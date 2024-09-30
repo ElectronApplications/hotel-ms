@@ -7,7 +7,7 @@ from hotel.models.service import Service
 
 class Accomodation(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE, null=False, related_name="accomodations")
-    price_to_pay = models.DecimalField("Стоимость проживания", max_digits=6, decimal_places=2)
+    price_to_pay = models.DecimalField("Стоимость проживания", max_digits=8, decimal_places=2)
     move_in_time = models.DateTimeField("Время въезда")
     move_out_time = models.DateTimeField("Время выезда")
     was_price_paid = models.BooleanField("Оплачено ли проживание", default=False)
@@ -22,7 +22,7 @@ class Accomodation(models.Model):
 class ServiceCard(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE, null=False, related_name="servicecards")
     accomodation = models.ForeignKey(Accomodation, on_delete=models.CASCADE, null=False, related_name="servicecards")
-    price_to_pay = models.DecimalField("Стоимость услуги", max_digits=6, decimal_places=2)
+    price_to_pay = models.DecimalField("Стоимость услуги", max_digits=8, decimal_places=2)
     service_time = models.DateTimeField("Время предоставления услуги")
     was_price_paid = models.BooleanField("Оплачена ли услуга", default=False)
 
