@@ -13,7 +13,7 @@ class Accomodation(models.Model):
     was_price_paid = models.BooleanField("Оплачено ли проживание", default=False)
     checked_out = models.BooleanField("Уже выехали", default=False)
     places = models.ManyToManyField(Place, related_name="accomodations")
-    reservation = models.OneToOneField(Reservation, on_delete=models.SET_NULL, null=True, related_name="accomodation")
+    reservation = models.OneToOneField(Reservation, on_delete=models.SET_NULL, null=True, blank=True, related_name="accomodation")
 
     class Meta:
         verbose_name = "Проживание"
