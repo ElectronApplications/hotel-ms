@@ -2,7 +2,7 @@ from django.db import models
 
 class ClassInfo(models.Model):
     class_description = models.TextField("Описание класса")
-    place_price = models.DecimalField("Стоимость места", max_digits=6, decimal_places=2)
+    place_price = models.DecimalField("Стоимость места", max_digits=8, decimal_places=2)
 
     def __str__(self) -> str:
         return self.class_description
