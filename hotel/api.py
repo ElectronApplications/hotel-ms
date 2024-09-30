@@ -1,7 +1,8 @@
 from rest_framework.viewsets import GenericViewSet
 from rest_framework import mixins
 
-from hotel.models import Client, Reservation
+from hotel.models.client import Client
+from hotel.models.reservation import Reservation
 from hotel.serializers import ClientSerializer, ReservationSerializer
 
 class ClientsViewSet(

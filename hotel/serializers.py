@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
-from hotel.models import Client, Reservation
+from hotel.models.client import Client
+from hotel.models.reservation import Reservation
 
 class ClientSerializer(serializers.ModelSerializer):
     class Meta:
