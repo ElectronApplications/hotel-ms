@@ -15,7 +15,7 @@ class Room(models.Model):
     room_class = models.ForeignKey(ClassInfo, on_delete=models.PROTECT, null=False, related_name="rooms")
 
     def __str__(self) -> str:
-        return str(self.id)
+        return f"Комната {str(self.id)} - {str(self.room_class)}"
     
     class Meta:
         verbose_name = "Комната"
@@ -29,6 +29,9 @@ class Place(models.Model):
         UNREADY = "unready", "Не готово"
         TAKEN = "taken", "Занято"
     status = models.CharField(max_length=8, choices=PlaceStatus.choices, default=PlaceStatus.FREE)
+
+    def __str__(self) -> str:
+        return f"Место {str(self.id)} в комнате {str(self.room.id)} - {str(self.room.room_class)}"
 
     class Meta:
         verbose_name = "Место"
