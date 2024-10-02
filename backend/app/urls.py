@@ -19,15 +19,12 @@ from rest_framework.routers import DefaultRouter
 from django.contrib import admin
 from django.urls import include, path
 
-from hotel import views
-from hotel.api import ClientsViewSet, ReservationsViewSet
+from hotel.api import register_hotel_routes
 
 router = DefaultRouter()
-router.register("clients", ClientsViewSet, basename="clients")
-router.register("reservations", ReservationsViewSet, basename="reservations")
+register_hotel_routes(router)
 
 urlpatterns = [
-    path('', views.ShowClientsView.as_view()),
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
 ]
