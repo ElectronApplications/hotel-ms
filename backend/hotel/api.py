@@ -14,6 +14,7 @@ from hotel.serializers import AccomodationSerializer, ClassInfoSerializer, Clien
 class ClientViewSet(
     mixins.CreateModelMixin,
     mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
     mixins.RetrieveModelMixin,
     mixins.ListModelMixin,
     GenericViewSet
@@ -24,6 +25,7 @@ class ClientViewSet(
 class ClassInfoViewSet(
     mixins.CreateModelMixin,
     mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
     mixins.RetrieveModelMixin,
     mixins.ListModelMixin,
     GenericViewSet
@@ -34,6 +36,7 @@ class ClassInfoViewSet(
 class RoomViewSet(
     mixins.CreateModelMixin,
     mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
     mixins.RetrieveModelMixin,
     mixins.ListModelMixin,
     GenericViewSet
@@ -44,6 +47,7 @@ class RoomViewSet(
 class PlaceViewSet(
     mixins.CreateModelMixin,
     mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
     mixins.RetrieveModelMixin,
     mixins.ListModelMixin,
     GenericViewSet
@@ -54,6 +58,7 @@ class PlaceViewSet(
 class ServiceViewSet(
     mixins.CreateModelMixin,
     mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
     mixins.RetrieveModelMixin,
     mixins.ListModelMixin,
     GenericViewSet
@@ -64,6 +69,7 @@ class ServiceViewSet(
 class ReservationViewSet(
     mixins.CreateModelMixin,
     mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
     mixins.RetrieveModelMixin,
     mixins.ListModelMixin,
     GenericViewSet
@@ -74,6 +80,7 @@ class ReservationViewSet(
 class AccomodationViewSet(
     mixins.CreateModelMixin,
     mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
     mixins.RetrieveModelMixin,
     mixins.ListModelMixin,
     GenericViewSet
@@ -84,6 +91,7 @@ class AccomodationViewSet(
 class ServiceCardViewSet(
     mixins.CreateModelMixin,
     mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
     mixins.RetrieveModelMixin,
     mixins.ListModelMixin,
     GenericViewSet
