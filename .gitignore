@@ -1,3 +1,14 @@
 .venv
 .vscode
 .pytest_cache
+
+.env
+local_settings.py
+
+layer/**
+!layer/*/
+!layer/*/*/
+!layer/*/*/*/
+!layer/*/*/*/*/
+!layer/*/*/*/*/*/
+!layer/**/*.example
