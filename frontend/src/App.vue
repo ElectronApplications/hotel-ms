@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router";
 import { Bars3Icon } from "@heroicons/vue/24/outline";
+
+const BRAND_HOTEL_NAME = import.meta.env.VITE_BRAND_HOTEL_NAME;
 </script>
 
 <template>
@@ -9,7 +11,7 @@ import { Bars3Icon } from "@heroicons/vue/24/outline";
       class="container sticky mx-auto flex flex-row justify-between border-b p-4"
     >
       <RouterLink to="/" class="text-sm font-bold">
-        Hotel Management System
+        {{ BRAND_HOTEL_NAME }}
       </RouterLink>
 
       <button class="block md:hidden">

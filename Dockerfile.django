@@ -1,0 +1,13 @@
+FROM python
+
+ENV PYTHONBUFFERED 1
+
+WORKDIR /app
+COPY backend/. /app/.
+COPY layer/backend/. /app/
+COPY local_settings.py /app/local_settings.py
+
+RUN --mount=type=cache,target=/root/.cache/pip pip install -r requirements.txt
+
+EXPOSE 8000
+CMD python manage.py collectstatic --noinput --settings local_settings && python manage.py migrate --settings local_settings && python manage.py runserver 0.0.0.0:8000 --settings local_settings
