@@ -28,7 +28,7 @@ class PlaceAdmin(admin.ModelAdmin):
 
 @admin.register(Client)
 class ClientAdmin(admin.ModelAdmin):
-    list_display = ["name", "phone_number"]
+    list_display = ["name", "phone_number", "user"]
 
 @admin.register(Reservation)
 class ReservationAdmin(admin.ModelAdmin):
