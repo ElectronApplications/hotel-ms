@@ -1,10 +1,10 @@
 from rest_framework import exceptions, serializers
-from rest_framework_simplejwt.serializers import TokenObtainSerializer, PasswordField
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, PasswordField
 from typing import Any, Dict
 
 from hotel.models.client import Client
 
-class ClientTokenObtainSerializer(TokenObtainSerializer):
+class ClientTokenObtainSerializer(TokenObtainPairSerializer):
     def __init__(self, *args, **kwargs) -> None:
         serializers.Serializer.__init__(self, *args, **kwargs)
 
