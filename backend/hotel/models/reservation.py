@@ -1,7 +1,7 @@
 from django.db import models
 
 from hotel.models.client import Client
-from hotel.models.place import Place
+from hotel.models.hotel import Place
 
 class Reservation(models.Model):
     move_in_time = models.DateTimeField("Время въезда")

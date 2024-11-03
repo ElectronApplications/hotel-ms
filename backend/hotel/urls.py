@@ -1,7 +1,9 @@
 from rest_framework.routers import BaseRouter
 
-from hotel.api import *
-from hotel.views.client import ClientViewSet
+from hotel.views.client import *
+from hotel.views.hotel import *
+from hotel.views.reservation import *
+from hotel.views.accomodation import *
 
 def register_hotel_routes(router: BaseRouter):
     router.register("client", ClientViewSet)

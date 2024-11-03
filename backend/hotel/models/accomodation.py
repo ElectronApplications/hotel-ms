@@ -1,9 +1,8 @@
 from django.db import models
 
 from hotel.models.client import Client
-from hotel.models.place import Place
+from hotel.models.hotel import Place, Service
 from hotel.models.reservation import Reservation
-from hotel.models.service import Service
 
 class Accomodation(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE, null=False, related_name="accomodations")

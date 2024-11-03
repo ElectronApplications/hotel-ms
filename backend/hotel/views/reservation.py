@@ -1,10 +1,11 @@
 from rest_framework.viewsets import GenericViewSet
 from rest_framework import mixins
 
-from hotel.models.client import *
-from hotel.serializers.client import *
+from hotel.models.reservation import *
+from hotel.serializers.reservation import *
 
-class ClientViewSet(
+
+class ReservationViewSet(
     mixins.CreateModelMixin,
     mixins.UpdateModelMixin,
     mixins.DestroyModelMixin,
@@ -12,5 +13,5 @@ class ClientViewSet(
     mixins.ListModelMixin,
     GenericViewSet
 ):
-    queryset = Client.objects.all()
-    serializer_class = ClientSerializer
+    queryset = Reservation.objects.all()
+    serializer_class = ReservationSerializer
