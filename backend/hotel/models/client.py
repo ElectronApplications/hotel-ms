@@ -11,7 +11,7 @@ class Client(models.Model):
             RegexValidator(r"^[+][\d]{7,15}$")
         ]
     )
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self) -> str:
         return self.name
