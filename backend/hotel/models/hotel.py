@@ -24,11 +24,11 @@ class Room(models.Model):
 class Place(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE, null=False, related_name="places")
 
-    class PlaceStatus(models.TextChoices):
+    class Status(models.TextChoices):
         FREE = "free", "Свободно"
         UNREADY = "unready", "Не готово"
         TAKEN = "taken", "Занято"
-    status = models.CharField(max_length=8, choices=PlaceStatus.choices, default=PlaceStatus.FREE)
+    status = models.CharField(max_length=8, choices=Status.choices, default=Status.FREE)
 
     def __str__(self) -> str:
         return f"Место {str(self.id)} в комнате {str(self.room.id)} - {str(self.room.room_class)}"

@@ -5,8 +5,6 @@ from hotel.models.client import *
 from hotel.models.hotel import *
 from hotel.models.reservation import *
 
-# Register your models here.
-
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
     list_display = ["service_description", "service_price"]
@@ -26,7 +24,7 @@ class PlaceAdmin(admin.ModelAdmin):
 
 @admin.register(Client)
 class ClientAdmin(admin.ModelAdmin):
-    list_display = ["name", "phone_number", "user"]
+    list_display = ["name", "phone_number", "role", "user"]
 
 @admin.register(Reservation)
 class ReservationAdmin(admin.ModelAdmin):

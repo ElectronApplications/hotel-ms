@@ -8,7 +8,8 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Client
-        fields = ["id", "name", "phone_number", "password"]
+        fields = ["id", "name", "phone_number", "password", "role"]
+        read_only_fields = ["role"]
 
     def validate_phone_number(self, phone_number: str) -> str:  
         existing_client = Client.objects.filter(phone_number=phone_number).first()

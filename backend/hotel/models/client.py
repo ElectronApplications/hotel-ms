@@ -13,6 +13,15 @@ class Client(models.Model):
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
 
+    class Role(models.TextChoices):
+        CLIENT = "client", "Клиент"
+        RECEPTION = "reception", "Ресепшен"
+        SERVICE = "service", "Обслуживание"
+        CLEANING = "cleaning", "Уборка"
+        PLANNING = "planning", "Планировка"
+        ADMIN = "admin", "Администрирование"
+    role = models.CharField(max_length=16, choices=Role.choices, default=Role.CLIENT)
+
     def __str__(self) -> str:
         return self.name
 
