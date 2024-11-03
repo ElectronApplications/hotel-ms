@@ -2,8 +2,7 @@ from django.test import TestCase
 from rest_framework.test import APIClient
 from model_bakery import baker
 
-from hotel.models.service import Service
-from hotel.models.place import ClassInfo
+from hotel.models.hotel import ClassInfo, Service
 from hotel.models.client import Client
 
 # Create your tests here.

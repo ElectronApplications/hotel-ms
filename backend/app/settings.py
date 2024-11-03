@@ -141,5 +141,5 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
-    "TOKEN_OBTAIN_SERIALIZER": "hotel.serializers.ClientTokenObtainSerializer"
+    "TOKEN_OBTAIN_SERIALIZER": "hotel.serializers.auth.ClientTokenObtainSerializer"
 }

@@ -1,10 +1,9 @@
 from django.contrib import admin
 
-from hotel.models.accomodation import Accomodation, ServiceCard
-from hotel.models.client import Client
-from hotel.models.place import ClassInfo, Place, Room
-from hotel.models.reservation import Reservation
-from hotel.models.service import Service
+from hotel.models.accomodation import *
+from hotel.models.client import *
+from hotel.models.hotel import *
+from hotel.models.reservation import *
 
 # Register your models here.
 
@@ -24,7 +23,6 @@ class RoomAdmin(admin.ModelAdmin):
 @admin.register(Place)
 class PlaceAdmin(admin.ModelAdmin):
     list_display = ["id", "room", "status"]
-
 
 @admin.register(Client)
 class ClientAdmin(admin.ModelAdmin):
