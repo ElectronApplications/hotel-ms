@@ -9,12 +9,13 @@ def register_hotel_routes(router: BaseRouter):
     router.register("user", UserViewSet, "user")
     router.register("client", ClientViewSet, "client")
     
-    router.register("reservation", ReservationViewSet)
+    # router.register("class", ClassInfoViewSet)
+    # router.register("room", RoomViewSet)
+    # router.register("place", PlaceViewSet)
+    # router.register("service", ServiceViewSet)
     
-    router.register("accomodation", AccomodationViewSet)
-    router.register("servicecard", ServiceCardViewSet)
+    # router.register("reservation", ReservationViewSet)
     
-    router.register("class", ClassInfoViewSet)
-    router.register("room", RoomViewSet)
-    router.register("place", PlaceViewSet)
-    router.register("service", ServiceViewSet)
+    # router.register("accomodation", AccomodationViewSet)
+    # router.register("servicecard", ServiceCardViewSet)
+    

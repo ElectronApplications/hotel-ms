@@ -2,7 +2,7 @@ from rest_framework import permissions
 from hotel.models.client import Client
 
 def get_client(request) -> Client | None:
-    if request.user is None:
+    if request.user is None or not request.user.is_authenticated:
         return None
     else:
         return Client.objects.filter(user=request.user).first()
