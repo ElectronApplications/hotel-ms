@@ -6,8 +6,8 @@ ALLOWED_HOSTS = ["*"]
 
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
-SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"] = timedelta(seconds=float(os.environ.et("ACCESS_TOKEN_SECONDS")))
-SIMPLE_JWT["REFRESH_TOKEN_LIFETIME"] = timedelta(seconds=float(os.environ.et("REFRESH_TOKEN_SECONDS")))
+SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"] = timedelta(seconds=float(os.environ.get("ACCESS_TOKEN_SECONDS")))
+SIMPLE_JWT["REFRESH_TOKEN_LIFETIME"] = timedelta(seconds=float(os.environ.get("REFRESH_TOKEN_SECONDS")))
 
 DATABASES = {
     "default": {
