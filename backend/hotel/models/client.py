@@ -7,6 +7,7 @@ class Client(models.Model):
     phone_number = models.CharField(
         "Номер телефона",
         max_length=16,
+        unique=True,
         validators=[
             RegexValidator(r"^[+][\d]{7,15}$")
         ]
