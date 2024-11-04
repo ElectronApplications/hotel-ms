@@ -20,6 +20,8 @@ services:
       POSTGRES_USER: "${POSTGRES_USER}"
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
       DJANGO_SECRET_KEY: "${DJANGO_SECRET_KEY}"
+      ACCESS_TOKEN_SECONDS: "${ACCESS_TOKEN_SECONDS}"
+      REFRESH_TOKEN_SECONDS: "${REFRESH_TOKEN_SECONDS}"
     volumes:
       - media:/app/media
       - django-static:/app/staticfiles
