@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
+from django.dispatch import receiver
+from django.db.models.signals import post_delete
 
 class Client(models.Model):
     name = models.TextField("ФИО")
@@ -29,3 +31,7 @@ class Client(models.Model):
     class Meta:
         verbose_name = "Клиент"
         verbose_name_plural = "Клиенты"
+    
+@receiver(post_delete, sender=Client)
+def delete_django_user(sender, instance: Client, **kwargs):
+    instance.user.delete()

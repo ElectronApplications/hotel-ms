@@ -51,4 +51,19 @@ class ClientViewSet(
     GenericViewSet
 ):
     queryset = Client.objects.all()
-    serializer_class = ClientSerializer
+    permission_classes = [IsReception]
+
+    def get_serializer_class(self):
+        if IsAdmin().has_permission(self.request, self):
+            return ClientAdminSerializer
+        else:
+            return ClientSerializer
+
+    def check_object_permissions(self, request, obj: Client):
+        super().check_object_permissions(request, obj)
+
+        if obj.role == Client.Role.ADMIN:
+            self.permission_denied(request, "Can't modify admins")
+        
+        if obj.role != Client.Role.CLIENT and not IsAdmin().has_permission(request, self):
+            self.permission_denied(request, "Reception can only modify normal clients")

@@ -60,4 +60,17 @@ class UserChangeNameSerializer(serializers.ModelSerializer):
 class ClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
-        fields = ["id", "name", "phone_number", "user"]
+        fields = ["id", "name", "phone_number", "role", "user"]
+        read_only_fields= ["role", "user"]
+    
+    def update(self, instance, validated_data):
+        instance: Client = super().update(instance, validated_data)
+        if instance.user is not None:
+            instance.user.username = instance.phone_number
+        return instance
+
+class ClientAdminSerializer(ClientSerializer):
+    class Meta:
+        model = Client
+        fields = ["id", "name", "phone_number", "role", "user"]
+        read_only_fields= ["user"]
