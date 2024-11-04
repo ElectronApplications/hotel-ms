@@ -35,7 +35,7 @@ class UserViewSetTestCase(TestCase):
         r = self.client.post("/api/user/", {
             "name": "Foobar Foobarovich",
             "phone_number": "+78005553535",
-            "password": "1234"
+            "password": "difficult_password"
         })
         client_id = r.json()["id"]
         client = Client.objects.filter(id=client_id).first()
@@ -43,7 +43,7 @@ class UserViewSetTestCase(TestCase):
         assert client is not None
         assert client.phone_number == "+78005553535"
         assert client.user is not None
-        assert client.user.check_password("1234")
+        assert client.user.check_password("difficult_password")
     
     def test_register_existing(self):
         client_old = Client.objects.create(name="Oldbar Oldbarovich", phone_number="+78005553535")
@@ -51,8 +51,9 @@ class UserViewSetTestCase(TestCase):
         r = self.client.post("/api/user/", {
             "name": "Foobar Foobarovich",
             "phone_number": "+78005553535",
-            "password": "123"
+            "password": "more_difficult_password"
         })
+        print(r.json())
         client_id = r.json()["id"]
 
         assert client_id == client_old.id
@@ -62,4 +63,4 @@ class UserViewSetTestCase(TestCase):
         assert client is not None
         assert client.name == "Foobar Foobarovich"
         assert client.user is not None
-        assert client.user.check_password("123")
+        assert client.user.check_password("more_difficult_password")
