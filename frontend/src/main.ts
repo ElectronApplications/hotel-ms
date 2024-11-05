@@ -1,14 +1,26 @@
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import { createApp } from "vue";
+import { createPinia } from "pinia";
 
-import App from './App.vue'
-import router from './router'
+import App from "./App.vue";
+import router from "./router";
 
-import './style.css'
+import "./style.css";
+import axios from "axios";
+import { useAuthStore } from "./stores/auth";
 
-const app = createApp(App)
+axios.interceptors.request.use(async (config) => {
+  const authStore = useAuthStore();
 
-app.use(createPinia())
-app.use(router)
+  if (await authStore.updateTokens()) {
+    config.headers.Authorization = `Bearer ${authStore.access}`;
+  }
 
-app.mount('#app')
+  return config;
+});
+
+const app = createApp(App);
+
+app.use(createPinia());
+app.use(router);
+
+app.mount("#app");

@@ -4,14 +4,20 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/vue/24/outline";
 import { Dialog, DialogPanel } from "@headlessui/vue";
 import BrandIcon from "./assets/brand-icon.svg";
 import { ref } from "vue";
+import { useAuthStore } from "./stores/auth";
+import { storeToRefs } from "pinia";
 
 const BRAND_HOTEL_NAME = import.meta.env.VITE_BRAND_HOTEL_NAME;
+
+const authStore = useAuthStore();
+const { currentUser } = storeToRefs(authStore);
 
 const mobileMenuOpen = ref(false);
 </script>
 
 <template>
   <header>
+    {{ currentUser }}
     <nav
       class="container sticky mx-auto flex flex-row items-center justify-between border-b border-gray-200 p-4 dark:border-slate-800"
     >
@@ -28,8 +34,9 @@ const mobileMenuOpen = ref(false);
       <div
         class="hidden flex-row gap-x-8 text-sm font-semibold text-gray-900 lg:flex dark:text-slate-300"
       >
-        <a href="/admin">Django admin page</a>
-        <RouterLink to="/vue-admin">Admin page</RouterLink>
+        <RouterLink v-if="currentUser === undefined" to="/login"
+          >Login</RouterLink
+        >
       </div>
 
       <Dialog
@@ -59,8 +66,7 @@ const mobileMenuOpen = ref(false);
           <div
             class="flex flex-col gap-y-2 pt-5 text-lg font-semibold text-gray-900 dark:text-slate-300"
           >
-            <a href="/admin">Django admin page</a>
-            <RouterLink to="/vue-admin">Admin page</RouterLink>
+            <RouterLink to="/login">Login</RouterLink>
           </div>
         </DialogPanel>
       </Dialog>
