@@ -2,10 +2,11 @@
 import { RouterLink, RouterView } from "vue-router";
 import { Bars3Icon, XMarkIcon } from "@heroicons/vue/24/outline";
 import { Dialog, DialogPanel } from "@headlessui/vue";
-import BrandIcon from "./assets/brand-icon.svg";
+import BrandIcon from "@/assets/brand-icon.svg";
 import { ref } from "vue";
-import { useAuthStore } from "./stores/auth";
+import { useAuthStore } from "@/stores/auth";
 import { storeToRefs } from "pinia";
+import PrimaryButton from "@/components/PrimaryButton.vue";
 
 const BRAND_HOTEL_NAME = import.meta.env.VITE_BRAND_HOTEL_NAME;
 
@@ -17,13 +18,12 @@ const mobileMenuOpen = ref(false);
 
 <template>
   <header>
-    {{ currentUser }}
     <nav
-      class="container sticky mx-auto flex flex-row items-center justify-between border-b border-gray-200 p-4 dark:border-slate-800"
+      class="container mx-auto flex flex-row items-center justify-between p-4 text-sm"
     >
       <RouterLink to="/" class="flex flex-row items-center">
         <BrandIcon class="size-[32px] pe-2" />
-        <span class="text-sm font-bold">{{ BRAND_HOTEL_NAME }}</span>
+        <span class="font-bold">{{ BRAND_HOTEL_NAME }}</span>
       </RouterLink>
 
       <button class="block lg:hidden" @click="mobileMenuOpen = true">
@@ -31,11 +31,9 @@ const mobileMenuOpen = ref(false);
         <Bars3Icon class="h-6 w-6" aria-hidden="true" />
       </button>
 
-      <div
-        class="hidden flex-row gap-x-8 text-sm font-semibold text-gray-900 lg:flex dark:text-slate-300"
-      >
+      <div class="hidden flex-row gap-x-8 lg:flex">
         <RouterLink v-if="currentUser === undefined" to="/login"
-          >Login</RouterLink
+          ><PrimaryButton class="px-8 py-3">Login</PrimaryButton></RouterLink
         >
       </div>
 
@@ -46,9 +44,11 @@ const mobileMenuOpen = ref(false);
       >
         <div class="fixed inset-0 z-10" />
         <DialogPanel
-          class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10 dark:bg-slate-950"
+          class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-surface-light px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10 dark:bg-surface-dark"
         >
-          <div class="flex items-center justify-between">
+          <div
+            class="flex items-center justify-between text-surface-light dark:text-surface-content-dark"
+          >
             <a href="#" class="-m-1.5 flex flex-row items-center p-1.5">
               <BrandIcon class="size-[32px] pe-2" />
               <span class="text-sm font-bold">{{ BRAND_HOTEL_NAME }}</span>
@@ -63,10 +63,10 @@ const mobileMenuOpen = ref(false);
             </button>
           </div>
 
-          <div
-            class="flex flex-col gap-y-2 pt-5 text-lg font-semibold text-gray-900 dark:text-slate-300"
-          >
-            <RouterLink to="/login">Login</RouterLink>
+          <div class="flex flex-col gap-y-2 pt-5 text-lg font-semibold">
+            <RouterLink v-if="currentUser === undefined" to="/login"
+              >Login</RouterLink
+            >
           </div>
         </DialogPanel>
       </Dialog>
