@@ -15,16 +15,14 @@ const { currentUser } = storeToRefs(authStore);
 </script>
 
 <template>
-  <main>
-    <div
-      class="container mx-auto flex flex-row flex-wrap gap-y-4 px-2 pt-[60px]"
-    >
+  <main class="container mx-auto">
+    <div class="flex flex-row flex-wrap gap-y-4 px-2 pt-[60px]">
       <div class="flex basis-full flex-col lg:basis-1/3">
         <h1 class="text-center text-6xl font-extrabold lg:text-left">
           Welcome to the {{ BRAND_HOTEL_NAME }}!
         </h1>
         <h2
-          class="text-secondary-active-light pt-6 text-center text-2xl font-semibold lg:text-left"
+          class="pt-6 text-center text-2xl font-semibold text-secondary-active-light lg:text-left"
         >
           We have a total of
           <span
@@ -41,14 +39,16 @@ const { currentUser } = storeToRefs(authStore);
           </RouterLink>
         </div>
       </div>
-      <div class="basis-full lg:basis-2/3">
+      <div class="basis-full self-end lg:basis-2/3">
         <img :src="BackgroundImage" alt="Hotel background" />
       </div>
     </div>
   </main>
 
-  <section>
-    <SurfaceCard class="container mx-auto text-center">
+  <section class="container mx-auto px-2">
+    <SurfaceCard
+      class="rounded-t-none rounded-tr-none text-center lg:rounded-tl-3xl"
+    >
       <span>Some content here!!!</span>
     </SurfaceCard>
   </section>
