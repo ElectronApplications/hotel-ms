@@ -1,21 +1,20 @@
 <script setup lang="ts">
+import type { ButtonHTMLAttributes } from "vue";
+
 const { enabled = true, type = "button" } = defineProps<{
   enabled?: boolean;
-  type?: "button" | "submit" | "reset";
+  type?: ButtonHTMLAttributes["type"];
 }>();
 </script>
 
 <template>
   <button
-    class="bg-secondary-light dark:bg-secondary-dark text-secondary-content-light dark:text-secondary-content-dark rounded-lg px-4 py-2 text-sm font-bold"
-    :class="
+    class="rounded-lg bg-secondary-light px-4 py-2 text-sm font-bold text-secondary-content-light duration-100 dark:bg-secondary-dark dark:text-secondary-content-dark"
+    :class="[
       enabled
-        ? [
-            'dark:hover:bg-secondary-active-dark',
-            'hover:bg-secondary-active-light',
-          ]
-        : []
-    "
+        ? 'hover:bg-secondary-active-light dark:hover:bg-secondary-active-dark'
+        : '',
+    ]"
     :type="type"
     :disabled="!enabled"
   >

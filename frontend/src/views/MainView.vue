@@ -3,7 +3,9 @@ import BackgroundImage from "@/assets/mainview-background.png";
 import PrimaryButton from "@/components/PrimaryButton.vue";
 import SurfaceCard from "@/components/SurfaceCard.vue";
 import { useAuthStore } from "@/stores/auth";
+import { TransitionRoot } from "@headlessui/vue";
 import { storeToRefs } from "pinia";
+import { onBeforeMount, ref } from "vue";
 import { RouterLink } from "vue-router";
 
 const BRAND_HOTEL_NAME = import.meta.env.VITE_BRAND_HOTEL_NAME;
@@ -12,6 +14,13 @@ const roomsAmount = 10; // TODO: dynamically load
 
 const authStore = useAuthStore();
 const { currentUser } = storeToRefs(authStore);
+
+const contentShow = ref(false);
+onBeforeMount(() => {
+  setTimeout(() => {
+    contentShow.value = true;
+  }, 1000);
+});
 </script>
 
 <template>
@@ -45,11 +54,18 @@ const { currentUser } = storeToRefs(authStore);
     </div>
   </main>
 
-  <section class="container mx-auto px-2">
-    <SurfaceCard
-      class="rounded-t-none rounded-tr-none text-center lg:rounded-tl-3xl"
-    >
-      <span>Some content here!!!</span>
-    </SurfaceCard>
-  </section>
+  <TransitionRoot
+    :show="contentShow"
+    enter="transition-opacity duration-500"
+    enter-from="opacity-0"
+    enter-to="opacity-100"
+  >
+    <section class="container mx-auto px-2">
+      <SurfaceCard
+        class="rounded-t-none rounded-tr-none text-center lg:rounded-tl-3xl"
+      >
+        <span>Some content here!!!</span>
+      </SurfaceCard>
+    </section>
+  </TransitionRoot>
 </template>

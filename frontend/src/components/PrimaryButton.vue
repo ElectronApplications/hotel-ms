@@ -7,12 +7,12 @@ const { enabled = true, type = "button" } = defineProps<{
 
 <template>
   <button
-    class="rounded-lg bg-primary-light px-4 py-2 text-sm font-bold text-primary-content-light dark:bg-primary-dark dark:text-primary-content-dark"
-    :class="
+    class="rounded-lg bg-primary-light px-4 py-2 text-sm font-bold text-primary-content-light duration-100 dark:bg-primary-dark dark:text-primary-content-dark"
+    :class="[
       enabled
-        ? ['dark:hover:bg-primary-active-dark', 'hover:bg-primary-active-light']
-        : []
-    "
+        ? 'hover:bg-primary-active-light dark:hover:bg-primary-active-dark'
+        : '',
+    ]"
     :type="type"
     :disabled="!enabled"
   >
