@@ -8,26 +8,40 @@ import { onBeforeMount, ref } from "vue";
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 import PrimaryButton from "@/components/PrimaryButton.vue";
 import TextField from "@/components/TextField.vue";
+import PasswordTextField from "@/components/PasswordTextField.vue";
 
 const authStore = useAuthStore();
 const { currentUser } = storeToRefs(authStore);
 
 const login_phone_number = ref("");
 const login_password = ref("");
+const login_error = ref<string>();
 
 const register_phone_number = ref("");
 const register_password = ref("");
 const register_confirm_password = ref("");
+const register_error = ref<string>();
 
 async function loginSubmit() {
-  console.log(login_phone_number.value);
-  console.log(login_password.value);
+  const result = await authStore.login(
+    login_phone_number.value,
+    login_password.value,
+  );
+
+  if (result) {
+    router.push("/profile");
+    return true;
+  } else {
+    login_error.value = "Incorrect phone number or password";
+    return false;
+  }
 }
 
 async function registerSubmit() {
-  console.log(register_phone_number.value);
-  console.log(register_password.value);
-  console.log(register_confirm_password.value);
+  if (register_password.value !== register_confirm_password.value) {
+    register_error.value = "Passwords do not match";
+    return false;
+  }
 }
 
 onBeforeMount(() => {
@@ -38,6 +52,7 @@ onBeforeMount(() => {
 </script>
 
 <template>
+  {{ currentUser }}
   <main class="container mx-auto flex justify-center pt-2">
     <SurfaceCard class="flex flex-col items-center">
       <BrandIcon class="scale-150" />
@@ -94,14 +109,17 @@ onBeforeMount(() => {
                   <label for="password" class="block text-sm/6 font-medium"
                     >Password</label
                   >
-                  <TextField
+                  <PasswordTextField
                     class="mt-2"
                     v-model="login_password"
                     name="password"
-                    type="password"
-                    autocomplete="current-password"
                     :required="true"
                   />
+                </div>
+                <div v-if="login_error">
+                  <span class="text-primary-light dark:text-primary-dark">{{
+                    login_error
+                  }}</span>
                 </div>
                 <div>
                   <PrimaryButton type="submit" class="w-full">
@@ -130,12 +148,10 @@ onBeforeMount(() => {
                   <label for="password" class="block text-sm/6 font-medium"
                     >Password</label
                   >
-                  <TextField
+                  <PasswordTextField
                     class="mt-2"
                     v-model="register_password"
                     name="password"
-                    type="password"
-                    autocomplete="current-password"
                     :required="true"
                   />
                 </div>
@@ -145,14 +161,17 @@ onBeforeMount(() => {
                     class="block text-sm/6 font-medium"
                     >Confirm password</label
                   >
-                  <TextField
+                  <PasswordTextField
                     class="mt-2"
                     v-model="register_confirm_password"
                     name="confirm-password"
-                    type="password"
-                    autocomplete="current-password"
                     :required="true"
                   />
+                </div>
+                <div v-if="register_error">
+                  <span class="text-primary-light dark:text-primary-dark">{{
+                    register_error
+                  }}</span>
                 </div>
                 <div>
                   <PrimaryButton type="submit" class="w-full">
