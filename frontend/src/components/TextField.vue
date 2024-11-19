@@ -7,6 +7,7 @@ const {
   name,
   autocomplete,
   required,
+  readonly,
   placeholder,
 } = defineProps<{
   enabled?: boolean;

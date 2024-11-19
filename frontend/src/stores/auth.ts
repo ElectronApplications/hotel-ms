@@ -59,31 +59,32 @@ export const useAuthStore = defineStore("auth", () => {
     phoneNumber: string,
     password: string,
   ): Promise<boolean> {
-    const simpleAxios = axios.create();
-    const result = await simpleAxios.post<Tokens>("/api/auth/login/", {
-      phone_number: phoneNumber,
-      password: password,
-    });
-
-    if (result.status === 200) {
+    try {
+      const simpleAxios = axios.create();
+      const result = await simpleAxios.post<Tokens>("/api/auth/login/", {
+        phone_number: phoneNumber,
+        password: password,
+      });
       const tokens = result.data;
       refresh.value = tokens.refresh;
       access.value = tokens.access;
       await updateUserInfo();
       return true;
-    } else {
+    } catch (_) {
       return false;
     }
   }
 
   async function logout() {
-    const simpleAxios = axios.create();
-    await simpleAxios.post("/api/auth/logout/", {
-      refresh: refresh.value,
-    });
+    const refreshCopy = refresh.value;
     refresh.value = undefined;
     access.value = undefined;
     currentUser.value = undefined;
+
+    const simpleAxios = axios.create();
+    await simpleAxios.post("/api/auth/logout/", {
+      refresh: refreshCopy,
+    });
   }
 
   onBeforeMount(async () => {
