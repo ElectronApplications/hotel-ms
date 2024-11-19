@@ -10,34 +10,52 @@ import PrimaryButton from "@/components/PrimaryButton.vue";
 import TextField from "@/components/TextField.vue";
 import PasswordTextField from "@/components/PasswordTextField.vue";
 import { useAuthentication } from "@/composables/auth";
+import axios from "axios";
 
 const authStore = useAuthStore();
 const { currentUser } = storeToRefs(authStore);
 
-const login_phone_number = ref("");
-const login_password = ref("");
-const login_error = ref<string>();
+const loginPhoneNumber = ref("");
+const loginPassword = ref("");
+const loginError = ref<string>();
 
-const register_phone_number = ref("");
-const register_password = ref("");
-const register_confirm_password = ref("");
-const register_error = ref<string>();
+const registerName = ref("");
+const registerPhoneNumber = ref("");
+const registerPassword = ref("");
+const registerConfirmPassword = ref("");
+const registerError = ref<string>();
 
 async function loginSubmit() {
   const result = await authStore.login(
-    login_phone_number.value,
-    login_password.value,
+    loginPhoneNumber.value,
+    loginPassword.value,
   );
 
   if (!result) {
-    login_error.value = "Incorrect phone number or password";
+    loginError.value = "Incorrect phone number or password";
   }
   return result;
 }
 
 async function registerSubmit() {
-  if (register_password.value !== register_confirm_password.value) {
-    register_error.value = "Passwords do not match";
+  if (registerPassword.value !== registerConfirmPassword.value) {
+    registerError.value = "Passwords do not match";
+    return false;
+  } else if (registerPassword.value.length < 8) {
+    registerError.value = "Password must be at least 8 characters long";
+    return false;
+  }
+
+  try {
+    await axios.post("/api/user/", {
+      name: registerName.value,
+      phone_number: registerPhoneNumber.value,
+      password: registerPassword.value,
+    });
+    await authStore.login(registerPhoneNumber.value, registerPassword.value);
+    return true;
+  } catch (_) {
+    registerError.value = "Couldn't complete registration";
     return false;
   }
 }
@@ -96,7 +114,7 @@ useAuthentication((isAuthenticated) => {
                   >
                   <TextField
                     class="mt-2"
-                    v-model="login_phone_number"
+                    v-model="loginPhoneNumber"
                     name="phone_number"
                     type="tel"
                     autocomplete="tel"
@@ -109,14 +127,14 @@ useAuthentication((isAuthenticated) => {
                   >
                   <PasswordTextField
                     class="mt-2"
-                    v-model="login_password"
+                    v-model="loginPassword"
                     name="password"
                     :required="true"
                   />
                 </div>
-                <div v-if="login_error">
+                <div v-if="loginError">
                   <span class="text-primary-light dark:text-primary-dark">{{
-                    login_error
+                    loginError
                   }}</span>
                 </div>
                 <div>
@@ -130,12 +148,25 @@ useAuthentication((isAuthenticated) => {
             <TabPanel>
               <form class="space-y-4" @submit.prevent="registerSubmit">
                 <div>
+                  <label for="name" class="block text-sm/6 font-medium"
+                    >Name</label
+                  >
+                  <TextField
+                    class="mt-2"
+                    v-model="registerName"
+                    name="name"
+                    type="text"
+                    autocomplete="name"
+                    :required="true"
+                  />
+                </div>
+                <div>
                   <label for="phone_number" class="block text-sm/6 font-medium"
                     >Phone number</label
                   >
                   <TextField
                     class="mt-2"
-                    v-model="register_phone_number"
+                    v-model="registerPhoneNumber"
                     name="phone_number"
                     type="tel"
                     autocomplete="tel"
@@ -148,7 +179,7 @@ useAuthentication((isAuthenticated) => {
                   >
                   <PasswordTextField
                     class="mt-2"
-                    v-model="register_password"
+                    v-model="registerPassword"
                     name="password"
                     :required="true"
                   />
@@ -161,14 +192,14 @@ useAuthentication((isAuthenticated) => {
                   >
                   <PasswordTextField
                     class="mt-2"
-                    v-model="register_confirm_password"
+                    v-model="registerConfirmPassword"
                     name="confirm-password"
                     :required="true"
                   />
                 </div>
-                <div v-if="register_error">
+                <div v-if="registerError">
                   <span class="text-primary-light dark:text-primary-dark">{{
-                    register_error
+                    registerError
                   }}</span>
                 </div>
                 <div>

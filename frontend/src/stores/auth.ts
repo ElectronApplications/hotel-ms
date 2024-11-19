@@ -61,11 +61,12 @@ export const useAuthStore = defineStore("auth", () => {
   ): Promise<boolean> {
     try {
       const simpleAxios = axios.create();
-      const result = await simpleAxios.post<Tokens>("/api/auth/login/", {
-        phone_number: phoneNumber,
-        password: password,
-      });
-      const tokens = result.data;
+      const tokens = (
+        await simpleAxios.post<Tokens>("/api/auth/login/", {
+          phone_number: phoneNumber,
+          password: password,
+        })
+      ).data;
       refresh.value = tokens.refresh;
       access.value = tokens.access;
       await updateUserInfo();
