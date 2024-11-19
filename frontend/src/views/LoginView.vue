@@ -4,11 +4,12 @@ import BrandIcon from "@/assets/brand-icon.svg";
 import router from "@/router";
 import { useAuthStore } from "@/stores/auth";
 import { storeToRefs } from "pinia";
-import { onBeforeMount, ref } from "vue";
+import { ref } from "vue";
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 import PrimaryButton from "@/components/PrimaryButton.vue";
 import TextField from "@/components/TextField.vue";
 import PasswordTextField from "@/components/PasswordTextField.vue";
+import { useAuthentication } from "@/composables/auth";
 
 const authStore = useAuthStore();
 const { currentUser } = storeToRefs(authStore);
@@ -28,13 +29,10 @@ async function loginSubmit() {
     login_password.value,
   );
 
-  if (result) {
-    router.push("/profile");
-    return true;
-  } else {
+  if (!result) {
     login_error.value = "Incorrect phone number or password";
-    return false;
   }
+  return result;
 }
 
 async function registerSubmit() {
@@ -44,8 +42,8 @@ async function registerSubmit() {
   }
 }
 
-onBeforeMount(() => {
-  if (currentUser.value !== undefined) {
+useAuthentication((isAuthenticated) => {
+  if (isAuthenticated) {
     router.push("/profile");
   }
 });

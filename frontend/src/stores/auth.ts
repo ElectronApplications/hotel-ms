@@ -23,7 +23,7 @@ export const useAuthStore = defineStore("auth", () => {
 
   const access = useLocalStorage<Token>("accessToken", undefined);
   const refresh = useLocalStorage<Token>("refreshToken", undefined);
-  const currentUser = ref<Client | undefined>();
+  const currentUser = ref<Client>();
 
   async function refreshTokens() {
     const simpleAxios = axios.create();
@@ -88,7 +88,7 @@ export const useAuthStore = defineStore("auth", () => {
   }
 
   onBeforeMount(async () => {
-    updateUserInfo();
+    await updateUserInfo();
   });
 
   return { currentUser, access, updateTokens, updateUserInfo, login, logout };
