@@ -92,5 +92,13 @@ export const useAuthStore = defineStore("auth", () => {
     await updateUserInfo();
   });
 
-  return { currentUser, access, updateTokens, updateUserInfo, login, logout };
+  return {
+    currentUser,
+    access,
+    refresh,
+    updateTokens,
+    updateUserInfo,
+    login,
+    logout,
+  };
 });
