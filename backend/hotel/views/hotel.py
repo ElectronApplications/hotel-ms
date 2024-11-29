@@ -3,6 +3,7 @@ from rest_framework import mixins
 
 from hotel.models.hotel import *
 from hotel.serializers.hotel import *
+from hotel.permissions import *
 
 class ClassInfoViewSet(
     mixins.CreateModelMixin,
@@ -14,6 +15,7 @@ class ClassInfoViewSet(
 ):
     queryset = ClassInfo.objects.all()
     serializer_class = ClassInfoSerializer
+    permission_classes = [IsPlanningOrReadOnly]
 
 class RoomViewSet(
     mixins.CreateModelMixin,
@@ -25,6 +27,7 @@ class RoomViewSet(
 ):
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
+    permission_classes = [IsPlanningOrReadOnly]
 
 class PlaceViewSet(
     mixins.CreateModelMixin,
@@ -35,7 +38,13 @@ class PlaceViewSet(
     GenericViewSet
 ):
     queryset = Place.objects.all()
-    serializer_class = PlaceSerializer
+    permission_classes = [IsPlanningOrReadOnly | IsCleaningOrReadOnly]
+
+    def get_serializer_class(self):
+        if IsCleaning().has_permission(self.request, self) and not IsAdmin().has_permission(self.request, self):
+            return CleaningPlaceSerializer
+        else:
+            return PlaceSerializer
 
 class ServiceViewSet(
     mixins.CreateModelMixin,
@@ -47,3 +56,4 @@ class ServiceViewSet(
 ):
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
+    permission_classes = [IsPlanningOrReadOnly]

@@ -18,7 +18,7 @@ class Client(models.Model):
 
     class Role(models.TextChoices):
         CLIENT = "client", "Client"
-        RECEPTION = "reception", "Reception"
+        RECEPTION = "reception", "Reception staff"
         SERVICE = "service", "Service staff"
         CLEANING = "cleaning", "Cleaning staff"
         PLANNING = "planning", "Plаnning staff"
