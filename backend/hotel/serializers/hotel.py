@@ -14,7 +14,13 @@ class RoomSerializer(serializers.ModelSerializer):
 class PlaceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Place
-        fields = ["id", "room"]
+        fields = ["id", "room", "status"]
+
+class CleaningPlaceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Place
+        fields = ["id", "room", "status"]
+        read_only_fields = ["room"]
 
 class ServiceSerializer(serializers.ModelSerializer):
     class Meta:

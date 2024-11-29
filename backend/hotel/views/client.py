@@ -55,7 +55,7 @@ class ClientViewSet(
 
     def get_serializer_class(self):
         if IsAdmin().has_permission(self.request, self):
-            return ClientAdminSerializer
+            return AdminClientSerializer
         else:
             return ClientSerializer
 

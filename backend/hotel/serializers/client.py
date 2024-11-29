@@ -69,7 +69,7 @@ class ClientSerializer(serializers.ModelSerializer):
             instance.user.username = instance.phone_number
         return instance
 
-class ClientAdminSerializer(ClientSerializer):
+class AdminClientSerializer(ClientSerializer):
     class Meta:
         model = Client
         fields = ["id", "name", "phone_number", "role", "user"]
