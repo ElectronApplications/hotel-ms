@@ -35,6 +35,9 @@ const mobileMenuOpen = ref(false);
         <RouterLink v-if="currentUser === undefined" to="/login"
           ><PrimaryButton class="px-8 py-3">Login</PrimaryButton></RouterLink
         >
+        <RouterLink v-if="currentUser !== undefined" to="/profile"
+          ><PrimaryButton class="px-8 py-3">Profile</PrimaryButton></RouterLink
+        >
       </div>
 
       <Dialog
@@ -66,6 +69,9 @@ const mobileMenuOpen = ref(false);
           <div class="flex flex-col gap-y-2 pt-5 text-lg font-semibold">
             <RouterLink v-if="currentUser === undefined" to="/login"
               >Login</RouterLink
+            >
+            <RouterLink v-if="currentUser !== undefined" to="/profile"
+              >Profile</RouterLink
             >
           </div>
         </DialogPanel>

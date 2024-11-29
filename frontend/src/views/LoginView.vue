@@ -3,7 +3,6 @@ import SurfaceCard from "@/components/SurfaceCard.vue";
 import BrandIcon from "@/assets/brand-icon.svg";
 import router from "@/router";
 import { useAuthStore } from "@/stores/auth";
-import { storeToRefs } from "pinia";
 import { ref } from "vue";
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 import PrimaryButton from "@/components/PrimaryButton.vue";
@@ -13,7 +12,6 @@ import { useAuthentication } from "@/composables/auth";
 import axios from "axios";
 
 const authStore = useAuthStore();
-const { currentUser } = storeToRefs(authStore);
 
 const loginPhoneNumber = ref("");
 const loginPassword = ref("");
@@ -68,7 +66,6 @@ useAuthentication((isAuthenticated) => {
 </script>
 
 <template>
-  {{ currentUser }}
   <main class="container mx-auto flex justify-center pt-2">
     <SurfaceCard class="flex flex-col items-center">
       <BrandIcon class="scale-150" />
