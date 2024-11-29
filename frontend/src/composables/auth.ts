@@ -4,12 +4,12 @@ import { watch } from "vue";
 
 export function useAuthentication(hook: (isAuthenticated: boolean) => void) {
   const authStore = useAuthStore();
-  const { currentUser } = storeToRefs(authStore);
+  const { refresh } = storeToRefs(authStore);
 
   watch(
-    currentUser,
+    refresh,
     () => {
-      hook(currentUser.value !== undefined);
+      hook(refresh.value !== undefined);
     },
     {
       immediate: true,
