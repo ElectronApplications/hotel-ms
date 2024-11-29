@@ -3,23 +3,27 @@ import BackgroundImage from "@/assets/mainview-background.png";
 import PrimaryButton from "@/components/PrimaryButton.vue";
 import SurfaceCard from "@/components/SurfaceCard.vue";
 import { useAuthStore } from "@/stores/auth";
+import type { Room } from "@/types";
 import { TransitionRoot } from "@headlessui/vue";
+import axios from "axios";
 import { storeToRefs } from "pinia";
 import { onBeforeMount, ref } from "vue";
 import { RouterLink } from "vue-router";
 
 const BRAND_HOTEL_NAME = import.meta.env.VITE_BRAND_HOTEL_NAME;
 
-const roomsAmount = 10; // TODO: dynamically load
+const rooms = ref<Room[]>([]);
 
 const authStore = useAuthStore();
 const { currentUser } = storeToRefs(authStore);
 
 const contentShow = ref(false);
-onBeforeMount(() => {
+onBeforeMount(async () => {
   setTimeout(() => {
     contentShow.value = true;
   }, 1000);
+
+  rooms.value = (await axios.get("/api/room/")).data;
 });
 </script>
 
@@ -36,7 +40,7 @@ onBeforeMount(() => {
           We have a total of
           <span
             class="text-primary-active-light dark:text-primary-active-dark"
-            >{{ roomsAmount }}</span
+            >{{ rooms.length }}</span
           >
           rooms with varied levels of service and comfort
         </h2>
