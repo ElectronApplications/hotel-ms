@@ -14,8 +14,8 @@ def register_hotel_routes(router: BaseRouter):
     router.register("place", PlaceViewSet)
     router.register("service", ServiceViewSet)
     
-    # router.register("reservation", ReservationViewSet)
+    router.register("reservation", ReservationViewSet)
     
-    # router.register("accomodation", AccomodationViewSet)
-    # router.register("servicecard", ServiceCardViewSet)
+    router.register("accomodation", AccomodationViewSet)
+    router.register("servicecard", ServiceCardViewSet)
     
