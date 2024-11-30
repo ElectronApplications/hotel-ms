@@ -47,7 +47,7 @@ function updateValue() {
 </script>
 
 <template>
-  <div v-show="!editing" class="flex flex-row justify-center">
+  <div v-show="!editing" class="flex flex-row items-center" v-bind="$attrs">
     <component :is="textTag" :class="textClass">{{ text }}</component>
     <button
       @click="
@@ -60,12 +60,16 @@ function updateValue() {
     </button>
   </div>
   <div v-if="editing">
-    <form class="flex flex-row justify-center" @submit.prevent="updateValue">
+    <form
+      class="flex flex-row items-center"
+      @submit.prevent="updateValue"
+      v-bind="$attrs"
+    >
       <input
         type="text"
         ref="inputRef"
         @blur="inputFocus"
-        class="bg-inherit outline-none w-[250px]"
+        class="w-[250px] bg-inherit outline-none"
         :class="textClass"
         v-model="editingText"
       />
