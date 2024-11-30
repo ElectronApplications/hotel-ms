@@ -18,6 +18,9 @@ class UserViewSet(
 
     def get_queryset(self):
         return super().get_queryset().filter(user=self.request.user)
+    
+    def get_object(self):
+        return self.get_queryset().first()
 
     @action(detail=False, url_path="self", methods=["get"], permission_classes=[IsAuthenticated])
     def get_self(self, request, *args, **kwargs):
@@ -25,18 +28,18 @@ class UserViewSet(
         serializer = self.get_serializer(client)
         return Response(serializer.data)
 
-    @action(detail=False, url_path="password", methods=["put"], permission_classes=[IsAuthenticated], serializer_class=UserChangePasswordSerializer)
-    def change_password(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
+    @action(detail=False, url_path="update-self", methods=["put"], permission_classes=[IsAuthenticated], serializer_class=UpdateUserSerializer)
+    def update_self(self, request, *args, **kwargs):
+        client = self.get_queryset().first()
+        serializer = self.get_serializer(client, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(serializer.data)
     
-    @action(detail=False, url_path="name", methods=["put"], permission_classes=[IsAuthenticated], serializer_class=UserChangeNameSerializer)
-    def change_name(self, request, *args, **kwargs):
-        client = self.get_queryset().first()
-        serializer = self.get_serializer(client, data=request.data)
+    @action(detail=False, url_path="password", methods=["put"], permission_classes=[IsAuthenticated], serializer_class=UserChangePasswordSerializer)
+    def change_password(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
 

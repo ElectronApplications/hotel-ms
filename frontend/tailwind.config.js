@@ -33,9 +33,9 @@ export default {
         },
         secondary: {
           light: "#D0D0D0",
-          dark: "#3A3A3A",
+          dark: "#4A4A4A",
           "active-light": "#909090",
-          "active-dark": "#575757",
+          "active-dark": "#5A5A5A",
           "content-light": colors.black,
           "content-dark": colors.gray[100],
         },

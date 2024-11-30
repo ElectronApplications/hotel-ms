@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { ref, type HTMLAttributes } from "vue";
+import { ref, toRefs, type HTMLAttributes } from "vue";
 
-const { src, alt, imgClass } = defineProps<{
+const props = defineProps<{
   src: string;
   alt?: string;
   imgClass: HTMLAttributes["class"];
 }>();
+
+const { src, alt, imgClass } = toRefs(props);
 
 const expanded = ref(false);
 </script>

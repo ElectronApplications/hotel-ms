@@ -11,7 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
         fields = ["id", "name", "phone_number", "password", "role", "picture"]
-        read_only_fields = ["role", "picture"]
+        read_only_fields = ["role"]
 
     def validate_phone_number(self, phone_number: str) -> str:  
         existing_client = Client.objects.filter(phone_number=phone_number).first()
@@ -30,6 +30,13 @@ class UserSerializer(serializers.ModelSerializer):
 
         client, created = Client.objects.update_or_create(phone_number=phone_number, defaults=validated_data)
         return client
+
+class UpdateUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Client
+        fields = ["id", "name", "phone_number", "role", "picture"]
+        read_only_fields = ["phone_number", "role"]
+        extra_kwargs = {"name": {"required": False}, "picture": {"required": False}}
 
 class UserChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(required=True, write_only=True)
@@ -51,11 +58,6 @@ class UserChangePasswordSerializer(serializers.Serializer):
         user.set_password(self.validated_data["new_password"])
         user.save()
         return user
-
-class UserChangeNameSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Client
-        fields = ["name"]
 
 class ClientSerializer(serializers.ModelSerializer):
     class Meta:

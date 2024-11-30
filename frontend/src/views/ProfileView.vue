@@ -8,9 +8,20 @@ import { useAuthStore } from "@/stores/auth";
 import { storeToRefs } from "pinia";
 import SecondaryButton from "@/components/SecondaryButton.vue";
 import ExpandableImage from "@/components/ExpandableImage.vue";
+import EditableLabel from "@/components/EditableLabel.vue";
+import axios from "axios";
 
 const authStore = useAuthStore();
 const { currentUser } = storeToRefs(authStore);
+
+async function changeName(value: string) {
+  if (value !== currentUser.value?.name) {
+    await axios.put("/api/user/update-self/", {
+      name: value,
+    });
+    authStore.updateUserInfo();
+  }
+}
 
 useAuthentication((isAuthenticated) => {
   if (!isAuthenticated) {
@@ -28,10 +39,13 @@ useAuthentication((isAuthenticated) => {
         :src="currentUser?.picture ?? DefaultProfileImage"
         :alt="currentUser?.name"
       />
-      <div class="flex flex-col ps-8 pt-4">
-        <h1 class="text-4xl font-extrabold">
-          {{ currentUser?.name }}
-        </h1>
+      <div class="flex flex-col ps-0 pt-4 text-center lg:ps-8 lg:text-start">
+        <EditableLabel
+          @updateText="changeName"
+          textTag="h1"
+          :text="currentUser?.name ?? ''"
+          textClass="text-4xl font-extrabold"
+        />
         <h2 class="pt-2 text-xl font-semibold">
           {{ currentUser?.phone_number }}
         </h2>
