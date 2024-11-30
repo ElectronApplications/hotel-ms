@@ -10,8 +10,8 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Client
-        fields = ["id", "name", "phone_number", "password", "role"]
-        read_only_fields = ["role"]
+        fields = ["id", "name", "phone_number", "password", "role", "picture"]
+        read_only_fields = ["role", "picture"]
 
     def validate_phone_number(self, phone_number: str) -> str:  
         existing_client = Client.objects.filter(phone_number=phone_number).first()
@@ -60,7 +60,7 @@ class UserChangeNameSerializer(serializers.ModelSerializer):
 class ClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
-        fields = ["id", "name", "phone_number", "role", "user"]
+        fields = ["id", "name", "phone_number", "role", "user", "picture"]
         read_only_fields= ["role", "user"]
     
     def update(self, instance, validated_data):
@@ -72,5 +72,5 @@ class ClientSerializer(serializers.ModelSerializer):
 class AdminClientSerializer(ClientSerializer):
     class Meta:
         model = Client
-        fields = ["id", "name", "phone_number", "role", "user"]
+        fields = ["id", "name", "phone_number", "role", "user", "picture"]
         read_only_fields= ["user"]

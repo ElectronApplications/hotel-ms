@@ -25,6 +25,8 @@ class Client(models.Model):
         ADMIN = "admin", "Admin staff"
     role = models.CharField(max_length=16, choices=Role.choices, default=Role.CLIENT)
 
+    picture = models.ImageField("Profile picture", null=True, blank=True, upload_to="clients")
+
     def __str__(self) -> str:
         return self.name
 
