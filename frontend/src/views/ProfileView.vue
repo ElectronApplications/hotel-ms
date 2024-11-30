@@ -57,8 +57,7 @@ useAuthentication((isAuthenticated) => {
   <main class="container mx-auto pt-4">
     <SurfaceCard class="flex flex-col items-center lg:flex-row lg:items-start">
       <ExpandableImage
-        class="w-[250px]"
-        imgClass="rounded-full"
+        imgClass="rounded-full w-[250px]"
         :src="currentUser?.picture ?? DefaultProfileImage"
         :alt="currentUser?.name"
       />
@@ -75,7 +74,7 @@ useAuthentication((isAuthenticated) => {
           {{ currentUser?.phone_number }}
         </h2>
         <span class="pt-2" v-if="currentUser?.role !== 'client'">
-          {{ currentUser?.role }}
+          Your role: {{ currentUser?.role }}
         </span>
 
         <form class="space-y-1 pt-4" @submit.prevent="changeProfilePicture">
