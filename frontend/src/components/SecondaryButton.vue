@@ -1,10 +1,18 @@
 <script setup lang="ts">
-import type { ButtonHTMLAttributes } from "vue";
+import { toRefs, type ButtonHTMLAttributes } from "vue";
 
-const { enabled = true, type = "button" } = defineProps<{
-  enabled?: boolean;
-  type?: ButtonHTMLAttributes["type"];
-}>();
+const props = withDefaults(
+  defineProps<{
+    enabled?: boolean;
+    type?: ButtonHTMLAttributes["type"];
+  }>(),
+  {
+    enabled: true,
+    type: "button",
+  },
+);
+
+const { enabled, type } = toRefs(props);
 </script>
 
 <template>

@@ -1,23 +1,24 @@
 <script setup lang="ts">
-import type { InputTypeHTMLAttribute } from "vue";
+import { toRefs, type InputTypeHTMLAttribute } from "vue";
 
-const {
-  enabled = true,
-  type = "text",
-  name,
-  autocomplete,
-  required,
-  readonly,
-  placeholder,
-} = defineProps<{
-  enabled?: boolean;
-  type?: InputTypeHTMLAttribute;
-  name?: string;
-  autocomplete?: string;
-  required?: boolean;
-  readonly?: boolean;
-  placeholder?: string;
-}>();
+const props = withDefaults(
+  defineProps<{
+    enabled?: boolean;
+    type?: InputTypeHTMLAttribute;
+    name?: string;
+    autocomplete?: string;
+    required?: boolean;
+    readonly?: boolean;
+    placeholder?: string;
+  }>(),
+  {
+    enabled: true,
+    type: "text",
+  },
+);
+
+const { enabled, type, name, autocomplete, required, readonly, placeholder } =
+  toRefs(props);
 
 const model = defineModel<string>();
 </script>
