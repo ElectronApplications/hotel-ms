@@ -27,7 +27,7 @@ async function changeName(value: string) {
 
 const picture = useTemplateRef("pictureRef");
 
-async function changeProfilePicture() {
+async function changeProfilePicture(): Promise<boolean> {
   const pictureFile = picture.value?.files;
 
   if (pictureFile && pictureFile[0]) {
@@ -44,6 +44,7 @@ async function changeProfilePicture() {
     });
   }
   authStore.updateUserInfo();
+  return true;
 }
 
 useAuthentication((isAuthenticated) => {

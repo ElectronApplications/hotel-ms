@@ -9,7 +9,7 @@ import PrimaryButton from "@/components/PrimaryButton.vue";
 import TextField from "@/components/TextField.vue";
 import PasswordTextField from "@/components/PasswordTextField.vue";
 import { useAuthentication } from "@/composables/auth";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 const authStore = useAuthStore();
 
@@ -23,7 +23,7 @@ const registerPassword = ref("");
 const registerConfirmPassword = ref("");
 const registerError = ref<string>();
 
-async function loginSubmit() {
+async function loginSubmit(): Promise<boolean> {
   const result = await authStore.login(
     loginPhoneNumber.value,
     loginPassword.value,
@@ -35,7 +35,7 @@ async function loginSubmit() {
   return result;
 }
 
-async function registerSubmit() {
+async function registerSubmit(): Promise<boolean> {
   if (registerPassword.value !== registerConfirmPassword.value) {
     registerError.value = "Passwords do not match";
     return false;
@@ -52,8 +52,8 @@ async function registerSubmit() {
     });
     await authStore.login(registerPhoneNumber.value, registerPassword.value);
     return true;
-  } catch (_) {
-    registerError.value = "Couldn't complete registration";
+  } catch (e) {
+    registerError.value = `Couldn't complete registration (${JSON.stringify((e as AxiosError)?.response?.data)})`;
     return false;
   }
 }
@@ -194,10 +194,13 @@ useAuthentication((isAuthenticated) => {
                     :required="true"
                   />
                 </div>
-                <div v-if="registerError">
-                  <span class="text-primary-light dark:text-primary-dark">{{
-                    registerError
-                  }}</span>
+                <div
+                  v-if="registerError"
+                  class="max-w-[250px] text-wrap break-words"
+                >
+                  <span class="text-primary-light dark:text-primary-dark">
+                    {{ registerError }}
+                  </span>
                 </div>
                 <div>
                   <PrimaryButton type="submit" class="w-full">
