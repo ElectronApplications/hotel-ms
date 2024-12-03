@@ -3,7 +3,7 @@ import { RouterLink, RouterView } from "vue-router";
 import { Bars3Icon, XMarkIcon } from "@heroicons/vue/24/outline";
 import { Dialog, DialogPanel } from "@headlessui/vue";
 import BrandIcon from "@/assets/brand-icon.svg";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { storeToRefs } from "pinia";
 import PrimaryButton from "@/components/PrimaryButton.vue";
@@ -14,6 +14,54 @@ const authStore = useAuthStore();
 const { currentUser } = storeToRefs(authStore);
 
 const mobileMenuOpen = ref(false);
+
+const topEntries = computed(() => {
+  return [
+    {
+      name: "Reception",
+      path: "/management/reception",
+      enabled:
+        currentUser.value?.role === "reception" ||
+        currentUser.value?.role === "admin",
+    },
+    {
+      name: "Service",
+      path: "/management/service",
+      enabled:
+        currentUser.value?.role === "service" ||
+        currentUser.value?.role === "admin",
+    },
+    {
+      name: "Cleaning",
+      path: "/management/cleaning",
+      enabled:
+        currentUser.value?.role === "cleaning" ||
+        currentUser.value?.role === "admin",
+    },
+    {
+      name: "Planning",
+      path: "/management/planning",
+      enabled:
+        currentUser.value?.role === "planning" ||
+        currentUser.value?.role === "admin",
+    },
+    {
+      name: "Admin",
+      path: "/management/admin",
+      enabled: currentUser.value?.role === "admin",
+    },
+    {
+      name: "Book",
+      path: "/book",
+      enabled: currentUser.value !== undefined,
+    },
+    {
+      name: "Profile",
+      path: "/profile",
+      enabled: currentUser.value != undefined,
+    },
+  ].filter((entry) => entry.enabled);
+});
 </script>
 
 <template>
@@ -23,7 +71,7 @@ const mobileMenuOpen = ref(false);
     >
       <RouterLink to="/" class="flex flex-row items-center">
         <BrandIcon class="size-[32px] pe-2" />
-        <span class="font-bold">{{ BRAND_HOTEL_NAME }}</span>
+        <span class="font-extrabold">{{ BRAND_HOTEL_NAME }}</span>
       </RouterLink>
 
       <button class="block lg:hidden" @click="mobileMenuOpen = true">
@@ -31,12 +79,16 @@ const mobileMenuOpen = ref(false);
         <Bars3Icon class="h-6 w-6" aria-hidden="true" />
       </button>
 
-      <div class="hidden flex-row gap-x-8 lg:flex">
+      <div class="hidden flex-row gap-x-10 lg:flex">
+        <RouterLink
+          v-for="entry in topEntries"
+          v-bind:key="entry.path"
+          :to="entry.path"
+          class="font-bold"
+          >{{ entry.name }}</RouterLink
+        >
         <RouterLink v-if="currentUser === undefined" to="/login"
           ><PrimaryButton class="px-8 py-3">Login</PrimaryButton></RouterLink
-        >
-        <RouterLink v-if="currentUser !== undefined" to="/profile"
-          ><PrimaryButton class="px-8 py-3">Profile</PrimaryButton></RouterLink
         >
       </div>
 
@@ -67,11 +119,14 @@ const mobileMenuOpen = ref(false);
           </div>
 
           <div class="flex flex-col gap-y-2 pt-5 text-lg font-semibold">
+            <RouterLink
+              v-for="entry in topEntries"
+              v-bind:key="entry.path"
+              :to="entry.path"
+              >{{ entry.name }}</RouterLink
+            >
             <RouterLink v-if="currentUser === undefined" to="/login"
               >Login</RouterLink
-            >
-            <RouterLink v-if="currentUser !== undefined" to="/profile"
-              >Profile</RouterLink
             >
           </div>
         </DialogPanel>

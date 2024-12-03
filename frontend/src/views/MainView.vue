@@ -45,7 +45,7 @@ onBeforeMount(async () => {
           rooms with varied levels of service and comfort
         </h2>
         <div class="pt-6">
-          <RouterLink :to="currentUser === undefined ? '/login' : '/profile'">
+          <RouterLink :to="currentUser === undefined ? '/login' : '/book'">
             <PrimaryButton class="w-full py-4 lg:w-fit lg:px-8"
               >Book now</PrimaryButton
             >
