@@ -58,7 +58,7 @@ useAuthentication((isAuthenticated) => {
   <main class="container mx-auto pt-4">
     <SurfaceCard class="flex flex-col items-center lg:flex-row lg:items-start">
       <ExpandableImage
-        imgClass="rounded-full w-[250px]"
+        imgClass="rounded-full w-[250px] h-[250px] object-cover"
         :src="currentUser?.picture ?? DefaultProfileImage"
         :alt="currentUser?.name"
       />
