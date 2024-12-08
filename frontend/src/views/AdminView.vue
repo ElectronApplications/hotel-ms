@@ -51,18 +51,6 @@ async function deleteClient(client: Client) {
   await fetchClients();
 }
 
-useAuthentication((isAuthenticated) => {
-  if (!isAuthenticated) {
-    router.push("/login");
-  }
-});
-
-useUserRole((role) => {
-  if (role !== "admin") {
-    router.push("/profile");
-  }
-});
-
 const newClientName = ref("");
 const newClientPhoneNumber = ref("");
 const newClientRole = ref<number>(clientRoles.indexOf("client"));
@@ -88,6 +76,18 @@ async function createClient(): Promise<boolean> {
 
 onMounted(async () => {
   await fetchClients();
+});
+
+useAuthentication((isAuthenticated) => {
+  if (!isAuthenticated) {
+    router.push("/login");
+  }
+});
+
+useUserRole((role) => {
+  if (role !== "admin") {
+    router.push("/profile");
+  }
 });
 </script>
 
