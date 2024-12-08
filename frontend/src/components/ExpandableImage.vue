@@ -4,7 +4,7 @@ import { ref, toRefs, type HTMLAttributes } from "vue";
 const props = defineProps<{
   src: string;
   alt?: string;
-  imgClass: HTMLAttributes["class"];
+  imgClass?: HTMLAttributes["class"];
 }>();
 
 const { src, alt, imgClass } = toRefs(props);

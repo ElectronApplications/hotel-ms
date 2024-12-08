@@ -64,6 +64,7 @@ class ClientSerializer(serializers.ModelSerializer):
         model = Client
         fields = ["id", "name", "phone_number", "role", "user", "picture"]
         read_only_fields= ["role", "user"]
+        extra_kwargs = {"name": {"required": False}, "phone_number": {"required": False}, "picture": {"required": False}}
     
     def update(self, instance, validated_data):
         instance: Client = super().update(instance, validated_data)
@@ -76,3 +77,4 @@ class AdminClientSerializer(ClientSerializer):
         model = Client
         fields = ["id", "name", "phone_number", "role", "user", "picture"]
         read_only_fields= ["user"]
+        extra_kwargs = {"name": {"required": False}, "phone_number": {"required": False}, "role": {"required": False}, "picture": {"required": False}}

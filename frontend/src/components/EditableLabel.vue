@@ -5,7 +5,7 @@ import { ref, toRefs, useTemplateRef, watch, type HTMLAttributes } from "vue";
 const props = withDefaults(
   defineProps<{
     text: string;
-    textClass: HTMLAttributes["class"];
+    textClass?: HTMLAttributes["class"];
     textTag?: string;
   }>(),
   {
