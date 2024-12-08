@@ -36,4 +36,5 @@ class Client(models.Model):
     
 @receiver(post_delete, sender=Client)
 def delete_django_user(sender, instance: Client, **kwargs):
-    instance.user.delete()
+    if instance.user is not None:
+        instance.user.delete()
