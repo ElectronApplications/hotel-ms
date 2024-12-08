@@ -11,13 +11,27 @@ import router from "@/router";
 import { clientRoles, type Client, type ClientRole } from "@/types";
 import { XMarkIcon } from "@heroicons/vue/24/outline";
 import axios from "axios";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
+import { debounce } from "lodash";
 
 const clients = ref<Client[]>([]);
 
+const searchKey = ref("");
+watch(searchKey, () => {
+  debouncedFetchClients();
+});
+
 async function fetchClients() {
-  clients.value = (await axios.get("/api/client/")).data;
+  console.log("hmmm");
+  clients.value = (
+    await axios.get("/api/client/", {
+      params: {
+        search: searchKey.value,
+      },
+    })
+  ).data;
 }
+const debouncedFetchClients = debounce(fetchClients, 200);
 
 async function changeClientName(client: Client, newName: string) {
   if (client.name !== newName) {
@@ -93,9 +107,18 @@ useUserRole((role) => {
 
 <template>
   <main class="container mx-auto pt-4">
-    <h1 class="text-center text-4xl font-extrabold lg:text-start">
-      Hotel clients
-    </h1>
+    <div class="flex flex-col space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0">
+      <h1 class="text-center text-4xl font-extrabold lg:text-start">
+        Hotel clients
+      </h1>
+      <div class="basis-1/3 px-4 lg:px-0">
+        <TextField
+          placeholder="Search"
+          v-model="searchKey"
+          @keyup.enter="fetchClients()"
+        />
+      </div>
+    </div>
     <div
       class="mt-4 rounded-3xl bg-slate-100 px-0 py-6 text-surface-content-light shadow-md dark:bg-secondary-dark dark:text-surface-content-dark"
     >
