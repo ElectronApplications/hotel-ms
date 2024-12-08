@@ -4,6 +4,9 @@ from rest_framework.decorators import action
 from rest_framework import mixins
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import filters
+
+from django_filters.rest_framework import DjangoFilterBackend
 
 from hotel.models.client import *
 from hotel.serializers.client import *
@@ -54,6 +57,9 @@ class ClientViewSet(
     GenericViewSet
 ):
     queryset = Client.objects.all()
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ["role"]
+    search_fields = ["name", "phone_number"]
     permission_classes = [IsReception]
 
     def get_serializer_class(self):
