@@ -56,7 +56,12 @@ useAuthentication((isAuthenticated) => {
 
 <template>
   <main class="container mx-auto pt-4">
-    <SurfaceCard class="flex flex-col items-center lg:flex-row lg:items-start">
+    <h1 class="text-center text-4xl font-extrabold lg:text-start">
+      Profile information
+    </h1>
+    <SurfaceCard
+      class="mt-4 flex flex-col items-center lg:flex-row lg:items-start"
+    >
       <ExpandableImage
         imgClass="rounded-full w-[250px] h-[250px] object-cover"
         :src="currentUser?.picture ?? DefaultProfileImage"
@@ -66,7 +71,7 @@ useAuthentication((isAuthenticated) => {
         <EditableLabel
           class="justify-center lg:justify-start"
           @updateText="changeName"
-          textTag="h1"
+          textTag="h2"
           :text="currentUser?.name ?? ''"
           textClass="text-4xl font-extrabold"
         />

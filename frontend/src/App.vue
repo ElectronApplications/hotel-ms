@@ -104,10 +104,14 @@ const topEntries = computed(() => {
           <div
             class="flex items-center justify-between text-surface-light dark:text-surface-content-dark"
           >
-            <a href="#" class="-m-1.5 flex flex-row items-center p-1.5">
+            <RouterLink
+              to="/"
+              @click="mobileMenuOpen = false"
+              class="-m-1.5 flex flex-row items-center p-1.5"
+            >
               <BrandIcon class="size-[32px] pe-2" />
               <span class="text-sm font-bold">{{ BRAND_HOTEL_NAME }}</span>
-            </a>
+            </RouterLink>
             <button
               type="button"
               class="-m-2.5 rounded-md p-2.5 text-gray-700"
@@ -123,9 +127,13 @@ const topEntries = computed(() => {
               v-for="entry in topEntries"
               v-bind:key="entry.path"
               :to="entry.path"
+              @click="mobileMenuOpen = false"
               >{{ entry.name }}</RouterLink
             >
-            <RouterLink v-if="currentUser === undefined" to="/login"
+            <RouterLink
+              v-if="currentUser === undefined"
+              to="/login"
+              @click="mobileMenuOpen = false"
               >Login</RouterLink
             >
           </div>

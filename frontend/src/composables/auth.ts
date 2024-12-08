@@ -1,5 +1,5 @@
 import { useAuthStore } from "@/stores/auth";
-import type { Client } from "@/types";
+import type { ClientRole } from "@/types";
 import { storeToRefs } from "pinia";
 import { watch } from "vue";
 
@@ -18,7 +18,7 @@ export function useAuthentication(hook: (isAuthenticated: boolean) => void) {
   );
 }
 
-export function useUserRole(hook: (role: Client["role"]) => void) {
+export function useUserRole(hook: (role: ClientRole) => void) {
   const authStore = useAuthStore();
   const { currentUser } = storeToRefs(authStore);
 
