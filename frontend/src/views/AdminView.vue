@@ -13,6 +13,7 @@ import { XMarkIcon } from "@heroicons/vue/24/outline";
 import axios from "axios";
 import { onMounted, ref, watch } from "vue";
 import { debounce } from "lodash";
+import TableCard from "@/components/TableCard.vue";
 
 const clients = ref<Client[]>([]);
 
@@ -22,7 +23,6 @@ watch(searchKey, () => {
 });
 
 async function fetchClients() {
-  console.log("hmmm");
   clients.value = (
     await axios.get("/api/client/", {
       params: {
@@ -119,137 +119,106 @@ useUserRole((role) => {
         />
       </div>
     </div>
-    <div
-      class="mt-4 rounded-3xl bg-slate-100 px-0 py-6 text-surface-content-light shadow-md dark:bg-secondary-dark dark:text-surface-content-dark"
+
+    <TableCard
+      :columns="[
+        { name: 'delete', display: '' },
+        { name: 'name', display: 'Name' },
+        { name: 'phone', display: 'Phone number' },
+        { name: 'role', display: 'Role' },
+        { name: 'image', display: 'Profile image' },
+      ]"
+      :rows="clients"
+      :extraFormRow="{ formName: 'createClientForm', formSubmit: createClient }"
     >
-      <form id="createClientForm" @submit.prevent="createClient" />
-
-      <table
-        class="w-full table-auto bg-slate-100 text-center dark:bg-secondary-dark"
-      >
-        <thead
-          class="border-b border-secondary-light dark:border-secondary-active-dark"
+      <template #delete="item">
+        <button
+          class="rounded-md bg-red-500 p-[4px]"
+          v-if="!item.isFormRow && item.data.role !== 'admin'"
+          @click="deleteClient(item.data)"
         >
-          <tr>
-            <th></th>
-            <th class="py-2">Name</th>
-            <th class="py-2">Phone number</th>
-            <th class="py-2">Role</th>
-            <th class="py-2">Profile image</th>
-          </tr>
-        </thead>
-        <tbody class="bg-surface-light dark:bg-surface-dark">
-          <tr v-for="client in clients" v-bind:key="client.id">
-            <td
-              class="border-b border-secondary-light py-2 dark:border-secondary-active-dark"
-            >
-              <button
-                class="rounded-md bg-red-500 p-[4px]"
-                v-if="client.role !== 'admin'"
-                @click="deleteClient(client)"
-              >
-                <XMarkIcon class="h-[24px] w-[24px] text-white" />
-              </button>
-            </td>
-            <td
-              class="border-b border-secondary-light py-6 dark:border-secondary-active-dark"
-            >
-              <EditableLabel
-                v-if="client.role !== 'admin'"
-                class="justify-center"
-                :text="client.name"
-                @updateText="(value) => changeClientName(client, value)"
-              />
-              <span v-if="client.role === 'admin'">
-                {{ client.name }}
-              </span>
-            </td>
-            <td
-              class="border-b border-secondary-light py-6 dark:border-secondary-active-dark"
-            >
-              <EditableLabel
-                v-if="client.role !== 'admin'"
-                class="justify-center"
-                :text="client.phone_number"
-                @updateText="(value) => changeClientPhoneNumber(client, value)"
-              />
-              <span v-if="client.role === 'admin'">
-                {{ client.phone_number }}
-              </span>
-            </td>
-            <td
-              class="border-b border-secondary-light py-6 dark:border-secondary-active-dark"
-            >
-              <SelectListDynamic
-                v-if="client.role !== 'admin'"
-                :options="clientRoles"
-                :selected="clientRoles.indexOf(client.role)"
-                @updateSelection="
-                  (value) => changeClientRole(client, clientRoles[value])
-                "
-              />
-              <span v-if="client.role === 'admin'">
-                {{ client.role }}
-              </span>
-            </td>
-            <td
-              class="border-b border-secondary-light py-2 dark:border-secondary-active-dark"
-            >
-              <ExpandableImage
-                imgClass="w-[64px]"
-                :src="client.picture ?? DefaultProfileImage"
-                :alt="client.name"
-              />
-            </td>
-          </tr>
+          <XMarkIcon class="h-[24px] w-[24px] text-white" />
+        </button>
+      </template>
 
-          <tr>
-            <td
-              class="border-b border-secondary-light py-2 dark:border-secondary-active-dark"
-            ></td>
-            <td
-              class="border-b border-secondary-light py-6 dark:border-secondary-active-dark"
-            >
-              <div class="inline-block w-[100px] lg:w-[250px]">
-                <TextField
-                  placeholder="Client's name"
-                  v-model="newClientName"
-                  form="createClientForm"
-                />
-              </div>
-            </td>
-            <td
-              class="border-b border-secondary-light py-6 dark:border-secondary-active-dark"
-            >
-              <div class="inline-block w-[100px] lg:w-[250px]">
-                <TextField
-                  placeholder="Client's phone number"
-                  v-model="newClientPhoneNumber"
-                  form="createClientForm"
-                />
-              </div>
-            </td>
-            <td
-              class="border-b border-secondary-light py-6 dark:border-secondary-active-dark"
-            >
-              <SelectList
-                :options="clientRoles"
-                :defaultOption="clientRoles.indexOf('client')"
-                v-model="newClientRole"
-                form="createClientForm"
-              />
-            </td>
-            <td
-              class="border-b border-secondary-light py-6 dark:border-secondary-active-dark"
-            >
-              <PrimaryButton form="createClientForm" type="submit"
-                >Create new client</PrimaryButton
-              >
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+      <template #name="item">
+        <template v-if="!item.isFormRow">
+          <EditableLabel
+            v-if="item.data.role !== 'admin'"
+            class="justify-center"
+            :text="item.data.name"
+            @updateText="(value) => changeClientName(item.data, value)"
+          />
+          <span v-else>
+            {{ item.data.name }}
+          </span>
+        </template>
+        <div v-else class="inline-block w-[100px] lg:w-[250px]">
+          <TextField
+            placeholder="Client's name"
+            v-model="newClientName"
+            form="createClientForm"
+          />
+        </div>
+      </template>
+
+      <template #phone="item">
+        <template v-if="!item.isFormRow">
+          <EditableLabel
+            v-if="item.data.role !== 'admin'"
+            class="justify-center"
+            :text="item.data.phone_number"
+            @updateText="(value) => changeClientPhoneNumber(item.data, value)"
+          />
+          <span v-else>
+            {{ item.data.phone_number }}
+          </span>
+        </template>
+        <div v-else class="inline-block w-[100px] lg:w-[250px]">
+          <TextField
+            placeholder="Client's phone number"
+            v-model="newClientPhoneNumber"
+            form="createClientForm"
+          />
+        </div>
+      </template>
+
+      <template #role="item">
+        <template v-if="!item.isFormRow">
+          <SelectListDynamic
+            v-if="item.data.role !== 'admin'"
+            :options="clientRoles"
+            :selected="clientRoles.indexOf(item.data.role)"
+            @updateSelection="
+              (value) => changeClientRole(item.data, clientRoles[value])
+            "
+          />
+          <span v-else>
+            {{ item.data.role }}
+          </span>
+        </template>
+        <SelectList
+          v-else
+          :options="clientRoles"
+          :defaultOption="clientRoles.indexOf('client')"
+          v-model="newClientRole"
+          form="createClientForm"
+        />
+      </template>
+
+      <template #image="item">
+        <ExpandableImage
+          v-if="!item.isFormRow"
+          imgClass="w-[64px]"
+          :src="item.data.picture ?? DefaultProfileImage"
+          :alt="item.data.name"
+        />
+        <PrimaryButton v-else form="createClientForm" type="submit"
+          >Create new client</PrimaryButton
+        >
+      </template>
+    </TableCard>
+
     <div class="mt-4">
       <a href="/admin" class="font-bold text-blue-500 underline"
         >Django admin page</a
