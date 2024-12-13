@@ -13,12 +13,20 @@ import { XMarkIcon } from "@heroicons/vue/24/outline";
 import axios from "axios";
 import { onMounted, ref, watch } from "vue";
 import { debounce } from "lodash";
-import TableCard, { type Ordering } from "@/components/TableCard.vue";
+import TableCard, {
+  type Filtering,
+  type Ordering,
+} from "@/components/TableCard.vue";
 
 const clients = ref<Client[]>([]);
 
 const ordering = ref<Ordering>();
 watch(ordering, () => {
+  fetchClients();
+});
+
+const filtering = ref<Filtering>();
+watch(filtering, () => {
   fetchClients();
 });
 
@@ -38,6 +46,7 @@ async function fetchClients() {
       params: {
         search: searchKey.value,
         ordering: orderingParam,
+        role: filtering.value?.role,
       },
     })
   ).data;
@@ -133,11 +142,12 @@ useUserRole((role) => {
 
     <TableCard
       v-model:ordering="ordering"
+      v-model:filtering="filtering"
       :columns="[
         { name: 'delete', display: '' },
         { name: 'name', display: 'Name', ordering: true },
         { name: 'phone', display: 'Phone number' },
-        { name: 'role', display: 'Role' },
+        { name: 'role', display: 'Role', filtering: clientRoles },
         { name: 'image', display: 'Profile image' },
       ]"
       :rows="clients"

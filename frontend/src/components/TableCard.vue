@@ -5,6 +5,10 @@ import {
   ChevronUpIcon,
   ChevronDownIcon,
 } from "@heroicons/vue/24/outline";
+import { Popover, PopoverButton, PopoverPanel } from "@headlessui/vue";
+
+// TODO: pagination
+// TODO: typing could probably be improved (models, generic tuples for props)
 
 export type TableCardSlot<T> =
   | {
@@ -18,12 +22,18 @@ export type TableCardSlot<T> =
 export type Column = {
   name: string;
   display: string;
-  ordering?: boolean;
-};
+} & (
+  | { ordering?: boolean; filtering?: undefined }
+  | { ordering?: undefined; filtering?: readonly string[] }
+);
 
 export type Ordering = {
   name: string;
   order: "ascending" | "descending";
+};
+
+export type Filtering = {
+  [column: string]: string;
 };
 
 const props = defineProps<{
@@ -36,6 +46,7 @@ const props = defineProps<{
 }>();
 
 const ordering = defineModel<Ordering>("ordering");
+const filtering = defineModel<Filtering>("filtering");
 
 const { columns, rows, extraFormRow } = toRefs(props);
 
@@ -54,6 +65,24 @@ function setOrdering(column: string) {
       name: column,
       order: "ascending",
     };
+  }
+}
+
+function setFiltering(column: string, filter?: string) {
+  if (filtering.value === undefined) {
+    filtering.value =
+      filter !== undefined
+        ? {
+            [column]: filter,
+          }
+        : {};
+  } else {
+    if (filter !== undefined) {
+      filtering.value[column] = filter;
+    } else {
+      delete filtering.value[column];
+    }
+    filtering.value = Object.assign({}, filtering.value);
   }
 }
 </script>
@@ -95,6 +124,66 @@ function setOrdering(column: string) {
                 />
                 <ChevronDownIcon v-else class="w-[24px]" />
               </button>
+            </div>
+            <div
+              v-else-if="column.filtering !== undefined"
+              class="flex w-full flex-row justify-center"
+            >
+              <Popover class="relative">
+                <PopoverButton
+                  class="flex flex-col items-center justify-center outline-none"
+                  @click="setOrdering(column.name)"
+                >
+                  <span class="leading-3">{{ column.display }}</span>
+                  <ChevronDownIcon class="w-[16px]" />
+                </PopoverButton>
+
+                <transition
+                  enter-active-class="transition duration-200 ease-out"
+                  enter-from-class="translate-y-1 opacity-0"
+                  enter-to-class="translate-y-0 opacity-100"
+                  leave-active-class="transition duration-150 ease-in"
+                  leave-from-class="translate-y-0 opacity-100"
+                  leave-to-class="translate-y-1 opacity-0"
+                >
+                  <PopoverPanel
+                    class="absolute left-1/2 z-10 mt-1 -translate-x-1/2"
+                  >
+                    <div
+                      class="flex flex-col overflow-hidden rounded-xl bg-surface-light text-surface-content-light shadow-xl dark:bg-surface-dark dark:text-surface-content-dark"
+                    >
+                      <button
+                        class="py-2"
+                        :class="[
+                          filtering === undefined ||
+                          filtering[column.name] === undefined
+                            ? 'bg-primary-active-light text-primary-content-light dark:bg-primary-active-dark dark:text-primary-content-dark'
+                            : 'hover:bg-primary-light hover:text-primary-content-light dark:hover:bg-primary-dark dark:hover:text-primary-content-dark',
+                        ]"
+                        @click="setFiltering(column.name)"
+                      >
+                        <span class="px-4">None</span>
+                      </button>
+                      <button
+                        v-for="filter in column.filtering"
+                        v-bind:key="filter"
+                        class="py-2"
+                        :class="[
+                          filtering !== undefined &&
+                          filtering[column.name] === filter
+                            ? 'bg-primary-active-light text-primary-content-light dark:bg-primary-active-dark dark:text-primary-content-dark'
+                            : 'hover:bg-primary-light hover:text-primary-content-light dark:hover:bg-primary-dark dark:hover:text-primary-content-dark',
+                        ]"
+                        @click="setFiltering(column.name, filter)"
+                      >
+                        <span class="px-4">
+                          {{ filter }}
+                        </span>
+                      </button>
+                    </div>
+                  </PopoverPanel>
+                </transition>
+              </Popover>
             </div>
             <span v-else>{{ column.display }}</span>
           </th>

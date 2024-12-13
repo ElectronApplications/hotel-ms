@@ -3,11 +3,14 @@ import DefaultProfileImage from "@/assets/default-profile.png";
 import EditableLabel from "@/components/EditableLabel.vue";
 import ExpandableImage from "@/components/ExpandableImage.vue";
 import PrimaryButton from "@/components/PrimaryButton.vue";
-import TableCard from "@/components/TableCard.vue";
+import TableCard, {
+  type Filtering,
+  type Ordering,
+} from "@/components/TableCard.vue";
 import TextField from "@/components/TextField.vue";
 import { useAuthentication, useUserRole } from "@/composables/auth";
 import router from "@/router";
-import { type Client } from "@/types";
+import { clientRoles, type Client } from "@/types";
 import { XMarkIcon } from "@heroicons/vue/24/outline";
 import axios from "axios";
 import { debounce } from "lodash";
@@ -15,16 +18,33 @@ import { onMounted, ref, watch } from "vue";
 
 const clients = ref<Client[]>([]);
 
+const ordering = ref<Ordering>();
+watch(ordering, () => {
+  fetchClients();
+});
+
+const filtering = ref<Filtering>();
+watch(filtering, () => {
+  fetchClients();
+});
+
 const searchKey = ref("");
 watch(searchKey, () => {
   debouncedFetchClients();
 });
 
 async function fetchClients() {
+  let orderingParam = ordering.value?.name;
+  if (ordering.value?.order === "descending") {
+    orderingParam = `-${orderingParam}`;
+  }
+
   clients.value = (
     await axios.get("/api/client/", {
       params: {
         search: searchKey.value,
+        ordering: orderingParam,
+        role: filtering.value?.role,
       },
     })
   ).data;
@@ -107,11 +127,13 @@ useUserRole((role) => {
     </div>
 
     <TableCard
+      v-model:ordering="ordering"
+      v-model:filtering="filtering"
       :columns="[
         { name: 'delete', display: '' },
-        { name: 'name', display: 'Name' },
+        { name: 'name', display: 'Name', ordering: true },
         { name: 'phone', display: 'Phone number' },
-        { name: 'role', display: 'Role' },
+        { name: 'role', display: 'Role', filtering: clientRoles },
         { name: 'image', display: 'Profile image' },
       ]"
       :rows="clients"
