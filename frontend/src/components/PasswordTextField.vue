@@ -42,7 +42,7 @@ const showPassword = ref(false);
       @click="showPassword = !showPassword"
     >
       <EyeIcon v-if="!showPassword" class="h-[24px] w-[24px]" />
-      <EyeSlashIcon v-if="showPassword" class="h-[24px] w-[24px]" />
+      <EyeSlashIcon v-else class="h-[24px] w-[24px]" />
     </button>
   </div>
 </template>

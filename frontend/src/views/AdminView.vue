@@ -13,9 +13,14 @@ import { XMarkIcon } from "@heroicons/vue/24/outline";
 import axios from "axios";
 import { onMounted, ref, watch } from "vue";
 import { debounce } from "lodash";
-import TableCard from "@/components/TableCard.vue";
+import TableCard, { type Ordering } from "@/components/TableCard.vue";
 
 const clients = ref<Client[]>([]);
+
+const ordering = ref<Ordering>();
+watch(ordering, () => {
+  fetchClients();
+});
 
 const searchKey = ref("");
 watch(searchKey, () => {
@@ -23,10 +28,16 @@ watch(searchKey, () => {
 });
 
 async function fetchClients() {
+  let orderingParam = ordering.value?.name;
+  if (ordering.value?.order === "descending") {
+    orderingParam = `-${orderingParam}`;
+  }
+
   clients.value = (
     await axios.get("/api/client/", {
       params: {
         search: searchKey.value,
+        ordering: orderingParam,
       },
     })
   ).data;
@@ -121,9 +132,10 @@ useUserRole((role) => {
     </div>
 
     <TableCard
+      v-model:ordering="ordering"
       :columns="[
         { name: 'delete', display: '' },
-        { name: 'name', display: 'Name' },
+        { name: 'name', display: 'Name', ordering: true },
         { name: 'phone', display: 'Phone number' },
         { name: 'role', display: 'Role' },
         { name: 'image', display: 'Profile image' },
