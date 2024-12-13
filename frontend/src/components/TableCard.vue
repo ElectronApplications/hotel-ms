@@ -1,5 +1,10 @@
 <script setup lang="ts" generic="T">
 import { toRefs } from "vue";
+import {
+  ChevronUpDownIcon,
+  ChevronUpIcon,
+  ChevronDownIcon,
+} from "@heroicons/vue/24/outline";
 
 export type TableCardSlot<T> =
   | {
@@ -10,8 +15,19 @@ export type TableCardSlot<T> =
       data: T;
     };
 
+export type Column = {
+  name: string;
+  display: string;
+  ordering?: boolean;
+};
+
+export type Ordering = {
+  name: string;
+  order: "ascending" | "descending";
+};
+
 const props = defineProps<{
-  columns: readonly { name: string; display: string }[];
+  columns: Column[];
   rows: readonly T[];
   extraFormRow?: {
     formName: string;
@@ -19,9 +35,27 @@ const props = defineProps<{
   };
 }>();
 
-// defineSlots;
+const ordering = defineModel<Ordering>("ordering");
 
 const { columns, rows, extraFormRow } = toRefs(props);
+
+function setOrdering(column: string) {
+  if (ordering?.value?.name === column) {
+    if (ordering.value.order === "ascending") {
+      ordering.value = {
+        name: column,
+        order: "descending",
+      };
+    } else {
+      ordering.value = undefined;
+    }
+  } else {
+    ordering.value = {
+      name: column,
+      order: "ascending",
+    };
+  }
+}
 </script>
 
 <template>
@@ -42,7 +76,27 @@ const { columns, rows, extraFormRow } = toRefs(props);
       >
         <tr>
           <th v-for="column in columns" v-bind:key="column.name" class="py-2">
-            {{ column.display }}
+            <div
+              v-if="column.ordering === true"
+              class="flex w-full flex-row justify-center"
+            >
+              <button
+                class="flex flex-row justify-center space-x-1"
+                @click="setOrdering(column.name)"
+              >
+                <span>{{ column.display }}</span>
+                <ChevronUpDownIcon
+                  v-if="ordering?.name !== column.name"
+                  class="w-[24px]"
+                />
+                <ChevronUpIcon
+                  v-else-if="ordering.order === 'ascending'"
+                  class="w-[24px]"
+                />
+                <ChevronDownIcon v-else class="w-[24px]" />
+              </button>
+            </div>
+            <span v-else>{{ column.display }}</span>
           </th>
         </tr>
       </thead>

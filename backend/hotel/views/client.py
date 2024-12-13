@@ -57,9 +57,10 @@ class ClientViewSet(
     GenericViewSet
 ):
     queryset = Client.objects.all()
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ["role"]
     search_fields = ["name", "phone_number"]
+    ordering_fields = ["name"]
     permission_classes = [IsReception]
 
     def get_serializer_class(self):
