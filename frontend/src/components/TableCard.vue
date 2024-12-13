@@ -202,7 +202,7 @@ function setFiltering(column: string, filter?: string) {
             ></slot>
           </td>
         </tr>
-        <tr>
+        <tr v-if="extraFormRow !== undefined">
           <td
             v-for="column in columns"
             v-bind:key="column.name"

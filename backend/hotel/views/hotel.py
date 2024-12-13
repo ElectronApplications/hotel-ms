@@ -1,5 +1,6 @@
 from rest_framework.viewsets import GenericViewSet
 from rest_framework import mixins
+from rest_framework import filters
 
 from hotel.models.hotel import *
 from hotel.serializers.hotel import *
@@ -14,6 +15,8 @@ class ClassInfoViewSet(
     GenericViewSet
 ):
     queryset = ClassInfo.objects.all()
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ["class_description", "place_price"]
     serializer_class = ClassInfoSerializer
     permission_classes = [IsPlanningOrReadOnly]
 
