@@ -1,6 +1,7 @@
 FROM node as build-frontend
 
 ARG VITE_BRAND_HOTEL_NAME
+ARG VITE_CURRENCY_SYMBOL
 
 WORKDIR /app
 COPY frontend/. /app/

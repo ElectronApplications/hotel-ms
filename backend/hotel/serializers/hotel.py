@@ -5,6 +5,7 @@ class ClassInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = ClassInfo
         fields = ["id", "class_description", "place_price"]
+        extra_kwargs = {"class_description": {"required": False}, "place_price": {"required": False}}
 
 class RoomSerializer(serializers.ModelSerializer):
     class Meta:

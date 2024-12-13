@@ -36,6 +36,7 @@ services:
       dockerfile: Dockerfile.nginx
       args:
         VITE_BRAND_HOTEL_NAME: "${VITE_BRAND_HOTEL_NAME}"
+        VITE_CURRENCY_SYMBOL: "${VITE_CURRENCY_SYMBOL}"
     restart: unless-stopped
     ports:
       - "${HOTEL_MS_PORT}:80"
