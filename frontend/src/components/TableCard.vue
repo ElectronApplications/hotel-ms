@@ -162,7 +162,9 @@ const pageEntries = computed(() => {
     <table
       class="w-full table-auto bg-slate-100 text-center dark:bg-secondary-dark"
     >
-      <thead class="border-b border-secondary-light dark:border-primary-dark">
+      <thead
+        class="border-b border-secondary-light dark:border-secondary-active-dark"
+      >
         <tr>
           <th v-for="column in columns" v-bind:key="column.name" class="py-2">
             <div
@@ -260,7 +262,7 @@ const pageEntries = computed(() => {
           <td
             v-for="column in columns"
             v-bind:key="column.name"
-            class="border-b border-secondary-light py-4 dark:border-primary-dark"
+            class="border-b border-secondary-light py-4 dark:border-secondary-active-dark"
           >
             <slot
               :name="column.name"
@@ -272,7 +274,7 @@ const pageEntries = computed(() => {
           <td
             v-for="column in columns"
             v-bind:key="column.name"
-            class="border-b border-secondary-light py-4 dark:border-primary-dark"
+            class="border-b border-secondary-light py-4 dark:border-secondary-active-dark"
           >
             <slot
               :name="column.name"
