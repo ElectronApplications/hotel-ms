@@ -59,7 +59,7 @@ const debouncedFetchClients = debounce(fetchClients, 200);
 
 async function changeClientName(client: Client, newName: string) {
   if (client.name !== newName) {
-    await axios.put(`/api/client/${client.id}/`, {
+    await axios.patch(`/api/client/${client.id}/`, {
       name: newName,
     });
     await fetchClients();
@@ -68,7 +68,7 @@ async function changeClientName(client: Client, newName: string) {
 
 async function changeClientPhoneNumber(client: Client, newPhoneNumber: string) {
   if (client.phone_number !== newPhoneNumber) {
-    await axios.put(`/api/client/${client.id}/`, {
+    await axios.patch(`/api/client/${client.id}/`, {
       phone_number: newPhoneNumber,
     });
     await fetchClients();

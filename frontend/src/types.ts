@@ -29,6 +29,13 @@ export type Class = {
   place_price: number;
 };
 
+export type Service = {
+  id: number;
+  service_description: string;
+  service_price: number;
+  classes: number[];
+};
+
 export type Room = {
   id: number;
   room_class: number;

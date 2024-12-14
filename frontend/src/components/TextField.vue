@@ -33,6 +33,6 @@ const model = defineModel<string>();
     :readonly="readonly"
     :placeholder="placeholder"
     :disabled="!enabled"
-    class="block w-full rounded-md border-0 bg-surface-light p-2 py-2 shadow-sm ring-1 ring-secondary-light sm:text-sm/6 dark:bg-surface-dark dark:ring-secondary-active-dark"
+    class="placeholder:text-placeholder-light dark:placeholder:text-placeholder-dark block w-full rounded-md border-0 bg-surface-light p-2 py-2 shadow-sm ring-1 ring-secondary-light sm:text-sm/6 dark:bg-surface-dark dark:ring-secondary-active-dark"
   />
 </template>

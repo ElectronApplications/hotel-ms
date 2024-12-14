@@ -39,6 +39,10 @@ export default {
           "content-light": colors.black,
           "content-dark": colors.gray[100],
         },
+        placeholder: {
+          light: "#9CA3AF",
+          dark: "#72767D",
+        },
       },
     },
   },
