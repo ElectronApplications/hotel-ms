@@ -58,5 +58,7 @@ class ServiceViewSet(
     GenericViewSet
 ):
     queryset = Service.objects.all()
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ["service_description", "service_price"]
     serializer_class = ServiceSerializer
     permission_classes = [IsPlanningOrReadOnly]

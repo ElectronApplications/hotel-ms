@@ -6,7 +6,7 @@ import ChangePasswordView from "@/views/ChangePasswordView.vue";
 import ReceptionView from "@/views/ReceptionView.vue";
 import ServiceView from "@/views/ServiceView.vue";
 import CleaningView from "@/views/CleaningView.vue";
-import PlanningView from "@/views/PlanningView.vue";
+import PlanningView from "@/views/planning/PlanningView.vue";
 import AdminView from "@/views/AdminView.vue";
 import BookView from "@/views/BookView.vue";
 
