@@ -13,29 +13,20 @@ class ClassInfo(models.Model):
 
 class Room(models.Model):
     room_class = models.ForeignKey(ClassInfo, on_delete=models.PROTECT, null=False, related_name="rooms")
-
-    def __str__(self) -> str:
-        return f"Room {str(self.id)} - {str(self.room_class)}"
-    
-    class Meta:
-        verbose_name = "Room"
-        verbose_name_plural = "Rooms"
-
-class Place(models.Model):
-    room = models.ForeignKey(Room, on_delete=models.CASCADE, null=False, related_name="places")
+    places = models.IntegerField("The amount of places")
 
     class Status(models.TextChoices):
         FREE = "free", "Free"
-        UNREADY = "notready", "Not ready"
+        NOTREADY = "notready", "Not ready"
         TAKEN = "taken", "Taken"
     status = models.CharField(max_length=8, choices=Status.choices, default=Status.FREE)
 
     def __str__(self) -> str:
-        return f"Place {str(self.id)} in room {str(self.room.id)} - {str(self.room.room_class)}"
-
+        return f"Room {str(self.id)} - {str(self.room_class.class_description)}"
+    
     class Meta:
-        verbose_name = "Place"
-        verbose_name_plural = "Places"
+        verbose_name = "Room"
+        verbose_name_plural = "Rooms"
 
 class Service(models.Model):
     service_description = models.TextField("Service description")

@@ -4,4 +4,4 @@ from hotel.models.reservation import *
 class ReservationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reservation
-        fields = ["id", "move_in_time", "move_out_time", "client", "places"]
+        fields = ["id", "room", "move_in_time", "move_out_time", "client"]
