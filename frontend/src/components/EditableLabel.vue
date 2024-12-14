@@ -20,17 +20,11 @@ const emit = defineEmits<{
 }>();
 
 const editing = ref(false);
-const editingText = ref("");
+const editingText = ref(text.value);
 
-watch(
-  text,
-  (value) => {
-    editingText.value = value;
-  },
-  {
-    immediate: true,
-  },
-);
+watch(text, (value) => {
+  editingText.value = value;
+});
 
 const input = useTemplateRef("inputRef");
 function inputFocus() {
