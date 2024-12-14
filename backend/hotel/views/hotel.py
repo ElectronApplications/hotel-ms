@@ -29,6 +29,8 @@ class RoomViewSet(
     GenericViewSet
 ):
     queryset = Room.objects.all()
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ["places"]
     serializer_class = RoomSerializer
     permission_classes = [IsPlanningOrReadOnly | IsCleaningOrReadOnly]
 

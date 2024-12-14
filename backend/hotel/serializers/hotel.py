@@ -17,6 +17,12 @@ class RoomSerializer(serializers.ModelSerializer):
         model = Room
         fields = ["id", "room_class", "status", "places"]
 
+    def validate_places(self, places: int):
+        if places < 1:
+            raise serializers.ValidationError("Amount of places can't be negative or zero")
+
+        return places
+
 class CleaningRoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
