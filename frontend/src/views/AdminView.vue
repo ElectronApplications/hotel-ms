@@ -8,7 +8,12 @@ import SelectListDynamic from "@/components/SelectListDynamic.vue";
 import TextField from "@/components/TextField.vue";
 import { useAuthentication, useUserRole } from "@/composables/auth";
 import router from "@/router";
-import { clientRoles, type Client, type ClientRole } from "@/types";
+import {
+  clientRoles,
+  type Pagination,
+  type Client,
+  type ClientRole,
+} from "@/types";
 import { XMarkIcon } from "@heroicons/vue/24/outline";
 import axios from "axios";
 import { onMounted, ref, watch } from "vue";
@@ -18,22 +23,27 @@ import TableCard, {
   type Ordering,
 } from "@/components/TableCard.vue";
 
-const clients = ref<Client[]>([]);
+const clients = ref<Pagination<Client>>();
 
+const clientsPage = ref(1);
 const ordering = ref<Ordering>();
-watch(ordering, () => {
-  fetchClients();
-});
-
 const filtering = ref<Filtering>();
-watch(filtering, () => {
-  fetchClients();
-});
-
 const searchKey = ref("");
-watch(searchKey, () => {
-  debouncedFetchClients();
-});
+
+watch(
+  [clientsPage, searchKey, ordering, filtering],
+  ([newPage, newSearch], [oldPage, oldSearch]) => {
+    if (newPage === oldPage) {
+      clientsPage.value = 1;
+    }
+
+    if (newSearch !== oldSearch) {
+      debouncedFetchClients();
+    } else {
+      fetchClients();
+    }
+  },
+);
 
 async function fetchClients() {
   let orderingParam = ordering.value?.name;
@@ -47,6 +57,7 @@ async function fetchClients() {
         search: searchKey.value,
         ordering: orderingParam,
         role: filtering.value?.role,
+        page: clientsPage.value,
       },
     })
   ).data;
@@ -127,7 +138,9 @@ useUserRole((role) => {
 
 <template>
   <main class="container mx-auto pt-4">
-    <div class="flex flex-col space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0">
+    <div
+      class="flex flex-col space-y-4 pb-4 lg:flex-row lg:space-x-4 lg:space-y-0"
+    >
       <h1 class="text-center text-4xl font-extrabold lg:text-start">
         Hotel clients
       </h1>
@@ -143,6 +156,7 @@ useUserRole((role) => {
     <TableCard
       v-model:ordering="ordering"
       v-model:filtering="filtering"
+      v-model:currentPage="clientsPage"
       :columns="[
         { name: 'delete', display: '' },
         { name: 'name', display: 'Name', ordering: true },
@@ -150,8 +164,13 @@ useUserRole((role) => {
         { name: 'role', display: 'Role', filtering: clientRoles },
         { name: 'image', display: 'Profile image' },
       ]"
-      :rows="clients"
+      :rows="clients?.results"
       :extraFormRow="{ formName: 'createClientForm', formSubmit: createClient }"
+      :pagination="
+        clients !== undefined
+          ? { totalPages: clients.total_pages, count: clients.count }
+          : undefined
+      "
     >
       <template #delete="item">
         <button

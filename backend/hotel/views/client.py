@@ -9,6 +9,7 @@ from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 
 from hotel.models.client import *
+from hotel.pagination import HotelPaginator
 from hotel.serializers.client import *
 from hotel.permissions import *
 
@@ -61,6 +62,7 @@ class ClientViewSet(
     filterset_fields = ["role"]
     search_fields = ["name", "phone_number"]
     ordering_fields = ["name"]
+    pagination_class = HotelPaginator
     permission_classes = [IsReception]
 
     def get_serializer_class(self):

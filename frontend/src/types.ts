@@ -1,3 +1,10 @@
+export type Pagination<T> = {
+  current_page: number;
+  total_pages: number;
+  count: number;
+  results: T[];
+};
+
 export const clientRoles = [
   "client",
   "reception",
