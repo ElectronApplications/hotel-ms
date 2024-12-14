@@ -132,7 +132,6 @@ function setFiltering(column: string, filter?: string) {
               <Popover class="relative">
                 <PopoverButton
                   class="flex flex-col items-center justify-center outline-none"
-                  @click="setOrdering(column.name)"
                 >
                   <span class="leading-3">{{ column.display }}</span>
                   <ChevronDownIcon class="w-[16px]" />
@@ -148,6 +147,7 @@ function setFiltering(column: string, filter?: string) {
                 >
                   <PopoverPanel
                     class="absolute left-1/2 z-10 mt-1 -translate-x-1/2"
+                    v-slot="{ close }"
                   >
                     <div
                       class="flex flex-col overflow-hidden rounded-xl bg-surface-light text-surface-content-light shadow-xl dark:bg-surface-dark dark:text-surface-content-dark"
@@ -160,9 +160,12 @@ function setFiltering(column: string, filter?: string) {
                             ? 'bg-primary-active-light text-primary-content-light dark:bg-primary-active-dark dark:text-primary-content-dark'
                             : 'hover:bg-primary-light hover:text-primary-content-light dark:hover:bg-primary-dark dark:hover:text-primary-content-dark',
                         ]"
-                        @click="setFiltering(column.name)"
+                        @click="
+                          setFiltering(column.name);
+                          close();
+                        "
                       >
-                        <span class="px-4">None</span>
+                        <span class="px-4">Any</span>
                       </button>
                       <button
                         v-for="filter in column.filtering"
@@ -174,7 +177,10 @@ function setFiltering(column: string, filter?: string) {
                             ? 'bg-primary-active-light text-primary-content-light dark:bg-primary-active-dark dark:text-primary-content-dark'
                             : 'hover:bg-primary-light hover:text-primary-content-light dark:hover:bg-primary-dark dark:hover:text-primary-content-dark',
                         ]"
-                        @click="setFiltering(column.name, filter)"
+                        @click="
+                          setFiltering(column.name, filter);
+                          close();
+                        "
                       >
                         <span class="px-4">
                           {{ filter }}
