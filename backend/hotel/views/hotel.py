@@ -30,7 +30,7 @@ class RoomViewSet(
 ):
     queryset = Room.objects.all()
     filter_backends = [filters.OrderingFilter]
-    ordering_fields = ["places"]
+    ordering_fields = ["room_number", "places"]
     serializer_class = RoomSerializer
     permission_classes = [IsPlanningOrReadOnly | IsCleaningOrReadOnly]
 

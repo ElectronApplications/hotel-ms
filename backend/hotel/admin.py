@@ -16,7 +16,7 @@ class ClassInfoAdmin(admin.ModelAdmin):
 
 @admin.register(Room)
 class RoomAdmin(admin.ModelAdmin):
-    list_display = ["id", "room_class", "status", "places"]
+    list_display = ["id", "room_number", "room_class", "status", "places"]
 
 @admin.register(Client)
 class ClientAdmin(admin.ModelAdmin):

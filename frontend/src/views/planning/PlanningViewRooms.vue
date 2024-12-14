@@ -41,6 +41,15 @@ async function fetchRooms() {
   ).data;
 }
 
+async function changeRoomNumber(roomItem: Room, newNumber: number) {
+  if (roomItem.room_number !== newNumber) {
+    await axios.patch(`/api/room/${roomItem.id}/`, {
+      room_number: newNumber,
+    });
+    await fetchRooms();
+  }
+}
+
 async function changeRoomClass(roomItem: Room, newClass: number) {
   if (roomItem.room_class !== newClass) {
     await axios.patch(`/api/room/${roomItem.id}/`, {
@@ -64,22 +73,25 @@ async function deleteRoom(roomItem: Room) {
   await fetchRooms();
 }
 
-const newRoomClass = ref<number>();
+const newRoomNumber = ref<number>();
 const newRoomPlaces = ref(1);
+const newRoomClass = ref<number>();
 
 async function createRoom(): Promise<boolean> {
-  if (newRoomClass.value === undefined) {
+  if (newRoomNumber.value === undefined || newRoomClass.value === undefined) {
     return false;
   }
 
   await axios.post("/api/room/", {
+    room_number: newRoomNumber.value,
     room_class: classes.value[newRoomClass.value].id,
     places: newRoomPlaces.value,
   });
   await fetchRooms();
 
-  newRoomClass.value = undefined;
+  newRoomNumber.value = undefined;
   newRoomPlaces.value = 1;
+  newRoomClass.value = undefined;
 
   return true;
 }
@@ -97,7 +109,7 @@ onMounted(async () => {
     v-model:ordering="roomsOrdering"
     :columns="[
       { name: 'delete', display: '' },
-      { name: 'id', display: 'ID' },
+      { name: 'room_number', display: 'Room number', ordering: true },
       { name: 'places', display: 'Places', ordering: true },
       { name: 'class', display: 'Class' },
       { name: 'submit', display: '' },
@@ -115,8 +127,20 @@ onMounted(async () => {
       </button>
     </template>
 
-    <template #id="item">
-      <span v-if="!item.isFormRow">{{ item.data.id }}</span>
+    <template #room_number="item">
+      <div v-if="!item.isFormRow" class="inline-block w-[100px] lg:w-[150px]">
+        <NumberInputDynamic
+          :numberValue="item.data.room_number"
+          :min="1"
+          @updateValue="(value) => changeRoomNumber(item.data, value)"
+        />
+      </div>
+      <div v-else class="inline-block w-[100px] lg:w-[150px]">
+        <NumberInput
+          v-model="newRoomNumber"
+          :min="1"
+        />
+      </div>
     </template>
 
     <template #places="item">
