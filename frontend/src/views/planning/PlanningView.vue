@@ -11,6 +11,8 @@ const classes = ref<Class[]>([]);
 const services = ref<Service[]>([]);
 const rooms = ref<Room[]>([]);
 
+// TODO: image galleries for services and rooms
+
 useAuthentication((isAuthenticated) => {
   if (!isAuthenticated) {
     router.push("/login");

@@ -32,7 +32,7 @@ export type Ordering = {
 };
 
 export type Filtering = {
-  [column: string]: string;
+  [column: string]: number;
 };
 
 const props = defineProps<{
@@ -72,7 +72,7 @@ function setOrdering(column: string) {
   }
 }
 
-function setFiltering(column: string, filter?: string) {
+function setFiltering(column: string, filter?: number) {
   if (filtering.value === undefined) {
     filtering.value =
       filter !== undefined
@@ -215,7 +215,7 @@ const pageEntries = computed(() => {
                       class="flex flex-col overflow-hidden rounded-xl bg-surface-light text-surface-content-light shadow-xl dark:bg-surface-dark dark:text-surface-content-dark"
                     >
                       <button
-                        class="py-2"
+                        class="text-nowrap py-2"
                         :class="[
                           filtering === undefined ||
                           filtering[column.name] === undefined
@@ -230,17 +230,17 @@ const pageEntries = computed(() => {
                         <span class="px-4">Any</span>
                       </button>
                       <button
-                        v-for="filter in column.filtering"
-                        v-bind:key="filter"
-                        class="py-2"
+                        v-for="[index, filter] in column.filtering.entries()"
+                        v-bind:key="index"
+                        class="text-nowrap py-2"
                         :class="[
                           filtering !== undefined &&
-                          filtering[column.name] === filter
+                          filtering[column.name] === index
                             ? 'bg-primary-light text-primary-content-light dark:bg-primary-dark dark:text-primary-content-dark'
                             : 'hover:bg-secondary-light hover:text-secondary-content-light dark:hover:bg-secondary-dark dark:hover:text-secondary-content-dark',
                         ]"
                         @click="
-                          setFiltering(column.name, filter);
+                          setFiltering(column.name, index);
                           close();
                         "
                       >
