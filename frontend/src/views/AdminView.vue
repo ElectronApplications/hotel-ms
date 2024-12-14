@@ -51,12 +51,14 @@ async function fetchClients() {
     orderingParam = `-${orderingParam}`;
   }
 
+  const roleFilter = filtering.value?.role;
+
   clients.value = (
     await axios.get("/api/client/", {
       params: {
         search: searchKey.value,
         ordering: orderingParam,
-        role: filtering.value?.role,
+        role: roleFilter === undefined ? undefined : clientRoles[roleFilter],
         page: clientsPage.value,
       },
     })

@@ -87,7 +87,7 @@ function switchOption(option: number) {
           <button
             v-for="[index, option] in options.entries()"
             v-bind:key="index"
-            class="py-2"
+            class="text-nowrap py-2"
             :class="[
               model !== undefined && model.includes(index)
                 ? 'bg-primary-light text-primary-content-light dark:bg-primary-dark dark:text-primary-content-dark'
