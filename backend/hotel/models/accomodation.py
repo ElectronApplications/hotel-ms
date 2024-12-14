@@ -1,17 +1,17 @@
 from django.db import models
 
 from hotel.models.client import Client
-from hotel.models.hotel import Place, Service
+from hotel.models.hotel import Room, Service
 from hotel.models.reservation import Reservation
 
 class Accomodation(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE, null=False, related_name="accomodations")
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, null=False, related_name="accomodations")
     price_to_pay = models.DecimalField("Accomodation's price", max_digits=8, decimal_places=2)
     move_in_time = models.DateTimeField("Time of moving in")
     move_out_time = models.DateTimeField("Time of moving out")
     was_price_paid = models.BooleanField("Did the client pay", default=False)
     checked_out = models.BooleanField("Did the client check out", default=False)
-    places = models.ManyToManyField(Place, related_name="accomodations")
     reservation = models.OneToOneField(Reservation, on_delete=models.SET_NULL, null=True, blank=True, related_name="accomodation")
 
     def __str__(self) -> str:

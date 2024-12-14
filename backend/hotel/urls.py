@@ -11,7 +11,6 @@ def register_hotel_routes(router: BaseRouter):
     
     router.register("class", ClassInfoViewSet)
     router.register("room", RoomViewSet)
-    router.register("place", PlaceViewSet)
     router.register("service", ServiceViewSet)
     
     router.register("reservation", ReservationViewSet)

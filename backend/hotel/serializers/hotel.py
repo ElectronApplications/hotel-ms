@@ -15,18 +15,22 @@ class ClassInfoSerializer(serializers.ModelSerializer):
 class RoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
-        fields = ["id", "room_class"]
+        fields = ["id", "room_class", "status", "places"]
 
-class PlaceSerializer(serializers.ModelSerializer):
+class CleaningRoomSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Place
-        fields = ["id", "room", "status"]
-
-class CleaningPlaceSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Place
-        fields = ["id", "room", "status"]
-        read_only_fields = ["room"]
+        model = Room
+        fields = ["id", "room_class", "status", "places"]
+        read_only_fields = ["room_class", "places"]
+    
+    def validate_status(self, status: Room.Status):
+        if status != Room.Status.FREE:
+            raise serializers.ValidationError("You can only change rooms' status to 'free'")
+        
+        if self.instance is not None and self.instance.status != Room.Status.NOTREADY:
+            raise serializers.ValidationError("You can only change rooms with 'notready' status")
+        
+        return status
 
 class ServiceSerializer(serializers.ModelSerializer):
     class Meta:

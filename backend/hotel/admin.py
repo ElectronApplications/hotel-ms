@@ -16,11 +16,7 @@ class ClassInfoAdmin(admin.ModelAdmin):
 
 @admin.register(Room)
 class RoomAdmin(admin.ModelAdmin):
-    list_display = ["id", "room_class"]
-
-@admin.register(Place)
-class PlaceAdmin(admin.ModelAdmin):
-    list_display = ["id", "room", "status"]
+    list_display = ["id", "room_class", "status", "places"]
 
 @admin.register(Client)
 class ClientAdmin(admin.ModelAdmin):
@@ -28,14 +24,12 @@ class ClientAdmin(admin.ModelAdmin):
 
 @admin.register(Reservation)
 class ReservationAdmin(admin.ModelAdmin):
-    list_display = ["client", "move_in_time", "move_out_time"]
-    filter_horizontal = ["places"]
+    list_display = ["client", "room", "move_in_time", "move_out_time"]
 
 @admin.register(Accomodation)
 class AccomodationAdmin(admin.ModelAdmin):
-    list_display = ["client", "move_in_time", "move_out_time", "price_to_pay",
+    list_display = ["client", "room", "move_in_time", "move_out_time", "price_to_pay",
                     "was_price_paid", "checked_out", "reservation"]
-    filter_horizontal = ["places"]
 
 @admin.register(ServiceCard)
 class ServiceCardAdmin(admin.ModelAdmin):

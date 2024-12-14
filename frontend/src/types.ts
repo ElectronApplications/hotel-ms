@@ -36,16 +36,12 @@ export type Service = {
   classes: number[];
 };
 
+export const roomStatuses = ["free", "notready", "taken"] as const;
+export type RoomStatus = (typeof roomStatuses)[number];
+
 export type Room = {
   id: number;
   room_class: number;
-};
-
-export const placeStatuses = ["free", "notready", "taken"] as const;
-export type PlaceStatus = (typeof placeStatuses)[number];
-
-export type Place = {
-  id: number;
-  room: number;
-  status: PlaceStatus;
+  status: RoomStatus;
+  places: number;
 };
