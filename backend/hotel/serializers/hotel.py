@@ -15,7 +15,7 @@ class ClassInfoSerializer(serializers.ModelSerializer):
 class RoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
-        fields = ["id", "room_class", "status", "places"]
+        fields = ["id", "room_number", "room_class", "status", "places"]
 
     def validate_places(self, places: int):
         if places < 1:
@@ -26,8 +26,8 @@ class RoomSerializer(serializers.ModelSerializer):
 class CleaningRoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
-        fields = ["id", "room_class", "status", "places"]
-        read_only_fields = ["room_class", "places"]
+        fields = ["id", "room_number", "room_class", "status", "places"]
+        read_only_fields = ["room_number", "room_class", "places"]
     
     def validate_status(self, status: Room.Status):
         if status != Room.Status.FREE:

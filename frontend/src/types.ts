@@ -41,6 +41,7 @@ export type RoomStatus = (typeof roomStatuses)[number];
 
 export type Room = {
   id: number;
+  room_number: number;
   room_class: number;
   status: RoomStatus;
   places: number;

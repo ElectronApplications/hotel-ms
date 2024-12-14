@@ -13,6 +13,7 @@ class ClassInfo(models.Model):
 
 class Room(models.Model):
     room_class = models.ForeignKey(ClassInfo, on_delete=models.PROTECT, null=False, related_name="rooms")
+    room_number = models.IntegerField("Physical room number", unique=True)
     places = models.IntegerField("The amount of places")
 
     class Status(models.TextChoices):
