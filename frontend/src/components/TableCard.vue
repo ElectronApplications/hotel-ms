@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="T">
-import { toRefs } from "vue";
+import { computed, toRefs } from "vue";
 import {
   ChevronUpDownIcon,
   ChevronUpIcon,
@@ -7,7 +7,6 @@ import {
 } from "@heroicons/vue/24/outline";
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/vue";
 
-// TODO: pagination
 // TODO: typing could probably be improved (models, generic tuples for props)
 
 export type TableCardSlot<T> =
@@ -38,17 +37,22 @@ export type Filtering = {
 
 const props = defineProps<{
   columns: Column[];
-  rows: readonly T[];
+  rows?: readonly T[];
   extraFormRow?: {
     formName: string;
     formSubmit: () => boolean | Promise<boolean>;
+  };
+  pagination?: {
+    totalPages: number;
+    count: number;
   };
 }>();
 
 const ordering = defineModel<Ordering>("ordering");
 const filtering = defineModel<Filtering>("filtering");
+const currentPage = defineModel<number>("currentPage");
 
-const { columns, rows, extraFormRow } = toRefs(props);
+const { columns, rows, extraFormRow, pagination } = toRefs(props);
 
 function setOrdering(column: string) {
   if (ordering?.value?.name === column) {
@@ -85,9 +89,67 @@ function setFiltering(column: string, filter?: string) {
     filtering.value = Object.assign({}, filtering.value);
   }
 }
+
+const pageEntries = computed(() => {
+  const current = currentPage.value;
+  const total = pagination.value?.totalPages;
+
+  if (current === undefined || total === undefined) {
+    return [];
+  }
+
+  const pages = new Set(
+    [1, 2, current - 1, current, current + 1, total - 1, total].filter(
+      (x) => x >= 1 && x <= total,
+    ),
+  );
+  let result = [...pages];
+
+  for (let i = 0; i < result.length - 1; i++) {
+    if (result[i] + 1 !== result[i + 1]) {
+      result.splice(i + 1, 0, -1);
+      i += 1;
+    }
+  }
+
+  return result;
+});
 </script>
 
 <template>
+  <div
+    v-if="pagination !== undefined"
+    class="flex flex-col items-center space-y-2 lg:flex-row lg:justify-between lg:space-y-0"
+  >
+    <span
+      >Showing {{ rows?.length }} out of {{ pagination.count }} entries</span
+    >
+    <div
+      class="flex flex-row overflow-hidden rounded-lg bg-surface-light shadow-md dark:bg-surface-dark"
+    >
+      <template
+        v-for="[index, entry] in pageEntries.entries()"
+        v-bind:key="index"
+      >
+        <button v-if="entry !== -1" @click="currentPage = entry">
+          <div
+            class="px-4 py-2"
+            :class="[
+              entry === currentPage
+                ? 'bg-primary-light text-primary-content-light dark:bg-primary-dark dark:text-primary-content-dark'
+                : 'hover:bg-secondary-light hover:text-secondary-content-light dark:hover:bg-secondary-dark dark:hover:text-secondary-content-dark',
+            ]"
+          >
+            {{ entry }}
+          </div>
+        </button>
+        <div v-else class="bg-surface-light px-4 py-2 dark:bg-surface-dark">
+          ...
+        </div>
+      </template>
+    </div>
+  </div>
+
   <div
     class="mt-4 rounded-3xl bg-slate-100 px-0 py-6 text-surface-content-light shadow-md dark:bg-secondary-dark dark:text-surface-content-dark"
   >
@@ -100,9 +162,7 @@ function setFiltering(column: string, filter?: string) {
     <table
       class="w-full table-auto bg-slate-100 text-center dark:bg-secondary-dark"
     >
-      <thead
-        class="border-b border-secondary-light dark:border-secondary-active-dark"
-      >
+      <thead class="border-b border-secondary-light dark:border-primary-dark">
         <tr>
           <th v-for="column in columns" v-bind:key="column.name" class="py-2">
             <div
@@ -157,8 +217,8 @@ function setFiltering(column: string, filter?: string) {
                         :class="[
                           filtering === undefined ||
                           filtering[column.name] === undefined
-                            ? 'bg-primary-active-light text-primary-content-light dark:bg-primary-active-dark dark:text-primary-content-dark'
-                            : 'hover:bg-primary-light hover:text-primary-content-light dark:hover:bg-primary-dark dark:hover:text-primary-content-dark',
+                            ? 'bg-primary-light text-primary-content-light dark:bg-primary-dark dark:text-primary-content-dark'
+                            : 'hover:bg-secondary-light hover:text-secondary-content-light dark:hover:bg-secondary-dark dark:hover:text-secondary-content-dark',
                         ]"
                         @click="
                           setFiltering(column.name);
@@ -174,8 +234,8 @@ function setFiltering(column: string, filter?: string) {
                         :class="[
                           filtering !== undefined &&
                           filtering[column.name] === filter
-                            ? 'bg-primary-active-light text-primary-content-light dark:bg-primary-active-dark dark:text-primary-content-dark'
-                            : 'hover:bg-primary-light hover:text-primary-content-light dark:hover:bg-primary-dark dark:hover:text-primary-content-dark',
+                            ? 'bg-primary-light text-primary-content-light dark:bg-primary-dark dark:text-primary-content-dark'
+                            : 'hover:bg-secondary-light hover:text-secondary-content-light dark:hover:bg-secondary-dark dark:hover:text-secondary-content-dark',
                         ]"
                         @click="
                           setFiltering(column.name, filter);
@@ -196,27 +256,27 @@ function setFiltering(column: string, filter?: string) {
         </tr>
       </thead>
       <tbody class="bg-surface-light dark:bg-surface-dark">
-        <tr v-for="[rowIndex, row] in rows.entries()" v-bind:key="rowIndex">
-          <td
-            v-for="column in columns"
-            v-bind:key="column.name"
-            class="border-b border-secondary-light py-4 dark:border-secondary-active-dark"
-          >
-            <slot
-              :name="column.name"
-              v-bind="{ isFormRow: false, data: row } as TableCardSlot<T>"
-            ></slot>
-          </td>
-        </tr>
         <tr v-if="extraFormRow !== undefined">
           <td
             v-for="column in columns"
             v-bind:key="column.name"
-            class="border-b border-secondary-light py-4 dark:border-secondary-active-dark"
+            class="border-b border-secondary-light py-4 dark:border-primary-dark"
           >
             <slot
               :name="column.name"
               v-bind="{ isFormRow: true } as TableCardSlot<T>"
+            ></slot>
+          </td>
+        </tr>
+        <tr v-for="[rowIndex, row] in rows?.entries()" v-bind:key="rowIndex">
+          <td
+            v-for="column in columns"
+            v-bind:key="column.name"
+            class="border-b border-secondary-light py-4 dark:border-primary-dark"
+          >
+            <slot
+              :name="column.name"
+              v-bind="{ isFormRow: false, data: row } as TableCardSlot<T>"
             ></slot>
           </td>
         </tr>
