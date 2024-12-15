@@ -18,8 +18,22 @@ class ClassInfoViewSet(
 ):
     queryset = ClassInfo.objects.all()
     filter_backends = [filters.OrderingFilter]
-    ordering_fields = ["class_description", "place_price"]
+    ordering_fields = ["class_description", "place_price", "gallery"]
     serializer_class = ClassInfoSerializer
+    permission_classes = [IsPlanningOrReadOnly]
+    
+class ServiceViewSet(
+    mixins.CreateModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.ListModelMixin,
+    GenericViewSet
+):
+    queryset = Service.objects.all()
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ["service_description", "service_price", "gallery"]
+    serializer_class = ServiceSerializer
     permission_classes = [IsPlanningOrReadOnly]
 
 class RoomViewSet(
@@ -34,7 +48,6 @@ class RoomViewSet(
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     filterset_fields = ["status", "room_class"]
     ordering_fields = ["room_number", "places"]
-    serializer_class = RoomSerializer
     permission_classes = [IsPlanningOrReadOnly | IsCleaningOrReadOnly]
 
     def get_serializer_class(self):
@@ -42,17 +55,3 @@ class RoomViewSet(
             return CleaningRoomSerializer
         else:
             return RoomSerializer
-    
-class ServiceViewSet(
-    mixins.CreateModelMixin,
-    mixins.UpdateModelMixin,
-    mixins.DestroyModelMixin,
-    mixins.RetrieveModelMixin,
-    mixins.ListModelMixin,
-    GenericViewSet
-):
-    queryset = Service.objects.all()
-    filter_backends = [filters.OrderingFilter]
-    ordering_fields = ["service_description", "service_price"]
-    serializer_class = ServiceSerializer
-    permission_classes = [IsPlanningOrReadOnly]
