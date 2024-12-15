@@ -176,8 +176,8 @@ useUserRole((role) => {
     >
       <template #delete="item">
         <button
-          class="rounded-md bg-red-500 p-[4px]"
           v-if="!item.isFormRow && item.data.role !== 'admin'"
+          class="rounded-md bg-red-500 p-[4px]"
           @click="deleteClient(item.data)"
         >
           <XMarkIcon class="h-[24px] w-[24px] text-white" />

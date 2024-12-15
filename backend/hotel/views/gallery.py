@@ -10,6 +10,7 @@ from hotel.models.gallery import *
 
 class GalleryViewSet(
     mixins.CreateModelMixin,
+    mixins.UpdateModelMixin,
     mixins.DestroyModelMixin,
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
@@ -20,7 +21,7 @@ class GalleryViewSet(
     serializer_class = GallerySerializer
 
     def get_serializer_class(self):
-        if self.action == "create":
+        if self.action in ["create", "update"]:
             return CreateGallerySerializer
         else:
             return super().get_serializer_class()
@@ -35,7 +36,7 @@ class GalleryViewSet(
         self.serializer_class = GallerySerializer
         return Response(self.get_serializer(gallery).data)
     
-    @action(detail=True, url_path="(?P<image_pk>[^/.]+)", methods=["delete"])
+    @action(detail=True, url_path="(?P<image_pk>[^\/.a-zA-Z]+)", methods=["delete"])
     def remove_image(self, request, image_pk, *args, **kwargs):
         gallery: Gallery = self.get_object()
         gallery_image = get_object_or_404(GalleryImage.objects.filter(gallery=gallery), pk=image_pk)
