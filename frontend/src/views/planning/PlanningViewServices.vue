@@ -5,21 +5,26 @@ import SelectMulti from "@/components/SelectMulti.vue";
 import SelectMultiDynamic from "@/components/SelectMultiDynamic.vue";
 import TableCard, { type Ordering } from "@/components/TableCard.vue";
 import TextField from "@/components/TextField.vue";
-import type { Class, Service } from "@/types";
+import router from "@/router";
+import type { Class, Gallery, Service } from "@/types";
 import { XMarkIcon } from "@heroicons/vue/24/outline";
 import axios from "axios";
 import { computed, onMounted, ref, toRefs, watch } from "vue";
+import PlanningViewGalleryDialog from "./PlanningViewGalleryDialog.vue";
+import SelectListDynamic from "@/components/SelectListDynamic.vue";
 
 const CURRENCY_SYMBOL = import.meta.env.VITE_CURRENCY_SYMBOL;
 
 const props = defineProps<{
   classes: Class[];
+  galleries: Gallery[];
 }>();
 
-const { classes } = toRefs(props);
+const { classes, galleries } = toRefs(props);
 const classDescriptions = computed(() =>
   classes.value.map((x) => x.class_description),
 );
+const galleryNames = computed(() => galleries.value.map((x) => x.name));
 
 const services = defineModel<Service[]>();
 
@@ -77,6 +82,15 @@ async function changeServiceClasses(
   await fetchServices();
 }
 
+async function changeServiceGallery(serviceItem: Service, newGallery?: number) {
+  if (serviceItem.gallery?.id !== newGallery) {
+    await axios.patch(`/api/service/${serviceItem.id}/`, {
+      gallery: newGallery ?? null,
+    });
+    await fetchServices();
+  }
+}
+
 async function deleteService(serviceItem: Service) {
   await axios.delete(`/api/service/${serviceItem.id}/`);
   await fetchServices();
@@ -114,12 +128,26 @@ async function createService(): Promise<boolean> {
   return true;
 }
 
+const createGalleryService = ref<Service>();
+
+async function createGallery(gallery: number) {
+  await changeServiceGallery(createGalleryService.value!, gallery);
+  createGalleryService.value = undefined;
+  router.push(`/gallery/${gallery}`);
+}
+
 onMounted(async () => {
   await fetchServices();
 });
 </script>
 
 <template>
+  <PlanningViewGalleryDialog
+    :open="createGalleryService !== undefined"
+    @close="createGalleryService = undefined"
+    @createGallery="(value) => createGallery(value)"
+  />
+
   <h1 class="pb-2 pt-6 text-center text-4xl font-extrabold lg:text-start">
     Services
   </h1>
@@ -134,6 +162,7 @@ onMounted(async () => {
       },
       { name: 'service_price', display: 'Service price', ordering: true },
       { name: 'classes', display: 'Classes' },
+      { name: 'gallery', display: 'Gallery' },
       { name: 'submit', display: '' },
     ]"
     :rows="services"
@@ -199,6 +228,38 @@ onMounted(async () => {
         :options="classDescriptions"
         placeholder="Select classes"
       />
+    </template>
+
+    <template #gallery="item">
+      <div
+        v-if="!item.isFormRow"
+        class="flex flex-col items-center justify-center space-x-2 lg:flex-row"
+      >
+        <SelectListDynamic
+          :blankOption="true"
+          :options="galleryNames"
+          :selected="galleries.findIndex((x) => x.id == item.data.gallery?.id)"
+          @updateSelection="
+            (value) =>
+              changeServiceGallery(
+                item.data,
+                value === undefined ? undefined : galleries[value].id,
+              )
+          "
+        />
+        <div
+          class="text-link-light dark:text-link-dark flex flex-col text-nowrap font-bold underline lg:items-start"
+        >
+          <RouterLink
+            v-if="item.data.gallery !== null"
+            :to="`/gallery/${item.data.gallery.id}`"
+            >Edit gallery</RouterLink
+          >
+          <button @click="createGalleryService = item.data">
+            Create new gallery
+          </button>
+        </div>
+      </div>
     </template>
 
     <template #submit="item">

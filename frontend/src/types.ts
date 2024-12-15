@@ -5,6 +5,15 @@ export type Pagination<T> = {
   results: T[];
 };
 
+export type Gallery = {
+  id: number;
+  name: string;
+  images: {
+    id: number;
+    image: string;
+  }[];
+};
+
 export const clientRoles = [
   "client",
   "reception",
@@ -20,13 +29,14 @@ export type Client = {
   name: string;
   phone_number: string;
   role: ClientRole;
-  picture?: string;
+  picture: string | null;
 };
 
 export type Class = {
   id: number;
   class_description: string;
   place_price: number;
+  gallery: Gallery | null;
 };
 
 export type Service = {
@@ -34,6 +44,7 @@ export type Service = {
   service_description: string;
   service_price: number;
   classes: number[];
+  gallery: Gallery | null;
 };
 
 export const roomStatuses = ["free", "notready", "taken"] as const;

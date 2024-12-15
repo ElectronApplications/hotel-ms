@@ -1,19 +1,20 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="Blank extends boolean = false">
 import { nextTick, ref, toRefs, watch } from "vue";
-import SelectList from "@/components/SelectList.vue";
+import SelectList, { type SelectModel } from "@/components/SelectList.vue";
 
 const props = defineProps<{
   options: readonly string[];
   selected: number;
+  blankOption?: Blank;
 }>();
 
-const { options, selected } = toRefs(props);
+const { options, selected, blankOption } = toRefs(props);
 
 const emit = defineEmits<{
-  updateSelection: [id: number];
+  updateSelection: [id: SelectModel<Blank>];
 }>();
 
-const selectedOption = ref(0);
+const selectedOption = ref<SelectModel<Blank>>(0);
 
 watch(
   selected,
@@ -40,5 +41,6 @@ function updateSelection() {
     @change="updateSelection"
     v-model="selectedOption"
     :options="options"
+    :blankOption="blankOption"
   />
 </template>

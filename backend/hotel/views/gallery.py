@@ -23,7 +23,7 @@ class GalleryViewSet(
         if self.action == "create":
             return CreateGallerySerializer
         else:
-            return self.serializer_class
+            return super().get_serializer_class()
 
     @action(detail=True, url_path="upload", methods=["post"], serializer_class=UploadGallerySerializer)
     def upload_images(self, request, *args, **kwargs):

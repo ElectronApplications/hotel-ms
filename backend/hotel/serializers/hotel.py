@@ -1,16 +1,34 @@
 from rest_framework import serializers
 from hotel.models.hotel import *
+from hotel.serializers.gallery import GallerySerializer
 
 class ClassInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = ClassInfo
-        fields = ["id", "class_description", "place_price"]
+        fields = ["id", "class_description", "place_price", "gallery"]
     
     def validate_place_price(self, place_price: float):
         if place_price < 0:
             raise serializers.ValidationError("Price can't be negative")
         
         return place_price
+
+class GetClassInfoSerializer(ClassInfoSerializer):
+    gallery = GallerySerializer()
+
+class ServiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Service
+        fields = ["id", "service_description", "service_price", "classes", "gallery"]
+    
+    def validate_service_price(self, service_price: float):
+        if service_price < 0:
+            raise serializers.ValidationError("Price can't be negative")
+    
+        return service_price
+
+class GetServiceSerializer(ServiceSerializer):
+    gallery = GallerySerializer()
 
 class RoomSerializer(serializers.ModelSerializer):
     class Meta:
@@ -37,14 +55,3 @@ class CleaningRoomSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("You can only change rooms with 'notready' status")
         
         return status
-
-class ServiceSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Service
-        fields = ["id", "service_description", "service_price", "classes"]
-    
-    def validate_service_price(self, service_price: float):
-        if service_price < 0:
-            raise serializers.ValidationError("Price can't be negative")
-    
-        return service_price

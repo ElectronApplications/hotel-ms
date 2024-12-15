@@ -263,7 +263,9 @@ useUserRole((role) => {
     </TableCard>
 
     <div class="mt-4">
-      <a href="/admin" class="font-bold text-blue-500 underline"
+      <a
+        href="/admin"
+        class="text-link-light dark:text-link-dark font-bold underline"
         >Django admin page</a
       >
     </div>
