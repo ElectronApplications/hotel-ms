@@ -95,28 +95,31 @@ onMounted(() => {
         {{ gallery.name }}
       </h1>
 
-      <div
-        class="flex flex-col items-center space-y-2 pt-4 lg:flex-row lg:items-start lg:space-x-2 lg:space-y-0"
-      >
+      <div class="flex flex-row flex-wrap gap-y-2 pt-4">
         <div
           v-for="image in gallery.images"
           v-bind:key="image.id"
-          class="relative"
+          class="flex basis-full flex-row justify-center md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
         >
-          <ExpandableImage
-            imgClass="rounded-xl w-[400px] h-[300px] object-cover"
-            :src="image.image"
-          />
-          <button
-            class="absolute left-2 top-2 rounded-md bg-red-500 p-[4px]"
-            @click="deleteImage(image.id)"
-          >
-            <XMarkIcon class="h-[24px] w-[24px] text-white" />
-          </button>
+          <div class="relative">
+            <ExpandableImage
+              imgClass="rounded-xl w-[300px] h-[200px] object-cover"
+              :src="image.image"
+            />
+            <button
+              class="absolute left-2 top-2 rounded-md bg-red-500 p-[4px]"
+              @click="deleteImage(image.id)"
+            >
+              <XMarkIcon class="h-[24px] w-[24px] text-white" />
+            </button>
+          </div>
         </div>
       </div>
 
-      <form class="space-y-1 pt-4" @submit.prevent="uploadImages">
+      <form
+        class="flex flex-col items-center space-y-1 pt-4"
+        @submit.prevent="uploadImages"
+      >
         <label class="block text-sm font-semibold" for="pictures"
           >Upload images</label
         >
