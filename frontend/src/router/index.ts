@@ -9,6 +9,7 @@ import CleaningView from "@/views/CleaningView.vue";
 import PlanningView from "@/views/planning/PlanningView.vue";
 import AdminView from "@/views/AdminView.vue";
 import BookView from "@/views/BookView.vue";
+import GalleryView from "@/views/GalleryView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -52,6 +53,10 @@ const router = createRouter({
     {
       path: "/book",
       component: BookView,
+    },
+    {
+      path: "/gallery/:id",
+      component: GalleryView,
     },
   ],
 });

@@ -170,8 +170,8 @@ onMounted(async () => {
   >
     <template #delete="item">
       <button
-        class="rounded-md bg-red-500 p-[4px]"
         v-if="!item.isFormRow"
+        class="rounded-md bg-red-500 p-[4px]"
         @click="deleteService(item.data)"
       >
         <XMarkIcon class="h-[24px] w-[24px] text-white" />
