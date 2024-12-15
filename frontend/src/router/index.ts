@@ -3,7 +3,7 @@ import MainView from "@/views/MainView.vue";
 import LoginView from "@/views/LoginView.vue";
 import ProfileView from "@/views/ProfileView.vue";
 import ChangePasswordView from "@/views/ChangePasswordView.vue";
-import ReceptionView from "@/views/ReceptionView.vue";
+import ReceptionView from "@/views/reception/ReceptionView.vue";
 import ServiceView from "@/views/ServiceView.vue";
 import CleaningView from "@/views/CleaningView.vue";
 import PlanningView from "@/views/planning/PlanningView.vue";
