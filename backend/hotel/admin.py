@@ -2,21 +2,30 @@ from django.contrib import admin
 
 from hotel.models.accomodation import *
 from hotel.models.client import *
+from hotel.models.gallery import *
 from hotel.models.hotel import *
 from hotel.models.reservation import *
 
+@admin.register(GalleryImage)
+class GalleryImageAdmin(admin.ModelAdmin):
+    list_display = ["image", "gallery"]
+
+@admin.register(Gallery)
+class GalleryAdmin(admin.ModelAdmin):
+    list_display = ["name"]
+
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
-    list_display = ["service_description", "service_price"]
+    list_display = ["service_description", "service_price", "gallery"]
     filter_horizontal = ["classes"]
 
 @admin.register(ClassInfo)
 class ClassInfoAdmin(admin.ModelAdmin):
-    list_display = ["class_description", "place_price"]
+    list_display = ["class_description", "place_price", "gallery"]
 
 @admin.register(Room)
 class RoomAdmin(admin.ModelAdmin):
-    list_display = ["id", "room_number", "room_class", "status", "places"]
+    list_display = ["room_number", "room_class", "status", "places"]
 
 @admin.register(Client)
 class ClientAdmin(admin.ModelAdmin):

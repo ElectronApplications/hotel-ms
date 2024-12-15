@@ -136,10 +136,7 @@ onMounted(async () => {
         />
       </div>
       <div v-else class="inline-block w-[100px] lg:w-[150px]">
-        <NumberInput
-          v-model="newRoomNumber"
-          :min="1"
-        />
+        <NumberInput v-model="newRoomNumber" :min="1" />
       </div>
     </template>
 
@@ -174,7 +171,7 @@ onMounted(async () => {
 
     <template #submit="item">
       <PrimaryButton v-if="item.isFormRow" form="createRoomForm" type="submit"
-        >Create new class</PrimaryButton
+        >Create new room</PrimaryButton
       >
     </template>
   </TableCard>
