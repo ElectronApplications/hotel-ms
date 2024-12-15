@@ -21,6 +21,12 @@ class ClassInfoViewSet(
     ordering_fields = ["class_description", "place_price", "gallery"]
     serializer_class = ClassInfoSerializer
     permission_classes = [IsPlanningOrReadOnly]
+
+    def get_serializer_class(self):
+        if self.action in ["list", "retrieve"]:
+            return GetClassInfoSerializer
+        else:
+            return super().get_serializer_class()
     
 class ServiceViewSet(
     mixins.CreateModelMixin,
@@ -35,6 +41,12 @@ class ServiceViewSet(
     ordering_fields = ["service_description", "service_price", "gallery"]
     serializer_class = ServiceSerializer
     permission_classes = [IsPlanningOrReadOnly]
+
+    def get_serializer_class(self):
+        if self.action in ["list", "retrieve"]:
+            return GetServiceSerializer
+        else:
+            return super().get_serializer_class()
 
 class RoomViewSet(
     mixins.CreateModelMixin,

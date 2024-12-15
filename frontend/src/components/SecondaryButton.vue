@@ -17,11 +17,11 @@ const { enabled, type } = toRefs(props);
 
 <template>
   <button
-    class="rounded-lg bg-secondary-light px-4 py-2 text-sm font-bold text-secondary-content-light duration-100 dark:bg-secondary-dark dark:text-secondary-content-dark"
+  class="rounded-lg px-4 py-2 text-sm font-bold duration-100"
     :class="[
       enabled
-        ? 'hover:bg-secondary-active-light dark:hover:bg-secondary-active-dark'
-        : '',
+        ? 'bg-secondary-light text-secondary-content-light hover:bg-secondary-active-light dark:bg-secondary-dark dark:text-secondary-content-dark dark:hover:bg-secondary-active-dark'
+        : 'bg-secondary-disabled-light dark:bg-secondary-disabled-dark text-secondary-disabled-content-light dark:text-secondary-disabled-content-dark',
     ]"
     :type="type"
     :disabled="!enabled"

@@ -7,8 +7,6 @@ import {
 } from "@heroicons/vue/24/outline";
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/vue";
 
-// TODO: typing could probably be improved (models, generic tuples for props)
-
 export type TableCardSlot<T> =
   | {
       isFormRow: true;

@@ -6,14 +6,14 @@ const props = withDefaults(
   defineProps<{
     text: string;
     textClass?: HTMLAttributes["class"];
-    textTag?: string;
+    as?: string;
   }>(),
   {
-    textTag: "span",
+    as: "span",
   },
 );
 
-const { text, textClass, textTag } = toRefs(props);
+const { text, textClass, as } = toRefs(props);
 
 const emit = defineEmits<{
   updateText: [value: string];
@@ -42,7 +42,7 @@ function updateValue() {
 
 <template>
   <div v-show="!editing" class="flex flex-row items-center" v-bind="$attrs">
-    <component :is="textTag" :class="textClass">{{ text }}</component>
+    <component :is="as" :class="textClass">{{ text }}</component>
     <button
       @click="
         editing = true;

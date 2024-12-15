@@ -71,7 +71,7 @@ useAuthentication((isAuthenticated) => {
         <EditableLabel
           class="justify-center lg:justify-start"
           @updateText="changeName"
-          textTag="h2"
+          as="h2"
           :text="currentUser?.name ?? ''"
           textClass="text-4xl font-extrabold"
         />
@@ -91,7 +91,7 @@ useAuthentication((isAuthenticated) => {
             class="flex flex-row items-center justify-center space-x-1 lg:justify-start"
           >
             <input
-              class="w-[250px] cursor-pointer rounded-lg bg-secondary-light text-sm font-medium text-secondary-content-light file:border-0 file:bg-primary-light file:px-4 file:py-2 file:text-primary-content-light file:hover:bg-primary-active-light dark:bg-secondary-dark dark:text-secondary-content-dark dark:file:bg-primary-dark dark:file:text-primary-content-dark dark:file:hover:bg-primary-active-dark"
+              class="w-[250px] cursor-pointer rounded-lg bg-secondary-light text-sm font-medium text-secondary-content-light file:border-0 file:bg-primary-light file:px-4 file:py-2 file:text-primary-content-light file:duration-100 file:hover:bg-primary-active-light dark:bg-secondary-dark dark:text-secondary-content-dark dark:file:bg-primary-dark dark:file:text-primary-content-dark dark:file:hover:bg-primary-active-dark"
               type="file"
               name="picture"
               ref="pictureRef"

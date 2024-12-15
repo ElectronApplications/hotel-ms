@@ -9,6 +9,8 @@ import axios, { AxiosError } from "axios";
 import { storeToRefs } from "pinia";
 import { ref } from "vue";
 
+// TODO: this could be a modal dialog
+
 const authStore = useAuthStore();
 const { currentUser } = storeToRefs(authStore);
 
