@@ -17,6 +17,12 @@ class AccomodationViewSet(
     serializer_class = AccomodationSerializer
     permission_classes = [IsReception]
 
+    def get_serializer_class(self):
+        if self.action in ["list", "retrieve"]:
+            return GetAccomodationSerializer
+        else:
+            return super().get_serializer_class()
+
 # TODO: let clients make their own service orders
 class ServiceCardViewSet(
     mixins.CreateModelMixin,

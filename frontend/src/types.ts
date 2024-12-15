@@ -57,3 +57,15 @@ export type Room = {
   status: RoomStatus;
   places: number;
 };
+
+export type Accomodation = {
+  id: number;
+  room: Room;
+  move_in_time: string;
+  move_out_time: string;
+  client: Client;
+  price_to_pay: number;
+  was_price_paid: boolean;
+  checked_out: boolean;
+  reservation: number | null;
+};
