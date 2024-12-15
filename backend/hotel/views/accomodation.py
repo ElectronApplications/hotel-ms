@@ -5,7 +5,6 @@ from hotel.models.accomodation import *
 from hotel.serializers.accomodation import *
 from hotel.permissions import *
 
-# TODO: let clients make their own accomodations
 class AccomodationViewSet(
     mixins.CreateModelMixin,
     mixins.UpdateModelMixin,
