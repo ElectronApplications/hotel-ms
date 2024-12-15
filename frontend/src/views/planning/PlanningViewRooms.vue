@@ -73,12 +73,12 @@ async function deleteRoom(roomItem: Room) {
   await fetchRooms();
 }
 
-const newRoomNumber = ref<number>();
+const newRoomNumber = ref<number>(1);
 const newRoomPlaces = ref(1);
 const newRoomClass = ref<number>();
 
 async function createRoom(): Promise<boolean> {
-  if (newRoomNumber.value === undefined || newRoomClass.value === undefined) {
+  if (newRoomClass.value === undefined) {
     return false;
   }
 
@@ -89,7 +89,7 @@ async function createRoom(): Promise<boolean> {
   });
   await fetchRooms();
 
-  newRoomNumber.value = undefined;
+  newRoomNumber.value = 1;
   newRoomPlaces.value = 1;
   newRoomClass.value = undefined;
 
@@ -170,7 +170,11 @@ onMounted(async () => {
     </template>
 
     <template #submit="item">
-      <PrimaryButton v-if="item.isFormRow" form="createRoomForm" type="submit"
+      <PrimaryButton
+        v-if="item.isFormRow"
+        form="createRoomForm"
+        type="submit"
+        :enabled="newRoomClass !== undefined"
         >Create new room</PrimaryButton
       >
     </template>

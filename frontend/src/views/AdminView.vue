@@ -256,7 +256,11 @@ useUserRole((role) => {
           :src="item.data.picture ?? DefaultProfileImage"
           :alt="item.data.name"
         />
-        <PrimaryButton v-else form="createClientForm" type="submit"
+        <PrimaryButton
+          v-else
+          form="createClientForm"
+          type="submit"
+          :enabled="newClientName !== '' && newClientPhoneNumber !== ''"
           >Create new client</PrimaryButton
         >
       </template>

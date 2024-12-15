@@ -267,6 +267,11 @@ onMounted(async () => {
         v-if="item.isFormRow"
         form="createServiceForm"
         type="submit"
+        :enabled="
+          newServiceDescription !== '' &&
+          newServicePrice !== '' &&
+          newServiceClasses.length !== 0
+        "
         >Create new service</PrimaryButton
       >
     </template>

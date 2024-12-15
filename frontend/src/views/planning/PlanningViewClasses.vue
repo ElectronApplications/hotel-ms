@@ -217,7 +217,11 @@ onMounted(async () => {
     </template>
 
     <template #submit="item">
-      <PrimaryButton v-if="item.isFormRow" form="createClassForm" type="submit"
+      <PrimaryButton
+        v-if="item.isFormRow"
+        form="createClassForm"
+        type="submit"
+        :enabled="newClassDescription !== '' && newClassPrice !== ''"
         >Create new class</PrimaryButton
       >
     </template>
