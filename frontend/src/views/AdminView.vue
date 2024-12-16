@@ -37,6 +37,7 @@ const { t } = useI18n({
       clientPhoneNumber: "Client's phone number",
       createClient: "Create new client",
       djangoAdmin: "Django admin page",
+      stats: "Download statistics",
     },
     ru: {
       hotelClients: "Клиенты отеля",
@@ -49,6 +50,7 @@ const { t } = useI18n({
       clientPhoneNumber: "Номер телефона клиента",
       createClient: "Создать нового клиента",
       djangoAdmin: "Админка django",
+      stats: "Скачать статистику",
     },
   },
 });
@@ -149,6 +151,24 @@ async function createClient(): Promise<boolean> {
   newClientRole.value = clientRoles.indexOf("client");
 
   return true;
+}
+
+async function downloadStats() {
+  const response = await axios.get("/api/stats", {
+    responseType: "blob",
+  });
+
+  const href = URL.createObjectURL(response.data);
+
+  // create "a" HTML element with href to file & click
+  const link = document.createElement("a");
+  link.href = href;
+  document.body.appendChild(link);
+  link.click();
+
+  // clean up "a" element & remove ObjectURL
+  document.body.removeChild(link);
+  URL.revokeObjectURL(href);
 }
 
 onMounted(async () => {
@@ -301,6 +321,16 @@ useUserRole((role) => {
         href="/admin"
         class="font-bold text-link-light underline dark:text-link-dark"
         >{{ t("djangoAdmin") }}</a
+      >
+    </div>
+
+    <div class="mt-4">
+      <a
+        href="/api/stats/"
+        class="font-bold text-link-light underline dark:text-link-dark"
+        download
+        @click.prevent="downloadStats"
+        >{{ t("stats") }}</a
       >
     </div>
   </main>

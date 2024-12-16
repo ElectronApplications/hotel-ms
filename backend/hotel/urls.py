@@ -5,6 +5,7 @@ from hotel.views.gallery import *
 from hotel.views.hotel import *
 from hotel.views.reservation import *
 from hotel.views.accomodation import *
+from hotel.views.stats import *
 
 def register_hotel_routes(router: BaseRouter):
     router.register("gallery", GalleryViewSet)
@@ -21,3 +22,4 @@ def register_hotel_routes(router: BaseRouter):
     router.register("accomodation", AccomodationViewSet)
     router.register("servicecard", ServiceCardViewSet)
     
+    router.register("stats", StatsViewset, "stats")
