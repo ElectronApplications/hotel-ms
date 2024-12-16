@@ -12,6 +12,26 @@ import ExpandableImage from "@/components/ExpandableImage.vue";
 import EditableLabel from "@/components/EditableLabel.vue";
 import axios from "axios";
 import { useTemplateRef } from "vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n({
+  messages: {
+    en: {
+      profileInformation: "Profile information",
+      yourRole: "Your role: {role}",
+      uploadProfilePicture: "Upload new profile picture",
+      logout: "Log out",
+      changePassword: "Change password",
+    },
+    ru: {
+      profileInformation: "Информация о профиле",
+      yourRole: "Ваша роль: {role}",
+      uploadProfilePicture: "Загрузить новую фотографию пользователя",
+      logout: "Выйти",
+      changePassword: "Сменить пароль",
+    },
+  },
+});
 
 const authStore = useAuthStore();
 const { currentUser } = storeToRefs(authStore);
@@ -57,7 +77,7 @@ useAuthentication((isAuthenticated) => {
 <template>
   <main class="container mx-auto pt-4">
     <h1 class="text-center text-4xl font-extrabold lg:text-start">
-      Profile information
+      {{ t("profileInformation") }}
     </h1>
     <SurfaceCard
       class="mt-4 flex flex-col items-center lg:flex-row lg:items-start"
@@ -80,13 +100,13 @@ useAuthentication((isAuthenticated) => {
           {{ currentUser?.phone_number }}
         </h2>
         <span class="pt-2" v-if="currentUser?.role !== 'client'">
-          Your role: {{ currentUser?.role }}
+          {{ t("yourRole", { role: currentUser?.role }) }}
         </span>
 
         <form class="space-y-1 pt-4" @submit.prevent="changeProfilePicture">
-          <label class="block text-sm font-semibold" for="picture"
-            >Upload new profile picture</label
-          >
+          <label class="block text-sm font-semibold" for="picture">{{
+            t("uploadProfilePicture")
+          }}</label>
           <div
             class="flex flex-row items-center justify-center space-x-1 lg:justify-start"
           >
@@ -104,11 +124,13 @@ useAuthentication((isAuthenticated) => {
       </div>
       <div class="flex flex-row justify-end pt-8 lg:grow lg:pt-0">
         <div class="flex flex-col gap-2">
-          <SecondaryButton class="w-[250px]" @click="authStore.logout"
-            >Log out</SecondaryButton
-          >
+          <SecondaryButton class="w-[250px]" @click="authStore.logout">{{
+            t("logout")
+          }}</SecondaryButton>
           <RouterLink to="/change-password">
-            <SecondaryButton class="w-[250px]">Change password</SecondaryButton>
+            <SecondaryButton class="w-[250px]">{{
+              t("changePassword")
+            }}</SecondaryButton>
           </RouterLink>
         </div>
       </div>

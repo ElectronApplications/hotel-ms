@@ -12,8 +12,36 @@ import axios from "axios";
 import { computed, onMounted, ref, toRefs, watch } from "vue";
 import PlanningViewGalleryDialog from "./PlanningViewGalleryDialog.vue";
 import SelectListDynamic from "@/components/SelectListDynamic.vue";
+import { useI18n } from "vue-i18n";
 
 const CURRENCY_SYMBOL = import.meta.env.VITE_CURRENCY_SYMBOL;
+
+const { t } = useI18n({
+  messages: {
+    en: {
+      services: "Services",
+      serviceDescription: "Service description",
+      servicePrice: "Service price",
+      classes: "Classes",
+      selectClasses: "Select classes",
+      gallery: "Gallery",
+      createService: "Create new service",
+      editGallery: "Edit gallery",
+      createGallery: "Create new gallery",
+    },
+    ru: {
+      services: "Услуги",
+      serviceDescription: "Описание услуги",
+      servicePrice: "Стоимость услуги",
+      classes: "Классы",
+      selectClasses: "Выбрать классы",
+      gallery: "Галерея",
+      createService: "Создать новую услугу",
+      editGallery: "Редактировать галерею",
+      createGallery: "Создать новую галерею",
+    },
+  },
+});
 
 const props = defineProps<{
   classes: Class[];
@@ -149,7 +177,7 @@ onMounted(async () => {
   />
 
   <h1 class="pb-2 pt-6 text-center text-4xl font-extrabold lg:text-start">
-    Services
+    {{ t("services") }}
   </h1>
   <TableCard
     v-model:ordering="servcesOrdering"
@@ -157,12 +185,12 @@ onMounted(async () => {
       { name: 'delete', display: '' },
       {
         name: 'service_description',
-        display: 'Service description',
+        display: t('serviceDescription'),
         ordering: true,
       },
-      { name: 'service_price', display: 'Service price', ordering: true },
-      { name: 'classes', display: 'Classes' },
-      { name: 'gallery', display: 'Gallery' },
+      { name: 'service_price', display: t('servicePrice'), ordering: true },
+      { name: 'classes', display: t('classes') },
+      { name: 'gallery', display: t('gallery') },
       { name: 'submit', display: '' },
     ]"
     :rows="services"
@@ -187,7 +215,7 @@ onMounted(async () => {
       />
       <div v-else class="inline-block w-[100px] lg:w-[250px]">
         <TextField
-          placeholder="Service description"
+          :placeholder="t('serviceDescription')"
           v-model="newServiceDescription"
           form="createServiceForm"
         />
@@ -205,7 +233,7 @@ onMounted(async () => {
       </div>
       <div v-else class="inline-block w-[100px] lg:w-[250px]">
         <TextField
-          placeholder="Service price"
+          :placeholder="t('servicePrice')"
           v-model="newServicePrice"
           form="createServiceForm"
         />
@@ -219,14 +247,14 @@ onMounted(async () => {
         :selected="
           item.data.classes.map((x) => classes.findIndex((y) => y.id == x))
         "
-        placeholder="Select classes"
+        :placeholder="t('selectClasses')"
         @updateSelections="(value) => changeServiceClasses(item.data, value)"
       />
       <SelectMulti
         v-else
         v-model="newServiceClasses"
         :options="classDescriptions"
-        placeholder="Select classes"
+        :placeholder="t('selectClasses')"
       />
     </template>
 
@@ -248,15 +276,15 @@ onMounted(async () => {
           "
         />
         <div
-          class="text-link-light dark:text-link-dark flex flex-col text-nowrap font-bold underline lg:items-start"
+          class="flex flex-col text-nowrap font-bold text-link-light underline lg:items-start dark:text-link-dark"
         >
           <RouterLink
             v-if="item.data.gallery !== null"
             :to="`/gallery/${item.data.gallery.id}`"
-            >Edit gallery</RouterLink
+            >{{ t("editGallery") }}</RouterLink
           >
           <button @click="createGalleryService = item.data">
-            Create new gallery
+            {{ t("createGallery") }}
           </button>
         </div>
       </div>
@@ -272,7 +300,7 @@ onMounted(async () => {
           newServicePrice !== '' &&
           newServiceClasses.length !== 0
         "
-        >Create new service</PrimaryButton
+        >{{ t("createService") }}</PrimaryButton
       >
     </template>
   </TableCard>

@@ -11,8 +11,32 @@ import axios from "axios";
 import { computed, onMounted, ref, toRefs, watch } from "vue";
 import PlanningViewGalleryDialog from "./PlanningViewGalleryDialog.vue";
 import router from "@/router";
+import { useI18n } from "vue-i18n";
 
 const CURRENCY_SYMBOL = import.meta.env.VITE_CURRENCY_SYMBOL;
+
+const { t } = useI18n({
+  messages: {
+    en: {
+      classes: "Classes",
+      classDescription: "Class description",
+      placePrice: "Place price",
+      gallery: "Gallery",
+      createClass: "Create new class",
+      editGallery: "Edit gallery",
+      createGallery: "Create new gallery",
+    },
+    ru: {
+      classes: "Классы",
+      classDescription: "Описание класса",
+      placePrice: "Стоимость места",
+      gallery: "Галерея",
+      createClass: "Создать новый класс",
+      editGallery: "Редактировать галерею",
+      createGallery: "Создать новую галерею",
+    },
+  },
+});
 
 const props = defineProps<{
   galleries: Gallery[];
@@ -122,7 +146,7 @@ onMounted(async () => {
   />
 
   <h1 class="pb-2 text-center text-4xl font-extrabold lg:text-start">
-    Classes
+    {{ t("classes") }}
   </h1>
   <TableCard
     v-model:ordering="classesOrdering"
@@ -130,11 +154,11 @@ onMounted(async () => {
       { name: 'delete', display: '' },
       {
         name: 'class_description',
-        display: 'Class description',
+        display: t('classDescription'),
         ordering: true,
       },
-      { name: 'place_price', display: 'Place price', ordering: true },
-      { name: 'gallery', display: 'Gallery' },
+      { name: 'place_price', display: t('placePrice'), ordering: true },
+      { name: 'gallery', display: t('gallery') },
       { name: 'submit', display: '' },
     ]"
     :rows="classes"
@@ -142,7 +166,7 @@ onMounted(async () => {
   >
     <template #delete="item">
       <button
-      v-if="!item.isFormRow"
+        v-if="!item.isFormRow"
         class="rounded-md bg-red-500 p-[4px]"
         @click="deleteClass(item.data)"
       >
@@ -159,7 +183,7 @@ onMounted(async () => {
       />
       <div v-else class="inline-block w-[100px] lg:w-[250px]">
         <TextField
-          placeholder="Class description"
+          :placeholder="t('classDescription')"
           v-model="newClassDescription"
           form="createClassForm"
         />
@@ -177,7 +201,7 @@ onMounted(async () => {
       </div>
       <div v-else class="inline-block w-[100px] lg:w-[250px]">
         <TextField
-          placeholder="Place price"
+          :placeholder="t('placePrice')"
           v-model="newClassPrice"
           form="createClassForm"
         />
@@ -202,15 +226,15 @@ onMounted(async () => {
           "
         />
         <div
-          class="text-link-light dark:text-link-dark flex flex-col text-nowrap font-bold underline lg:items-start"
+          class="flex flex-col text-nowrap font-bold text-link-light underline lg:items-start dark:text-link-dark"
         >
           <RouterLink
             v-if="item.data.gallery !== null"
             :to="`/gallery/${item.data.gallery.id}`"
-            >Edit gallery</RouterLink
+            >{{ t("editGallery") }}</RouterLink
           >
           <button @click="createGalleryClass = item.data">
-            Create new gallery
+            {{ t("createGallery") }}
           </button>
         </div>
       </div>
@@ -222,7 +246,7 @@ onMounted(async () => {
         form="createClassForm"
         type="submit"
         :enabled="newClassDescription !== '' && newClassPrice !== ''"
-        >Create new class</PrimaryButton
+        >{{ t("createClass") }}</PrimaryButton
       >
     </template>
   </TableCard>

@@ -10,8 +10,24 @@ import {
 } from "@headlessui/vue";
 import axios from "axios";
 import { ref, toRefs } from "vue";
+import { useI18n } from "vue-i18n";
 
 // TODO: modal dialog could be its own actual component (could also make ExpandableImage use it)
+
+const { t } = useI18n({
+  messages: {
+    en: {
+      createGallery: "Create new gallery",
+      galleryName: "Gallery name",
+      create: "Create",
+    },
+    ru: {
+      createGallery: "Создать новую галерею",
+      galleryName: "Название галереи",
+      create: "Создать",
+    },
+  },
+});
 
 const props = defineProps<{
   open: boolean;
@@ -69,12 +85,12 @@ async function createGallery() {
               class="w-full max-w-md transform overflow-hidden rounded-2xl bg-surface-light p-6 text-left align-middle shadow-xl transition-all dark:bg-surface-dark"
             >
               <DialogTitle as="h3" class="text-lg font-medium leading-6">
-                Create new gallery
+                {{ t("createGallery") }}
               </DialogTitle>
 
               <TextField
                 v-model="galleryName"
-                placeholder="Gallery name"
+                :placeholder="t('galleryName')"
                 class="mt-4"
                 @keyup.enter="if (galleryName !== '') createGallery();"
               />
@@ -83,7 +99,7 @@ async function createGallery() {
                 class="mt-4"
                 :enabled="galleryName !== ''"
                 @click="createGallery"
-                >Create</PrimaryButton
+                >{{ t("create") }}</PrimaryButton
               >
             </DialogPanel>
           </TransitionChild>

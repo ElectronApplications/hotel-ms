@@ -7,6 +7,26 @@ import router from "@/router";
 import type { Class, Room } from "@/types";
 import axios from "axios";
 import { computed, onMounted, ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n({
+  messages: {
+    en: {
+      rooms: "Rooms",
+      roomNumber: "Room number",
+      class: "Class",
+      status: "Status",
+      setFree: "Set to free",
+    },
+    ru: {
+      rooms: "Комнаты",
+      roomNumber: "Номер комнаты",
+      class: "Класс",
+      status: "Статус",
+      setFree: "Изменить на free",
+    },
+  },
+});
 
 const classes = ref<Class[]>([]);
 const classDescriptions = computed(() =>
@@ -74,15 +94,19 @@ useUserRole((role) => {
 <template>
   <main class="container mx-auto pt-4">
     <h1 class="pb-2 pt-6 text-center text-4xl font-extrabold lg:text-start">
-      Rooms
+      {{ t("rooms") }}
     </h1>
     <TableCard
       v-model:ordering="roomsOrdering"
       v-model:filtering="roomsFiltering"
       :columns="[
-        { name: 'room_number', display: 'Room number', ordering: true },
-        { name: 'room_class', display: 'Class', filtering: classDescriptions },
-        { name: 'status', display: 'Status' },
+        { name: 'room_number', display: t('roomNumber'), ordering: true },
+        {
+          name: 'room_class',
+          display: t('class'),
+          filtering: classDescriptions,
+        },
+        { name: 'status', display: t('status') },
       ]"
       :rows="rooms"
     >
@@ -101,9 +125,9 @@ useUserRole((role) => {
       </template>
 
       <template #status="item">
-        <PrimaryButton v-if="!item.isFormRow" @click="freeRoom(item.data)"
-          >Set to free</PrimaryButton
-        >
+        <PrimaryButton v-if="!item.isFormRow" @click="freeRoom(item.data)">{{
+          t("setFree")
+        }}</PrimaryButton>
       </template>
     </TableCard>
   </main>

@@ -10,6 +10,40 @@ import TextField from "@/components/TextField.vue";
 import PasswordTextField from "@/components/PasswordTextField.vue";
 import { useAuthentication } from "@/composables/auth";
 import axios, { AxiosError } from "axios";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n({
+  messages: {
+    en: {
+      login: "Login",
+      register: "Register",
+      signIn: "Sign in",
+      signUp: "Sign up",
+      name: "Name",
+      phoneNumber: "Phone number",
+      password: "Password",
+      confirmPassword: "Confirm password",
+      incorrectNumberPassword: "Incorrect phone number or password",
+      passwordsNotSame: "Passwords do not match",
+      passwordShort: "Password must be at least 8 characters long",
+      couldntRegister: "Couldn't complete registration",
+    },
+    ru: {
+      login: "Вход",
+      register: "Регистрация",
+      signIn: "Войти",
+      signUp: "Зарегистрироваться",
+      name: "Имя",
+      phoneNumber: "Номер телефона",
+      password: "Пароль",
+      confirmPassword: "Подтвердите пароль",
+      incorrectNumberPassword: "Неправильный номер телефона или пароль",
+      passwordsNotSame: "Пароли не совпадают",
+      passwordShort: "Пароль должен состоять хотя бы из 8 символов",
+      couldntRegister: "Не получилось зарегистрироваться",
+    },
+  },
+});
 
 const authStore = useAuthStore();
 
@@ -30,17 +64,17 @@ async function loginSubmit(): Promise<boolean> {
   );
 
   if (!result) {
-    loginError.value = "Incorrect phone number or password";
+    loginError.value = t("incorrectNumberPassword");
   }
   return result;
 }
 
 async function registerSubmit(): Promise<boolean> {
   if (registerPassword.value !== registerConfirmPassword.value) {
-    registerError.value = "Passwords do not match";
+    registerError.value = t("passwordsNotSame");
     return false;
   } else if (registerPassword.value.length < 8) {
-    registerError.value = "Password must be at least 8 characters long";
+    registerError.value = t("passwordShort");
     return false;
   }
 
@@ -53,7 +87,7 @@ async function registerSubmit(): Promise<boolean> {
     await authStore.login(registerPhoneNumber.value, registerPassword.value);
     return true;
   } catch (e) {
-    registerError.value = `Couldn't complete registration (${JSON.stringify((e as AxiosError)?.response?.data)})`;
+    registerError.value = `${t("couldntRegister")} (${JSON.stringify((e as AxiosError)?.response?.data)})`;
     return false;
   }
 }
@@ -84,7 +118,7 @@ useAuthentication((isAuthenticated) => {
                     : 'text-primary-content-light hover:bg-primary-active-light dark:text-primary-content-dark dark:hover:bg-primary-active-dark',
                 ]"
               >
-                Login
+                {{ t("login") }}
               </button></Tab
             >
 
@@ -97,7 +131,7 @@ useAuthentication((isAuthenticated) => {
                     : 'text-primary-content-light hover:bg-primary-active-light dark:text-primary-content-dark dark:hover:bg-primary-active-dark',
                 ]"
               >
-                Register
+                {{ t("register") }}
               </button></Tab
             >
           </TabList>
@@ -106,8 +140,10 @@ useAuthentication((isAuthenticated) => {
             <TabPanel>
               <form class="space-y-4" @submit.prevent="loginSubmit">
                 <div>
-                  <label for="phone_number" class="block text-sm/6 font-medium"
-                    >Phone number</label
+                  <label
+                    for="phone_number"
+                    class="block text-sm/6 font-medium"
+                    >{{ t("phoneNumber") }}</label
                   >
                   <TextField
                     class="mt-2"
@@ -119,9 +155,9 @@ useAuthentication((isAuthenticated) => {
                   />
                 </div>
                 <div>
-                  <label for="password" class="block text-sm/6 font-medium"
-                    >Password</label
-                  >
+                  <label for="password" class="block text-sm/6 font-medium">{{
+                    t("password")
+                  }}</label>
                   <PasswordTextField
                     class="mt-2"
                     v-model="loginPassword"
@@ -136,7 +172,7 @@ useAuthentication((isAuthenticated) => {
                 </div>
                 <div>
                   <PrimaryButton type="submit" class="w-full">
-                    Sign in
+                    {{ t("signIn") }}
                   </PrimaryButton>
                 </div>
               </form>
@@ -145,9 +181,9 @@ useAuthentication((isAuthenticated) => {
             <TabPanel>
               <form class="space-y-4" @submit.prevent="registerSubmit">
                 <div>
-                  <label for="name" class="block text-sm/6 font-medium"
-                    >Name</label
-                  >
+                  <label for="name" class="block text-sm/6 font-medium">{{
+                    t("name")
+                  }}</label>
                   <TextField
                     class="mt-2"
                     v-model="registerName"
@@ -158,8 +194,10 @@ useAuthentication((isAuthenticated) => {
                   />
                 </div>
                 <div>
-                  <label for="phone_number" class="block text-sm/6 font-medium"
-                    >Phone number</label
+                  <label
+                    for="phone_number"
+                    class="block text-sm/6 font-medium"
+                    >{{ t("phoneNumber") }}</label
                   >
                   <TextField
                     class="mt-2"
@@ -171,9 +209,9 @@ useAuthentication((isAuthenticated) => {
                   />
                 </div>
                 <div>
-                  <label for="password" class="block text-sm/6 font-medium"
-                    >Password</label
-                  >
+                  <label for="password" class="block text-sm/6 font-medium">{{
+                    t("password")
+                  }}</label>
                   <PasswordTextField
                     class="mt-2"
                     v-model="registerPassword"
@@ -185,7 +223,7 @@ useAuthentication((isAuthenticated) => {
                   <label
                     for="confirm-password"
                     class="block text-sm/6 font-medium"
-                    >Confirm password</label
+                    >{{ t("confirmPassword") }}</label
                   >
                   <PasswordTextField
                     class="mt-2"
@@ -204,7 +242,7 @@ useAuthentication((isAuthenticated) => {
                 </div>
                 <div>
                   <PrimaryButton type="submit" class="w-full">
-                    Sign up
+                    {{ t("signUp") }}
                   </PrimaryButton>
                 </div>
               </form>
