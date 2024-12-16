@@ -8,8 +8,32 @@ import { useAuthStore } from "@/stores/auth";
 import axios, { AxiosError } from "axios";
 import { storeToRefs } from "pinia";
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 
 // TODO: this could be a modal dialog
+
+const { t } = useI18n({
+  messages: {
+    en: {
+      changePassword: "Change password",
+      oldPassword: "Old password",
+      newPassword: "New password",
+      confirmNewPassword: "Confirm new password",
+      passwordsNotSame: "Passwords do not match",
+      passwordShort: "Password must be at least 8 characters long",
+      couldntChange: "Couldn't change the password",
+    },
+    ru: {
+      changePassword: "Сменить пароль",
+      oldPassword: "Старый пароль",
+      newPassword: "Новый пароль",
+      confirmNewPassword: "Подтвердите новый пароль",
+      passwordsNotSame: "Пароли не совпадают",
+      passwordShort: "Пароль должен состоять хотя бы из 8 символов",
+      couldntRegister: "Не получилось сменить пароль",
+    },
+  },
+});
 
 const authStore = useAuthStore();
 const { currentUser } = storeToRefs(authStore);
@@ -22,10 +46,10 @@ const error = ref("");
 
 async function changePassword(): Promise<boolean> {
   if (newPassword.value != newPasswordConfirm.value) {
-    error.value = "Passwords do not match";
+    error.value = t("passwordsNotSame");
     return false;
   } else if (newPassword.value.length < 8) {
-    error.value = "Password must be at least 8 characters long";
+    error.value = t("passwordShort");
     return false;
   }
 
@@ -38,7 +62,7 @@ async function changePassword(): Promise<boolean> {
     router.push("/profile");
     return true;
   } catch (e) {
-    error.value = `Couldn't change the password (${JSON.stringify((e as AxiosError)?.response?.data)})`;
+    error.value = `${t("couldntChange")} (${JSON.stringify((e as AxiosError)?.response?.data)})`;
     return false;
   }
 }
@@ -53,13 +77,13 @@ useAuthentication((isAuthenticated) => {
 <template>
   <main class="container mx-auto flex justify-center pt-2">
     <SurfaceCard class="flex flex-col items-center">
-      <h1 class="text-2xl font-bold">Change password</h1>
+      <h1 class="text-2xl font-bold">{{ t("changePassword") }}</h1>
       <span class="text-lg">{{ currentUser?.name }}</span>
       <form class="space-y-4" @submit.prevent="changePassword">
         <div>
-          <label for="old-password" class="block text-sm/6 font-medium"
-            >Old password</label
-          >
+          <label for="old-password" class="block text-sm/6 font-medium">{{
+            t("oldPassword")
+          }}</label>
           <PasswordTextField
             class="mt-2"
             v-model="oldPassword"
@@ -68,9 +92,9 @@ useAuthentication((isAuthenticated) => {
           />
         </div>
         <div>
-          <label for="password" class="block text-sm/6 font-medium"
-            >New password</label
-          >
+          <label for="password" class="block text-sm/6 font-medium">{{
+            t("newPassword")
+          }}</label>
           <PasswordTextField
             class="mt-2"
             v-model="newPassword"
@@ -79,9 +103,9 @@ useAuthentication((isAuthenticated) => {
           />
         </div>
         <div>
-          <label for="confirm-password" class="block text-sm/6 font-medium"
-            >Confirm new password</label
-          >
+          <label for="confirm-password" class="block text-sm/6 font-medium">{{
+            t("confirmNewPassword")
+          }}</label>
           <PasswordTextField
             class="mt-2"
             v-model="newPasswordConfirm"
@@ -95,9 +119,9 @@ useAuthentication((isAuthenticated) => {
           }}</span>
         </div>
         <div>
-          <PrimaryButton type="submit" class="w-full"
-            >Change password</PrimaryButton
-          >
+          <PrimaryButton type="submit" class="w-full">{{
+            t("changePassword")
+          }}</PrimaryButton>
         </div>
       </form>
     </SurfaceCard>

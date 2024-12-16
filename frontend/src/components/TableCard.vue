@@ -6,6 +6,7 @@ import {
   ChevronDownIcon,
 } from "@heroicons/vue/24/outline";
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/vue";
+import { useI18n } from "vue-i18n";
 
 export type TableCardSlot<T> =
   | {
@@ -32,6 +33,19 @@ export type Ordering = {
 export type Filtering = {
   [column: string]: number;
 };
+
+const { t } = useI18n({
+  messages: {
+    en: {
+      showingEntries: "Showing {amount} out of {total} entries",
+      any: "Any",
+    },
+    ru: {
+      showingEntries: "Отображается {amount} из {total} пунктов",
+      any: "Любой",
+    },
+  },
+});
 
 const props = defineProps<{
   columns: Column[];
@@ -119,8 +133,13 @@ const pageEntries = computed(() => {
     v-if="pagination !== undefined"
     class="flex flex-col items-center space-y-2 lg:flex-row lg:justify-between lg:space-y-0"
   >
-    <span
-      >Showing {{ rows?.length }} out of {{ pagination.count }} entries</span
+    <span>
+      {{
+        t("showingEntries", {
+          amount: rows?.length,
+          total: pagination.count,
+        })
+      }}</span
     >
     <div
       class="flex flex-row overflow-hidden rounded-lg bg-surface-light shadow-md dark:bg-surface-dark"
@@ -225,7 +244,7 @@ const pageEntries = computed(() => {
                           close();
                         "
                       >
-                        <span class="px-4">Any</span>
+                        <span class="px-4">{{ t("any") }}</span>
                       </button>
                       <button
                         v-for="[index, filter] in column.filtering.entries()"

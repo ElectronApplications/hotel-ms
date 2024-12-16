@@ -13,6 +13,34 @@ import { XMarkIcon } from "@heroicons/vue/24/outline";
 import axios from "axios";
 import { debounce } from "lodash";
 import { onMounted, ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n({
+  messages: {
+    en: {
+      hotelClients: "Hotel clients",
+      search: "Search",
+      name: "Name",
+      phoneNumber: "Phone number",
+      role: "Role",
+      profileImage: "Profile image",
+      clientName: "Client's name",
+      clientPhoneNumber: "Client's phone number",
+      createClient: "Create new client",
+    },
+    ru: {
+      hotelClients: "Клиенты отеля",
+      search: "Поиск",
+      name: "Имя",
+      phoneNumber: "Номер телефона",
+      role: "Роль",
+      profileImage: "Фотография пользователя",
+      clientName: "Имя клиента",
+      clientPhoneNumber: "Номер телефона клиента",
+      createClient: "Создать нового клиента",
+    },
+  },
+});
 
 const clients = ref<Pagination<Client>>();
 
@@ -108,11 +136,11 @@ onMounted(async () => {
     class="flex flex-col space-y-4 pb-4 lg:flex-row lg:space-x-4 lg:space-y-0"
   >
     <h1 class="text-center text-4xl font-extrabold lg:text-start">
-      Hotel clients
+      {{ t("hotelClients") }}
     </h1>
     <div class="basis-1/3 px-4 lg:px-0">
       <TextField
-        placeholder="Search"
+        :placeholder="t('search')"
         v-model="searchKey"
         @keyup.enter="fetchClients()"
       />
@@ -125,10 +153,10 @@ onMounted(async () => {
     v-model:currentPage="clientsPage"
     :columns="[
       { name: 'delete', display: '' },
-      { name: 'name', display: 'Name', ordering: true },
-      { name: 'phone', display: 'Phone number' },
-      { name: 'role', display: 'Role', filtering: clientRoles },
-      { name: 'image', display: 'Profile image' },
+      { name: 'name', display: t('name'), ordering: true },
+      { name: 'phone', display: t('phoneNumber') },
+      { name: 'role', display: t('role'), filtering: clientRoles },
+      { name: 'image', display: t('profileImage') },
     ]"
     :rows="clients?.results"
     :extraFormRow="{ formName: 'createClientForm', formSubmit: createClient }"
@@ -162,7 +190,7 @@ onMounted(async () => {
       </template>
       <div v-else class="inline-block w-[100px] lg:w-[250px]">
         <TextField
-          placeholder="Client's name"
+          :placeholder="t('clientName')"
           v-model="newClientName"
           form="createClientForm"
         />
@@ -183,7 +211,7 @@ onMounted(async () => {
       </template>
       <div v-else class="inline-block w-[100px] lg:w-[250px]">
         <TextField
-          placeholder="Client's phone number"
+          :placeholder="t('clientPhoneNumber')"
           v-model="newClientPhoneNumber"
           form="createClientForm"
         />
@@ -209,7 +237,7 @@ onMounted(async () => {
         form="createClientForm"
         type="submit"
         :enabled="newClientName !== '' && newClientPhoneNumber !== ''"
-        >Create new client</PrimaryButton
+        >{{ t("createClient") }}</PrimaryButton
       >
     </template>
   </TableCard>

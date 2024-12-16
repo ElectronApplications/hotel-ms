@@ -9,6 +9,26 @@ import type { Class, Room } from "@/types";
 import { XMarkIcon } from "@heroicons/vue/24/outline";
 import axios from "axios";
 import { computed, onMounted, ref, toRefs, watch } from "vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n({
+  messages: {
+    en: {
+      rooms: "Rooms",
+      roomNumber: "Room number",
+      places: "Places",
+      class: "Class",
+      createRoom: "Create new room",
+    },
+    ru: {
+      rooms: "Комнаты",
+      roomNumber: "Номер комнаты",
+      places: "Места",
+      class: "Класс",
+      createRoom: "Создать новую комнату",
+    },
+  },
+});
 
 const props = defineProps<{
   classes: Class[];
@@ -103,15 +123,15 @@ onMounted(async () => {
 
 <template>
   <h1 class="pb-2 pt-6 text-center text-4xl font-extrabold lg:text-start">
-    Rooms
+    {{ t("rooms") }}
   </h1>
   <TableCard
     v-model:ordering="roomsOrdering"
     :columns="[
       { name: 'delete', display: '' },
-      { name: 'room_number', display: 'Room number', ordering: true },
-      { name: 'places', display: 'Places', ordering: true },
-      { name: 'class', display: 'Class' },
+      { name: 'room_number', display: t('roomNumber'), ordering: true },
+      { name: 'places', display: t('places'), ordering: true },
+      { name: 'class', display: t('class') },
       { name: 'submit', display: '' },
     ]"
     :rows="rooms"
@@ -119,7 +139,7 @@ onMounted(async () => {
   >
     <template #delete="item">
       <button
-      v-if="!item.isFormRow"
+        v-if="!item.isFormRow"
         class="rounded-md bg-red-500 p-[4px]"
         @click="deleteRoom(item.data)"
       >
@@ -175,7 +195,7 @@ onMounted(async () => {
         form="createRoomForm"
         type="submit"
         :enabled="newRoomClass !== undefined"
-        >Create new room</PrimaryButton
+        >{{ t("createRoom") }}</PrimaryButton
       >
     </template>
   </TableCard>

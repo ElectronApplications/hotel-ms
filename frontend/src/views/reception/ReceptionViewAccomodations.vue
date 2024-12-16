@@ -7,8 +7,38 @@ import TextField from "@/components/TextField.vue";
 import type { Room, Accomodation, Class, Pagination, Client } from "@/types";
 import axios from "axios";
 import { computed, onMounted, ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
 
 const CURRENCY_SYMBOL = import.meta.env.VITE_CURRENCY_SYMBOL;
+
+const { t } = useI18n({
+  messages: {
+    en: {
+      accomodations: "Accomodations",
+      roomNumber: "Room number",
+      moveInTime: "Move in time",
+      moveOutTime: "Move out time",
+      client: "Client",
+      price: "Price",
+      checkedOut: "Checked out",
+      paid: "Paid",
+      noneFound: "None found",
+      createAccomodation: "Create new accomodation",
+    },
+    ru: {
+      accomodations: "Проживание",
+      roomNumber: "Номер комнаты",
+      moveInTime: "Время въезда",
+      moveOutTime: "Время выезда",
+      client: "Клиент",
+      price: "Стоимость",
+      checkedOut: "Выехали",
+      paid: "Оплатили",
+      noneFound: "Не найдено",
+      createAccomodation: "Создать новое проживание",
+    },
+  },
+});
 
 const accomodations = ref<Accomodation[]>([]);
 
@@ -126,13 +156,13 @@ onMounted(async () => {
   </h1>
   <TableCard
     :columns="[
-      { name: 'room__room_number', display: 'Room number' },
-      { name: 'move_in_time', display: 'Move in time' },
-      { name: 'move_out_time', display: 'Move out time' },
-      { name: 'client__phone_number', display: 'Client' },
-      { name: 'price_to_pay', display: 'Price' },
-      { name: 'checked_out', display: 'Checked out' },
-      { name: 'was_price_paid', display: 'Paid' },
+      { name: 'room__room_number', display: t('roomNumber') },
+      { name: 'move_in_time', display: t('moveInTime') },
+      { name: 'move_out_time', display: t('moveOutTime') },
+      { name: 'client__phone_number', display: t('client') },
+      { name: 'price_to_pay', display: t('price') },
+      { name: 'checked_out', display: t('checkedOut') },
+      { name: 'was_price_paid', display: t('paid') },
       { name: 'submit', display: '' },
     ]"
     :rows="accomodations"
@@ -173,7 +203,7 @@ onMounted(async () => {
       </span>
       <div v-else>
         <TextField v-model="newAccomodationClientSearch" />
-        {{ newAccomodationClient?.phone_number ?? "None found" }}
+        {{ newAccomodationClient?.phone_number ?? t("noneFound") }}
       </div>
     </template>
 
@@ -212,7 +242,7 @@ onMounted(async () => {
           !isNaN(priceToPay) &&
           newAccomodationClient !== undefined
         "
-        >Create new accomodation</PrimaryButton
+        >{{ t("createAccomodation") }}</PrimaryButton
       >
     </template>
   </TableCard>

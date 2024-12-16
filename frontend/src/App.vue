@@ -7,8 +7,50 @@ import { computed, ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { storeToRefs } from "pinia";
 import PrimaryButton from "@/components/PrimaryButton.vue";
+import { useI18n } from "vue-i18n";
+import { useLocale, type LocaleType } from "@/stores/locale";
+import SelectListDynamic from "./components/SelectListDynamic.vue";
 
 const BRAND_HOTEL_NAME = import.meta.env.VITE_BRAND_HOTEL_NAME;
+
+const { t } = useI18n({
+  messages: {
+    en: {
+      browserLanguage: "Browser language",
+      reception: "Reception",
+      service: "Service",
+      cleaning: "Cleaning",
+      planning: "Planning",
+      admin: "Admin",
+      book: "Book",
+      profile: "Profile",
+      login: "Login",
+      closeMenu: "Close menu",
+    },
+    ru: {
+      browserLanguage: "Язык браузера",
+      reception: "Ресепшен",
+      service: "Услуги",
+      cleaning: "Уборка",
+      planning: "Планировка",
+      admin: "Админ",
+      book: "Бронирование",
+      profile: "Профиль",
+      login: "Вход",
+      closeMenu: "Закрыть меню",
+    },
+  },
+});
+
+const locale = useLocale();
+const { currentLocale } = storeToRefs(locale);
+
+const localesText = computed(() => [
+  t("browserLanguage"),
+  "English",
+  "Русский",
+]);
+const localesMap: (LocaleType | undefined)[] = [undefined, "en", "ru"];
 
 const authStore = useAuthStore();
 const { currentUser } = storeToRefs(authStore);
@@ -18,45 +60,45 @@ const mobileMenuOpen = ref(false);
 const topEntries = computed(() => {
   return [
     {
-      name: "Reception",
+      name: t("reception"),
       path: "/management/reception",
       enabled:
         currentUser.value?.role === "reception" ||
         currentUser.value?.role === "admin",
     },
     {
-      name: "Service",
+      name: t("service"),
       path: "/management/service",
       enabled:
         currentUser.value?.role === "service" ||
         currentUser.value?.role === "admin",
     },
     {
-      name: "Cleaning",
+      name: t("cleaning"),
       path: "/management/cleaning",
       enabled:
         currentUser.value?.role === "cleaning" ||
         currentUser.value?.role === "admin",
     },
     {
-      name: "Planning",
+      name: t("planning"),
       path: "/management/planning",
       enabled:
         currentUser.value?.role === "planning" ||
         currentUser.value?.role === "admin",
     },
     {
-      name: "Admin",
+      name: t("admin"),
       path: "/management/admin",
       enabled: currentUser.value?.role === "admin",
     },
     {
-      name: "Book",
+      name: t("book"),
       path: "/book",
       enabled: currentUser.value !== undefined,
     },
     {
-      name: "Profile",
+      name: t("profile"),
       path: "/profile",
       enabled: currentUser.value != undefined,
     },
@@ -69,10 +111,18 @@ const topEntries = computed(() => {
     <nav
       class="container mx-auto flex flex-row items-center justify-between p-4 text-sm"
     >
-      <RouterLink to="/" class="flex flex-row items-center">
-        <BrandIcon class="size-[32px] pe-2" />
-        <span class="font-extrabold">{{ BRAND_HOTEL_NAME }}</span>
-      </RouterLink>
+      <div class="flex flex-row space-x-4">
+        <RouterLink to="/" class="flex flex-row items-center">
+          <BrandIcon class="size-[32px] pe-2" />
+          <span class="font-extrabold">{{ BRAND_HOTEL_NAME }}</span>
+        </RouterLink>
+
+        <SelectListDynamic
+          :options="localesText"
+          :selected="localesMap.indexOf(currentLocale)"
+          @updateSelection="(value) => locale.setLocale(localesMap[value])"
+        />
+      </div>
 
       <button class="block lg:hidden" @click="mobileMenuOpen = true">
         <span class="sr-only">Open menu</span>
@@ -88,7 +138,9 @@ const topEntries = computed(() => {
           >{{ entry.name }}</RouterLink
         >
         <RouterLink v-if="currentUser === undefined" to="/login"
-          ><PrimaryButton class="px-8 py-3">Login</PrimaryButton></RouterLink
+          ><PrimaryButton class="px-8 py-3">{{
+            t("login")
+          }}</PrimaryButton></RouterLink
         >
       </div>
 
@@ -117,7 +169,7 @@ const topEntries = computed(() => {
               class="-m-2.5 rounded-md p-2.5 text-gray-700"
               @click="mobileMenuOpen = false"
             >
-              <span class="sr-only">Close menu</span>
+              <span class="sr-only">{{ t("closeMenu") }}</span>
               <XMarkIcon class="h-6 w-6 dark:text-white" aria-hidden="true" />
             </button>
           </div>
@@ -134,7 +186,7 @@ const topEntries = computed(() => {
               v-if="currentUser === undefined"
               to="/login"
               @click="mobileMenuOpen = false"
-              >Login</RouterLink
+              >{{ t("login") }}</RouterLink
             >
           </div>
         </DialogPanel>

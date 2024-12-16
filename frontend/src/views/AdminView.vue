@@ -22,6 +22,36 @@ import TableCard, {
   type Filtering,
   type Ordering,
 } from "@/components/TableCard.vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n({
+  messages: {
+    en: {
+      hotelClients: "Hotel clients",
+      search: "Search",
+      name: "Name",
+      phoneNumber: "Phone number",
+      role: "Role",
+      profileImage: "Profile image",
+      clientName: "Client's name",
+      clientPhoneNumber: "Client's phone number",
+      createClient: "Create new client",
+      djangoAdmin: "Django admin page",
+    },
+    ru: {
+      hotelClients: "Клиенты отеля",
+      search: "Поиск",
+      name: "Имя",
+      phoneNumber: "Номер телефона",
+      role: "Роль",
+      profileImage: "Фотография пользователя",
+      clientName: "Имя клиента",
+      clientPhoneNumber: "Номер телефона клиента",
+      createClient: "Создать нового клиента",
+      djangoAdmin: "Админка django",
+    },
+  },
+});
 
 const clients = ref<Pagination<Client>>();
 
@@ -144,11 +174,11 @@ useUserRole((role) => {
       class="flex flex-col space-y-4 pb-4 lg:flex-row lg:space-x-4 lg:space-y-0"
     >
       <h1 class="text-center text-4xl font-extrabold lg:text-start">
-        Hotel clients
+        {{ t("hotelClients") }}
       </h1>
       <div class="basis-1/3 px-4 lg:px-0">
         <TextField
-          placeholder="Search"
+          :placeholder="t('search')"
           v-model="searchKey"
           @keyup.enter="fetchClients()"
         />
@@ -161,10 +191,10 @@ useUserRole((role) => {
       v-model:currentPage="clientsPage"
       :columns="[
         { name: 'delete', display: '' },
-        { name: 'name', display: 'Name', ordering: true },
-        { name: 'phone', display: 'Phone number' },
-        { name: 'role', display: 'Role', filtering: clientRoles },
-        { name: 'image', display: 'Profile image' },
+        { name: 'name', display: t('name'), ordering: true },
+        { name: 'phone', display: t('phoneNumber') },
+        { name: 'role', display: t('role'), filtering: clientRoles },
+        { name: 'image', display: t('profileImage') },
       ]"
       :rows="clients?.results"
       :extraFormRow="{ formName: 'createClientForm', formSubmit: createClient }"
@@ -198,7 +228,7 @@ useUserRole((role) => {
         </template>
         <div v-else class="inline-block w-[100px] lg:w-[250px]">
           <TextField
-            placeholder="Client's name"
+            :placeholder="t('clientName')"
             v-model="newClientName"
             form="createClientForm"
           />
@@ -219,7 +249,7 @@ useUserRole((role) => {
         </template>
         <div v-else class="inline-block w-[100px] lg:w-[250px]">
           <TextField
-            placeholder="Client's phone number"
+            :placeholder="t('clientPhoneNumber')"
             v-model="newClientPhoneNumber"
             form="createClientForm"
           />
@@ -261,7 +291,7 @@ useUserRole((role) => {
           form="createClientForm"
           type="submit"
           :enabled="newClientName !== '' && newClientPhoneNumber !== ''"
-          >Create new client</PrimaryButton
+          >{{ t("createClient") }}</PrimaryButton
         >
       </template>
     </TableCard>
@@ -269,8 +299,8 @@ useUserRole((role) => {
     <div class="mt-4">
       <a
         href="/admin"
-        class="text-link-light dark:text-link-dark font-bold underline"
-        >Django admin page</a
+        class="font-bold text-link-light underline dark:text-link-dark"
+        >{{ t("djangoAdmin") }}</a
       >
     </div>
   </main>

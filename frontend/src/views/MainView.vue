@@ -9,10 +9,32 @@ import { TransitionRoot } from "@headlessui/vue";
 import axios from "axios";
 import { storeToRefs } from "pinia";
 import { computed, onBeforeMount, ref } from "vue";
+import { useI18n } from "vue-i18n";
 import { RouterLink } from "vue-router";
 
 const BRAND_HOTEL_NAME = import.meta.env.VITE_BRAND_HOTEL_NAME;
 const CURRENCY_SYMBOL = import.meta.env.VITE_CURRENCY_SYMBOL;
+
+const { t } = useI18n({
+  messages: {
+    en: {
+      welcome: "Welcome to the {hotelName}",
+      totalRooms:
+        "We have a total of {roomsAmount} rooms with varied levels of service and comfort",
+      bookNow: "Book now",
+      places: "no places | {n} place | {n} places",
+      startingAt: "Starting at {price}",
+    },
+    ru: {
+      welcome: "Добро пожаловать в {hotelName}",
+      totalRooms:
+        "Мы распоряжаем в общей мере {roomsAmount} комнатами с разными уровнями комфорта и услуг",
+      bookNow: "Сделать бронь",
+      places: "нет мест | {n} место | {n} места | {n} мест",
+      startingAt: "От {price}",
+    },
+  },
+});
 
 const rooms = ref<Room[]>([]);
 const classes = ref<Class[]>([]);
@@ -46,23 +68,25 @@ onBeforeMount(async () => {
     <div class="flex flex-row flex-wrap gap-y-4 px-2 pt-[60px]">
       <div class="flex basis-full flex-col lg:basis-1/3">
         <h1 class="text-center text-6xl font-extrabold lg:text-left">
-          Welcome to the {{ BRAND_HOTEL_NAME }}!
+          {{ t("welcome", { hotelName: BRAND_HOTEL_NAME }) }}
         </h1>
         <h2
           class="pt-6 text-center text-2xl font-semibold text-secondary-active-light lg:text-left"
         >
-          We have a total of
-          <span
-            class="text-primary-active-light dark:text-primary-active-dark"
-            >{{ rooms.length }}</span
-          >
-          rooms with varied levels of service and comfort
+          <i18n-t keypath="totalRooms">
+            <template #roomsAmount>
+              <span
+                class="text-primary-active-light dark:text-primary-active-dark"
+                >{{ rooms.length }}</span
+              >
+            </template>
+          </i18n-t>
         </h2>
         <div class="pt-6">
           <RouterLink :to="currentUser === undefined ? '/login' : '/book'">
-            <PrimaryButton class="w-full py-4 lg:w-fit lg:px-8"
-              >Book now</PrimaryButton
-            >
+            <PrimaryButton class="w-full py-4 lg:w-fit lg:px-8">{{
+              t("bookNow")
+            }}</PrimaryButton>
           </RouterLink>
         </div>
       </div>
@@ -106,18 +130,22 @@ onBeforeMount(async () => {
             />
 
             <div class="pt-2 text-2xl">
-              {{ room.class_info.class_description }} - {{ room.places }} places
+              {{ room.class_info.class_description }} -
+              {{ t("places", room.places) }}
             </div>
 
             <div>
-              Starting at {{ room.class_info.place_price * room.places }}
-              {{ CURRENCY_SYMBOL }}
+              {{
+                t("startingAt", {
+                  price: `${room.class_info.place_price * room.places} ${CURRENCY_SYMBOL}`,
+                })
+              }}
             </div>
 
             <RouterLink :to="currentUser === undefined ? '/login' : '/book'">
               <span
-                class="text-link-light dark:text-link-darkfont-bold underline"
-                >Book now</span
+                class="dark:text-link-darkfont-bold text-link-light underline"
+                >{{ t("bookNow") }}</span
               >
             </RouterLink>
           </div>

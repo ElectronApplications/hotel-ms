@@ -8,7 +8,21 @@ import { CheckIcon, XMarkIcon } from "@heroicons/vue/24/outline";
 import axios from "axios";
 import { storeToRefs } from "pinia";
 import { computed, onMounted, ref, useTemplateRef } from "vue";
+import { useI18n } from "vue-i18n";
 import { useRoute } from "vue-router";
+
+const { t } = useI18n({
+  messages: {
+    en: {
+      gallery: "Gallery {id}",
+      uploadImages: "Upload images",
+    },
+    ru: {
+      gallery: "Галерея {id}",
+      uploadImages: "Загрузить фотографии",
+    },
+  },
+});
 
 const authStore = useAuthStore();
 const { currentUser } = storeToRefs(authStore);
@@ -77,7 +91,7 @@ onMounted(() => {
 <template>
   <main class="container mx-auto pt-4">
     <span class="text-center text-2xl font-bold lg:text-start">
-      Gallery {{ galleryId }}
+      {{ t("gallery", { id: galleryId }) }}
     </span>
     <div v-if="gallery !== undefined" class="pt-2">
       <div v-if="canEdit" class="flex flex-row items-center space-x-2">
@@ -120,9 +134,9 @@ onMounted(() => {
         class="flex flex-col items-center space-y-1 pt-4"
         @submit.prevent="uploadImages"
       >
-        <label class="block text-sm font-semibold" for="pictures"
-          >Upload images</label
-        >
+        <label class="block text-sm font-semibold" for="pictures">{{
+          t("uploadImages")
+        }}</label>
         <div class="flex flex-row items-center justify-start space-x-1">
           <input
             class="w-[250px] cursor-pointer rounded-lg bg-secondary-light text-sm font-medium text-secondary-content-light file:border-0 file:bg-primary-light file:px-4 file:py-2 file:text-primary-content-light file:duration-100 file:hover:bg-primary-active-light dark:bg-secondary-dark dark:text-secondary-content-dark dark:file:bg-primary-dark dark:file:text-primary-content-dark dark:file:hover:bg-primary-active-dark"
