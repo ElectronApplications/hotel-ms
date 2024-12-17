@@ -36,13 +36,13 @@ function switchImage(value: number) {
       class="absolute left-2 top-1/2 -translate-y-1/2"
       @click="switchImage(-1)"
     >
-      <ChevronLeftIcon class="w-[32px] text-white shadow-lg" />
+      <ChevronLeftIcon class="w-[32px] text-white drop-shadow-lg" />
     </button>
     <button
       class="absolute right-2 top-1/2 -translate-y-1/2"
       @click="switchImage(+1)"
     >
-      <ChevronRightIcon class="w-[32px] text-white shadow-lg" />
+      <ChevronRightIcon class="w-[32px] text-white drop-shadow-lg" />
     </button>
   </div>
 </template>
