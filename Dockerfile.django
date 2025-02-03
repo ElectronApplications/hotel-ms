@@ -1,6 +1,7 @@
 FROM python
 
 ENV PYTHONBUFFERED 1
+ENV DJANGO_SETTINGS_MODULE local_settings
 
 WORKDIR /app
 COPY backend/. /app/.
@@ -13,4 +14,4 @@ EXPOSE 8000
 CMD python manage.py collectstatic --noinput --settings local_settings \
     && python manage.py migrate --settings local_settings \
     && python manage.py init_superuser --settings local_settings --phone_number ${DJANGO_SUPERUSER_PHONE_NUMBER} --password ${DJANGO_SUPERUSER_PASSWORD} \
-    && python manage.py runserver 0.0.0.0:8000 --settings local_settings
+    && gunicorn --bind 0.0.0.0:8000 app.wsgi
