@@ -53,7 +53,7 @@ export const useAuthStore = defineStore("auth", () => {
     if (await updateTokens()) {
       try {
         currentUser.value = (await axios.get("/api/user/self/")).data;
-      } catch(_) {
+      } catch (_) {
         // TODO: actual error checking
         refresh.value = undefined;
         access.value = undefined;

@@ -43,30 +43,17 @@ function updateValue() {
 <template>
   <div v-show="!editing" class="flex flex-row items-center" v-bind="$attrs">
     <component :is="as" :class="textClass">{{ text }}</component>
-    <button
-      @click="
-        editing = true;
-        inputFocus();
-      "
-      class="px-2"
-    >
+    <button @click="
+      editing = true;
+    inputFocus();
+    " class="px-2">
       <PencilIcon class="h-4 w-4" />
     </button>
   </div>
   <div v-if="editing">
-    <form
-      class="flex flex-row items-center"
-      @submit.prevent="updateValue"
-      v-bind="$attrs"
-    >
-      <input
-        type="text"
-        ref="inputRef"
-        @blur="inputFocus"
-        class="w-[250px] bg-inherit outline-none"
-        :class="textClass"
-        v-model="editingText"
-      />
+    <form class="flex flex-row items-center" @submit.prevent="updateValue" v-bind="$attrs">
+      <input type="text" ref="inputRef" @blur="inputFocus" class="w-[250px] bg-inherit outline-none" :class="textClass"
+        v-model="editingText" />
       <button type="submit">
         <CheckIcon class="h-8 w-8" />
       </button>

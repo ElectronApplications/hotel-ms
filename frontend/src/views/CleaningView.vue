@@ -96,20 +96,15 @@ useUserRole((role) => {
     <h1 class="pb-2 pt-6 text-center text-4xl font-extrabold lg:text-start">
       {{ t("rooms") }}
     </h1>
-    <TableCard
-      v-model:ordering="roomsOrdering"
-      v-model:filtering="roomsFiltering"
-      :columns="[
-        { name: 'room_number', display: t('roomNumber'), ordering: true },
-        {
-          name: 'room_class',
-          display: t('class'),
-          filtering: classDescriptions,
-        },
-        { name: 'status', display: t('status') },
-      ]"
-      :rows="rooms"
-    >
+    <TableCard v-model:ordering="roomsOrdering" v-model:filtering="roomsFiltering" :columns="[
+      { name: 'room_number', display: t('roomNumber'), ordering: true },
+      {
+        name: 'room_class',
+        display: t('class'),
+        filtering: classDescriptions,
+      },
+      { name: 'status', display: t('status') },
+    ]" :rows="rooms">
       <template #room_number="item">
         <span v-if="!item.isFormRow">{{ item.data.room_number }}</span>
       </template>
@@ -121,13 +116,13 @@ useUserRole((role) => {
       <template #room_class="item">
         <span v-if="!item.isFormRow">{{
           classes.find((x) => x.id == item.data.room_class)?.class_description
-        }}</span>
+          }}</span>
       </template>
 
       <template #status="item">
         <PrimaryButton v-if="!item.isFormRow" @click="freeRoom(item.data)">{{
           t("setFree")
-        }}</PrimaryButton>
+          }}</PrimaryButton>
       </template>
     </TableCard>
   </main>

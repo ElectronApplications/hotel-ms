@@ -79,22 +79,12 @@ useAuthentication((isAuthenticated) => {
     <h1 class="text-center text-4xl font-extrabold lg:text-start">
       {{ t("profileInformation") }}
     </h1>
-    <SurfaceCard
-      class="mt-4 flex flex-col items-center lg:flex-row lg:items-start"
-    >
-      <ExpandableImage
-        imgClass="rounded-full w-[250px] h-[250px] object-cover"
-        :src="currentUser?.picture ?? DefaultProfileImage"
-        :alt="currentUser?.name"
-      />
+    <SurfaceCard class="mt-4 flex flex-col items-center lg:flex-row lg:items-start">
+      <ExpandableImage imgClass="rounded-full w-[250px] h-[250px] object-cover"
+        :src="currentUser?.picture ?? DefaultProfileImage" :alt="currentUser?.name" />
       <div class="flex flex-col ps-0 pt-4 text-center lg:ps-8 lg:text-start">
-        <EditableLabel
-          class="justify-center lg:justify-start"
-          @updateText="changeName"
-          as="h2"
-          :text="currentUser?.name ?? ''"
-          textClass="text-4xl font-extrabold"
-        />
+        <EditableLabel class="justify-center lg:justify-start" @updateText="changeName" as="h2"
+          :text="currentUser?.name ?? ''" textClass="text-4xl font-extrabold" />
 
         <h2 class="pt-2 text-xl font-semibold">
           {{ currentUser?.phone_number }}
@@ -106,16 +96,11 @@ useAuthentication((isAuthenticated) => {
         <form class="space-y-1 pt-4" @submit.prevent="changeProfilePicture">
           <label class="block text-sm font-semibold" for="picture">{{
             t("uploadProfilePicture")
-          }}</label>
-          <div
-            class="flex flex-row items-center justify-center space-x-1 lg:justify-start"
-          >
+            }}</label>
+          <div class="flex flex-row items-center justify-center space-x-1 lg:justify-start">
             <input
               class="w-[250px] cursor-pointer rounded-lg bg-secondary-light text-sm font-medium text-secondary-content-light file:border-0 file:bg-primary-light file:px-4 file:py-2 file:text-primary-content-light file:duration-100 file:hover:bg-primary-active-light dark:bg-secondary-dark dark:text-secondary-content-dark dark:file:bg-primary-dark dark:file:text-primary-content-dark dark:file:hover:bg-primary-active-dark"
-              type="file"
-              name="picture"
-              ref="pictureRef"
-            />
+              type="file" name="picture" ref="pictureRef" />
             <button type="submit">
               <CheckIcon class="h-6 w-6" />
             </button>
@@ -126,11 +111,11 @@ useAuthentication((isAuthenticated) => {
         <div class="flex flex-col gap-2">
           <SecondaryButton class="w-[250px]" @click="authStore.logout">{{
             t("logout")
-          }}</SecondaryButton>
+            }}</SecondaryButton>
           <RouterLink to="/change-password">
             <SecondaryButton class="w-[250px]">{{
               t("changePassword")
-            }}</SecondaryButton>
+              }}</SecondaryButton>
           </RouterLink>
         </div>
       </div>

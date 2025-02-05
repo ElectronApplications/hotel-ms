@@ -170,119 +170,67 @@ onMounted(async () => {
 </script>
 
 <template>
-  <PlanningViewGalleryDialog
-    :open="createGalleryService !== undefined"
-    @close="createGalleryService = undefined"
-    @createGallery="(value) => createGallery(value)"
-  />
+  <PlanningViewGalleryDialog :open="createGalleryService !== undefined" @close="createGalleryService = undefined"
+    @createGallery="(value) => createGallery(value)" />
 
   <h1 class="pb-2 pt-6 text-center text-4xl font-extrabold lg:text-start">
     {{ t("services") }}
   </h1>
-  <TableCard
-    v-model:ordering="servcesOrdering"
-    :columns="[
-      { name: 'delete', display: '' },
-      {
-        name: 'service_description',
-        display: t('serviceDescription'),
-        ordering: true,
-      },
-      { name: 'service_price', display: t('servicePrice'), ordering: true },
-      { name: 'classes', display: t('classes') },
-      { name: 'gallery', display: t('gallery') },
-      { name: 'submit', display: '' },
-    ]"
-    :rows="services"
-    :extraFormRow="{ formName: 'createServiceForm', formSubmit: createService }"
-  >
+  <TableCard v-model:ordering="servcesOrdering" :columns="[
+    { name: 'delete', display: '' },
+    {
+      name: 'service_description',
+      display: t('serviceDescription'),
+      ordering: true,
+    },
+    { name: 'service_price', display: t('servicePrice'), ordering: true },
+    { name: 'classes', display: t('classes') },
+    { name: 'gallery', display: t('gallery') },
+    { name: 'submit', display: '' },
+  ]" :rows="services" :extraFormRow="{ formName: 'createServiceForm', formSubmit: createService }">
     <template #delete="item">
-      <button
-        v-if="!item.isFormRow"
-        class="rounded-md bg-red-500 p-[4px]"
-        @click="deleteService(item.data)"
-      >
+      <button v-if="!item.isFormRow" class="rounded-md bg-red-500 p-[4px]" @click="deleteService(item.data)">
         <XMarkIcon class="h-[24px] w-[24px] text-white" />
       </button>
     </template>
 
     <template #service_description="item">
-      <EditableLabel
-        v-if="!item.isFormRow"
-        class="justify-center"
-        :text="item.data.service_description"
-        @updateText="(value) => changeServiceDescription(item.data, value)"
-      />
+      <EditableLabel v-if="!item.isFormRow" class="justify-center" :text="item.data.service_description"
+        @updateText="(value) => changeServiceDescription(item.data, value)" />
       <div v-else class="inline-block w-[100px] lg:w-[250px]">
-        <TextField
-          :placeholder="t('serviceDescription')"
-          v-model="newServiceDescription"
-          form="createServiceForm"
-        />
+        <TextField :placeholder="t('serviceDescription')" v-model="newServiceDescription" form="createServiceForm" />
       </div>
     </template>
 
     <template #service_price="item">
       <div v-if="!item.isFormRow">
-        <EditableLabel
-          class="justify-center"
-          :text="item.data.service_price.toString()"
-          @updateText="(value) => changeServicePrice(item.data, value)"
-        />
+        <EditableLabel class="justify-center" :text="item.data.service_price.toString()"
+          @updateText="(value) => changeServicePrice(item.data, value)" />
         {{ CURRENCY_SYMBOL }}
       </div>
       <div v-else class="inline-block w-[100px] lg:w-[250px]">
-        <TextField
-          :placeholder="t('servicePrice')"
-          v-model="newServicePrice"
-          form="createServiceForm"
-        />
+        <TextField :placeholder="t('servicePrice')" v-model="newServicePrice" form="createServiceForm" />
       </div>
     </template>
 
     <template #classes="item">
-      <SelectMultiDynamic
-        v-if="!item.isFormRow"
-        :options="classDescriptions"
-        :selected="
-          item.data.classes.map((x) => classes.findIndex((y) => y.id == x))
-        "
-        :placeholder="t('selectClasses')"
-        @updateSelections="(value) => changeServiceClasses(item.data, value)"
-      />
-      <SelectMulti
-        v-else
-        v-model="newServiceClasses"
-        :options="classDescriptions"
-        :placeholder="t('selectClasses')"
-      />
+      <SelectMultiDynamic v-if="!item.isFormRow" :options="classDescriptions" :selected="item.data.classes.map((x) => classes.findIndex((y) => y.id == x))
+        " :placeholder="t('selectClasses')" @updateSelections="(value) => changeServiceClasses(item.data, value)" />
+      <SelectMulti v-else v-model="newServiceClasses" :options="classDescriptions" :placeholder="t('selectClasses')" />
     </template>
 
     <template #gallery="item">
-      <div
-        v-if="!item.isFormRow"
-        class="flex flex-col items-center justify-center space-x-2 lg:flex-row"
-      >
-        <SelectListDynamic
-          :blankOption="true"
-          :options="galleryNames"
-          :selected="galleries.findIndex((x) => x.id == item.data.gallery?.id)"
-          @updateSelection="
-            (value) =>
+      <div v-if="!item.isFormRow" class="flex flex-col items-center justify-center space-x-2 lg:flex-row">
+        <SelectListDynamic :blankOption="true" :options="galleryNames"
+          :selected="galleries.findIndex((x) => x.id == item.data.gallery?.id)" @updateSelection="(value) =>
               changeServiceGallery(
                 item.data,
                 value === undefined ? undefined : galleries[value].id,
               )
-          "
-        />
-        <div
-          class="flex flex-col text-nowrap font-bold text-link-light underline lg:items-start dark:text-link-dark"
-        >
-          <RouterLink
-            v-if="item.data.gallery !== null"
-            :to="`/gallery/${item.data.gallery.id}`"
-            >{{ t("editGallery") }}</RouterLink
-          >
+            " />
+        <div class="flex flex-col text-nowrap font-bold text-link-light underline lg:items-start dark:text-link-dark">
+          <RouterLink v-if="item.data.gallery !== null" :to="`/gallery/${item.data.gallery.id}`">{{ t("editGallery") }}
+          </RouterLink>
           <button @click="createGalleryService = item.data">
             {{ t("createGallery") }}
           </button>
@@ -291,17 +239,10 @@ onMounted(async () => {
     </template>
 
     <template #submit="item">
-      <PrimaryButton
-        v-if="item.isFormRow"
-        form="createServiceForm"
-        type="submit"
-        :enabled="
-          newServiceDescription !== '' &&
-          newServicePrice !== '' &&
-          newServiceClasses.length !== 0
-        "
-        >{{ t("createService") }}</PrimaryButton
-      >
+      <PrimaryButton v-if="item.isFormRow" form="createServiceForm" type="submit" :enabled="newServiceDescription !== '' &&
+        newServicePrice !== '' &&
+        newServiceClasses.length !== 0
+        ">{{ t("createService") }}</PrimaryButton>
     </template>
   </TableCard>
 </template>

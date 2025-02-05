@@ -37,11 +37,7 @@ useUserRole((role) => {
 <template>
   <main class="container mx-auto pt-4">
     <PlanningViewClasses v-model="classes" :galleries="galleries" />
-    <PlanningViewServices
-      v-model="services"
-      :classes="classes"
-      :galleries="galleries"
-    />
+    <PlanningViewServices v-model="services" :classes="classes" :galleries="galleries" />
     <PlanningViewRooms v-model="rooms" :classes="classes" />
   </main>
 </template>

@@ -97,7 +97,7 @@ watch(newAccomodationClientSearch, async (value) => {
 });
 const newAccomodationClient = computed(() =>
   newAccomodationClients.value !== undefined &&
-  newAccomodationClients.value.count !== 0
+    newAccomodationClients.value.count !== 0
     ? newAccomodationClients.value.results[0]
     : undefined,
 );
@@ -154,46 +154,37 @@ onMounted(async () => {
   <h1 class="pt-6 text-center text-4xl font-extrabold lg:text-start">
     Accomodations
   </h1>
-  <TableCard
-    :columns="[
-      { name: 'room__room_number', display: t('roomNumber') },
-      { name: 'move_in_time', display: t('moveInTime') },
-      { name: 'move_out_time', display: t('moveOutTime') },
-      { name: 'client__phone_number', display: t('client') },
-      { name: 'price_to_pay', display: t('price') },
-      { name: 'checked_out', display: t('checkedOut') },
-      { name: 'was_price_paid', display: t('paid') },
-      { name: 'submit', display: '' },
-    ]"
-    :rows="accomodations"
-    :extraFormRow="{
+  <TableCard :columns="[
+    { name: 'room__room_number', display: t('roomNumber') },
+    { name: 'move_in_time', display: t('moveInTime') },
+    { name: 'move_out_time', display: t('moveOutTime') },
+    { name: 'client__phone_number', display: t('client') },
+    { name: 'price_to_pay', display: t('price') },
+    { name: 'checked_out', display: t('checkedOut') },
+    { name: 'was_price_paid', display: t('paid') },
+    { name: 'submit', display: '' },
+  ]" :rows="accomodations" :extraFormRow="{
       formName: 'createAccomodationForm',
       formSubmit: createAccomodation,
-    }"
-  >
+    }">
     <template #room__room_number="item">
       <span v-if="!item.isFormRow">
         {{ item.data.room.room_number }}
       </span>
-      <SelectList
-        v-else
-        v-model="newAccomodationRoom"
-        :options="roomNumbers"
-        :defaultOption="0"
-      />
+      <SelectList v-else v-model="newAccomodationRoom" :options="roomNumbers" :defaultOption="0" />
     </template>
 
     <template #move_in_time="item">
       <span v-if="!item.isFormRow">{{
         new Date(item.data.move_in_time).toUTCString()
-      }}</span>
+        }}</span>
       <input v-else type="datetime-local" v-model="newAccomodationMoveIn" />
     </template>
 
     <template #move_out_time="item">
       <span v-if="!item.isFormRow">{{
         new Date(item.data.move_out_time).toUTCString()
-      }}</span>
+        }}</span>
       <input v-else type="datetime-local" v-model="newAccomodationMoveOut" />
     </template>
 
@@ -211,39 +202,25 @@ onMounted(async () => {
       <span v-if="!item.isFormRow">
         {{ item.data.price_to_pay }} {{ CURRENCY_SYMBOL }}
       </span>
-      <span v-else-if="newAccomodationRoom !== undefined && rooms.length !== 0"
-        >{{ priceToPay }} {{ CURRENCY_SYMBOL }}</span
-      >
+      <span v-else-if="newAccomodationRoom !== undefined && rooms.length !== 0">{{ priceToPay }} {{ CURRENCY_SYMBOL
+        }}</span>
     </template>
 
     <template #checked_out="item">
-      <CheckboxDynamic
-        v-if="!item.isFormRow"
-        :value="item.data.checked_out"
-        @updateValue="(value) => changeAccomodationCheckedOut(item.data, value)"
-      />
+      <CheckboxDynamic v-if="!item.isFormRow" :value="item.data.checked_out"
+        @updateValue="(value) => changeAccomodationCheckedOut(item.data, value)" />
     </template>
 
     <template #was_price_paid="item">
-      <CheckboxDynamic
-        v-if="!item.isFormRow"
-        :value="item.data.was_price_paid"
-        @updateValue="(value) => changeAccomodationPricePaid(item.data, value)"
-      />
+      <CheckboxDynamic v-if="!item.isFormRow" :value="item.data.was_price_paid"
+        @updateValue="(value) => changeAccomodationPricePaid(item.data, value)" />
     </template>
 
     <template #submit="item">
-      <PrimaryButton
-        v-if="item.isFormRow"
-        type="submit"
-        form="createAccomodationForm"
-        :enabled="
-          priceToPay !== undefined &&
-          !isNaN(priceToPay) &&
-          newAccomodationClient !== undefined
-        "
-        >{{ t("createAccomodation") }}</PrimaryButton
-      >
+      <PrimaryButton v-if="item.isFormRow" type="submit" form="createAccomodationForm" :enabled="priceToPay !== undefined &&
+        !isNaN(priceToPay) &&
+        newAccomodationClient !== undefined
+        ">{{ t("createAccomodation") }}</PrimaryButton>
     </template>
   </TableCard>
 </template>

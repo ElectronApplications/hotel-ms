@@ -70,15 +70,10 @@ onBeforeMount(async () => {
         <h1 class="text-center text-6xl font-extrabold lg:text-left">
           {{ t("welcome", { hotelName: BRAND_HOTEL_NAME }) }}
         </h1>
-        <h2
-          class="pt-6 text-center text-2xl font-semibold text-secondary-active-light lg:text-left"
-        >
+        <h2 class="pt-6 text-center text-2xl font-semibold text-secondary-active-light lg:text-left">
           <i18n-t keypath="totalRooms">
             <template #roomsAmount>
-              <span
-                class="text-primary-active-light dark:text-primary-active-dark"
-                >{{ rooms.length }}</span
-              >
+              <span class="text-primary-active-light dark:text-primary-active-dark">{{ rooms.length }}</span>
             </template>
           </i18n-t>
         </h2>
@@ -86,7 +81,7 @@ onBeforeMount(async () => {
           <RouterLink :to="currentUser === undefined ? '/login' : '/book'">
             <PrimaryButton class="w-full py-4 lg:w-fit lg:px-8">{{
               t("bookNow")
-            }}</PrimaryButton>
+              }}</PrimaryButton>
           </RouterLink>
         </div>
       </div>
@@ -96,38 +91,21 @@ onBeforeMount(async () => {
     </div>
   </main>
 
-  <TransitionRoot
-    :show="contentShow"
-    enter="transition-opacity duration-500"
-    enter-from="opacity-0"
-    enter-to="opacity-100"
-  >
+  <TransitionRoot :show="contentShow" enter="transition-opacity duration-500" enter-from="opacity-0"
+    enter-to="opacity-100">
     <section class="container mx-auto px-2">
-      <SurfaceCard
-        class="rounded-t-none rounded-tr-none text-center lg:rounded-tl-3xl"
-      >
+      <SurfaceCard class="rounded-t-none rounded-tr-none text-center lg:rounded-tl-3xl">
         <div class="flex flex-row flex-wrap gap-y-4">
-          <div
-            v-for="room in displayRooms"
-            v-bind:key="room.id"
-            class="flex basis-full flex-col items-center md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
-          >
-            <div
-              v-if="
-                room.class_info.gallery !== null &&
-                room.class_info.gallery.images.length !== 0
-              "
-              class="h-[200px] w-[300px]"
-            >
-              <GalleryCarousel
-                :gallery="room.class_info.gallery"
-                imgClass="rounded-xl w-[300px] h-[200px] object-cover"
-              />
+          <div v-for="room in displayRooms" v-bind:key="room.id"
+            class="flex basis-full flex-col items-center md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
+            <div v-if="
+              room.class_info.gallery !== null &&
+              room.class_info.gallery.images.length !== 0
+            " class="h-[200px] w-[300px]">
+              <GalleryCarousel :gallery="room.class_info.gallery"
+                imgClass="rounded-xl w-[300px] h-[200px] object-cover" />
             </div>
-            <div
-              v-else
-              class="h-[200px] w-[300px] rounded-xl bg-secondary-light dark:bg-secondary-dark"
-            />
+            <div v-else class="h-[200px] w-[300px] rounded-xl bg-secondary-light dark:bg-secondary-dark" />
 
             <div class="pt-2 text-2xl">
               {{ room.class_info.class_description }} -
@@ -143,10 +121,7 @@ onBeforeMount(async () => {
             </div>
 
             <RouterLink :to="currentUser === undefined ? '/login' : '/book'">
-              <span
-                class="dark:text-link-darkfont-bold text-link-light underline"
-                >{{ t("bookNow") }}</span
-              >
+              <span class="dark:text-link-darkfont-bold text-link-light underline">{{ t("bookNow") }}</span>
             </RouterLink>
           </div>
         </div>

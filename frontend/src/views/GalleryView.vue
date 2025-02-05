@@ -98,53 +98,33 @@ onMounted(() => {
         <button class="rounded-md bg-red-500 p-[4px]" @click="deleteGallery">
           <XMarkIcon class="h-[24px] w-[24px] text-white" />
         </button>
-        <EditableLabel
-          :text="gallery.name"
-          as="h1"
-          textClass="text-center text-4xl font-extrabold lg:text-start"
-          @updateText="(value) => changeGalleryName(value)"
-        />
+        <EditableLabel :text="gallery.name" as="h1" textClass="text-center text-4xl font-extrabold lg:text-start"
+          @updateText="(value) => changeGalleryName(value)" />
       </div>
       <h1 v-else class="pt-2 text-center text-4xl font-extrabold lg:text-start">
         {{ gallery.name }}
       </h1>
 
       <div class="flex flex-row flex-wrap gap-y-2 pt-4">
-        <div
-          v-for="image in gallery.images"
-          v-bind:key="image.id"
-          class="flex basis-full flex-row justify-center md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
-        >
+        <div v-for="image in gallery.images" v-bind:key="image.id"
+          class="flex basis-full flex-row justify-center md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
           <div class="relative">
-            <ExpandableImage
-              imgClass="rounded-xl w-[300px] h-[200px] object-cover"
-              :src="image.image"
-            />
-            <button
-              class="absolute left-2 top-2 rounded-md bg-red-500 p-[4px]"
-              @click="deleteImage(image.id)"
-            >
+            <ExpandableImage imgClass="rounded-xl w-[300px] h-[200px] object-cover" :src="image.image" />
+            <button class="absolute left-2 top-2 rounded-md bg-red-500 p-[4px]" @click="deleteImage(image.id)">
               <XMarkIcon class="h-[24px] w-[24px] text-white" />
             </button>
           </div>
         </div>
       </div>
 
-      <form
-        class="flex flex-col items-center space-y-1 pt-4"
-        @submit.prevent="uploadImages"
-      >
+      <form class="flex flex-col items-center space-y-1 pt-4" @submit.prevent="uploadImages">
         <label class="block text-sm font-semibold" for="pictures">{{
           t("uploadImages")
-        }}</label>
+          }}</label>
         <div class="flex flex-row items-center justify-start space-x-1">
           <input
             class="w-[250px] cursor-pointer rounded-lg bg-secondary-light text-sm font-medium text-secondary-content-light file:border-0 file:bg-primary-light file:px-4 file:py-2 file:text-primary-content-light file:duration-100 file:hover:bg-primary-active-light dark:bg-secondary-dark dark:text-secondary-content-dark dark:file:bg-primary-dark dark:file:text-primary-content-dark dark:file:hover:bg-primary-active-dark"
-            type="file"
-            name="pictures"
-            ref="picturesRef"
-            multiple
-          />
+            type="file" name="pictures" ref="picturesRef" multiple />
           <button type="submit">
             <CheckIcon class="h-6 w-6" />
           </button>
