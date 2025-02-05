@@ -62,10 +62,7 @@ export const useAuthStore = defineStore("auth", () => {
     }
   }
 
-  async function login(
-    phoneNumber: string,
-    password: string,
-  ): Promise<boolean> {
+  async function login(phoneNumber: string, password: string): Promise<boolean> {
     try {
       const simpleAxios = axios.create();
       const tokens = (

@@ -48,7 +48,7 @@ app.use(
         return choicesLength < 4 ? 2 : 3;
       },
     },
-  }),
+  })
 );
 
 app.use(createPinia());

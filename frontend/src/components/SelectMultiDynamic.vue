@@ -12,7 +12,7 @@ const props = withDefaults(
   {
     placeholder: "Select options",
     maxTagsShow: 2,
-  },
+  }
 );
 
 const { options, selected, placeholder, maxTagsShow } = toRefs(props);
@@ -32,7 +32,7 @@ watch(
   },
   {
     immediate: true,
-  },
+  }
 );
 
 function updateSelections() {
@@ -44,6 +44,11 @@ function updateSelections() {
 </script>
 
 <template>
-  <SelectMulti @updateSelections="updateSelections" v-model="selectedOptions" :options="options"
-    :placeholder="placeholder" :maxTagsShow="maxTagsShow" />
+  <SelectMulti
+    @updateSelections="updateSelections"
+    v-model="selectedOptions"
+    :options="options"
+    :placeholder="placeholder"
+    :maxTagsShow="maxTagsShow"
+  />
 </template>

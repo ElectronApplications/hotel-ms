@@ -35,9 +35,7 @@ const props = defineProps<{
 }>();
 
 const { classes } = toRefs(props);
-const classDescriptions = computed(() =>
-  classes.value.map((x) => x.class_description),
-);
+const classDescriptions = computed(() => classes.value.map((x) => x.class_description));
 
 const rooms = defineModel<Room[]>();
 
@@ -125,23 +123,35 @@ onMounted(async () => {
   <h1 class="pb-2 pt-6 text-center text-4xl font-extrabold lg:text-start">
     {{ t("rooms") }}
   </h1>
-  <TableCard v-model:ordering="roomsOrdering" :columns="[
-    { name: 'delete', display: '' },
-    { name: 'room_number', display: t('roomNumber'), ordering: true },
-    { name: 'places', display: t('places'), ordering: true },
-    { name: 'class', display: t('class') },
-    { name: 'submit', display: '' },
-  ]" :rows="rooms" :extraFormRow="{ formName: 'createRoomForm', formSubmit: createRoom }">
+  <TableCard
+    v-model:ordering="roomsOrdering"
+    :columns="[
+      { name: 'delete', display: '' },
+      { name: 'room_number', display: t('roomNumber'), ordering: true },
+      { name: 'places', display: t('places'), ordering: true },
+      { name: 'class', display: t('class') },
+      { name: 'submit', display: '' },
+    ]"
+    :rows="rooms"
+    :extraFormRow="{ formName: 'createRoomForm', formSubmit: createRoom }"
+  >
     <template #delete="item">
-      <button v-if="!item.isFormRow" class="rounded-md bg-red-500 p-[4px]" @click="deleteRoom(item.data)">
+      <button
+        v-if="!item.isFormRow"
+        class="rounded-md bg-red-500 p-[4px]"
+        @click="deleteRoom(item.data)"
+      >
         <XMarkIcon class="h-[24px] w-[24px] text-white" />
       </button>
     </template>
 
     <template #room_number="item">
       <div v-if="!item.isFormRow" class="inline-block w-[100px] lg:w-[150px]">
-        <NumberInputDynamic :numberValue="item.data.room_number" :min="1"
-          @updateValue="(value) => changeRoomNumber(item.data, value)" />
+        <NumberInputDynamic
+          :numberValue="item.data.room_number"
+          :min="1"
+          @updateValue="(value) => changeRoomNumber(item.data, value)"
+        />
       </div>
       <div v-else class="inline-block w-[100px] lg:w-[150px]">
         <NumberInput v-model="newRoomNumber" :min="1" />
@@ -150,8 +160,10 @@ onMounted(async () => {
 
     <template #places="item">
       <div v-if="!item.isFormRow" class="inline-block w-[100px] lg:w-[150px]">
-        <NumberInputDynamic :numberValue="item.data.places"
-          @updateValue="(value) => changeRoomPlaces(item.data, value)" />
+        <NumberInputDynamic
+          :numberValue="item.data.places"
+          @updateValue="(value) => changeRoomPlaces(item.data, value)"
+        />
       </div>
       <div v-else class="inline-block w-[100px] lg:w-[150px]">
         <NumberInput v-model="newRoomPlaces" :min="1" :max="10" />
@@ -159,15 +171,28 @@ onMounted(async () => {
     </template>
 
     <template #class="item">
-      <SelectListDynamic v-if="!item.isFormRow" :options="classDescriptions"
-        :selected="classes.findIndex((x) => x.id == item.data.room_class)" @updateSelection="(value) => changeRoomClass(item.data, classes[value].id)
-          " />
-      <SelectList v-else :options="classDescriptions" v-model="newRoomClass" form="createRoomForm" />
+      <SelectListDynamic
+        v-if="!item.isFormRow"
+        :options="classDescriptions"
+        :selected="classes.findIndex((x) => x.id == item.data.room_class)"
+        @updateSelection="(value) => changeRoomClass(item.data, classes[value].id)"
+      />
+      <SelectList
+        v-else
+        :options="classDescriptions"
+        v-model="newRoomClass"
+        form="createRoomForm"
+      />
     </template>
 
     <template #submit="item">
-      <PrimaryButton v-if="item.isFormRow" form="createRoomForm" type="submit" :enabled="newRoomClass !== undefined">{{
-        t("createRoom") }}</PrimaryButton>
+      <PrimaryButton
+        v-if="item.isFormRow"
+        form="createRoomForm"
+        type="submit"
+        :enabled="newRoomClass !== undefined"
+        >{{ t("createRoom") }}</PrimaryButton
+      >
     </template>
   </TableCard>
 </template>

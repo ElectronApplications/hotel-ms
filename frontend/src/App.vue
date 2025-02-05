@@ -45,11 +45,7 @@ const { t } = useI18n({
 const locale = useLocale();
 const { currentLocale } = storeToRefs(locale);
 
-const localesText = computed(() => [
-  t("browserLanguage"),
-  "English",
-  "Русский",
-]);
+const localesText = computed(() => [t("browserLanguage"), "English", "Русский"]);
 const localesMap: (LocaleType | undefined)[] = [undefined, "en", "ru"];
 
 const authStore = useAuthStore();
@@ -62,30 +58,22 @@ const topEntries = computed(() => {
     {
       name: t("reception"),
       path: "/management/reception",
-      enabled:
-        currentUser.value?.role === "reception" ||
-        currentUser.value?.role === "admin",
+      enabled: currentUser.value?.role === "reception" || currentUser.value?.role === "admin",
     },
     {
       name: t("service"),
       path: "/management/service",
-      enabled:
-        currentUser.value?.role === "service" ||
-        currentUser.value?.role === "admin",
+      enabled: currentUser.value?.role === "service" || currentUser.value?.role === "admin",
     },
     {
       name: t("cleaning"),
       path: "/management/cleaning",
-      enabled:
-        currentUser.value?.role === "cleaning" ||
-        currentUser.value?.role === "admin",
+      enabled: currentUser.value?.role === "cleaning" || currentUser.value?.role === "admin",
     },
     {
       name: t("planning"),
       path: "/management/planning",
-      enabled:
-        currentUser.value?.role === "planning" ||
-        currentUser.value?.role === "admin",
+      enabled: currentUser.value?.role === "planning" || currentUser.value?.role === "admin",
     },
     {
       name: t("admin"),
@@ -115,8 +103,11 @@ const topEntries = computed(() => {
           <span class="font-extrabold">{{ BRAND_HOTEL_NAME }}</span>
         </RouterLink>
 
-        <SelectListDynamic :options="localesText" :selected="localesMap.indexOf(currentLocale)"
-          @updateSelection="(value) => locale.setLocale(localesMap[value])" />
+        <SelectListDynamic
+          :options="localesText"
+          :selected="localesMap.indexOf(currentLocale)"
+          @updateSelection="(value) => locale.setLocale(localesMap[value])"
+        />
       </div>
 
       <button class="block lg:hidden" @click="mobileMenuOpen = true">
@@ -125,34 +116,54 @@ const topEntries = computed(() => {
       </button>
 
       <div class="hidden flex-row gap-x-10 lg:flex">
-        <RouterLink v-for="entry in topEntries" v-bind:key="entry.path" :to="entry.path" class="font-bold">{{ entry.name
-          }}</RouterLink>
+        <RouterLink
+          v-for="entry in topEntries"
+          v-bind:key="entry.path"
+          :to="entry.path"
+          class="font-bold"
+          >{{ entry.name }}</RouterLink
+        >
         <RouterLink v-if="currentUser === undefined" to="/login">
-          <PrimaryButton class="px-8 py-3">{{
-            t("login")
-          }}</PrimaryButton>
+          <PrimaryButton class="px-8 py-3">{{ t("login") }}</PrimaryButton>
         </RouterLink>
       </div>
 
       <Dialog class="lg:hidden" @close="mobileMenuOpen = false" :open="mobileMenuOpen">
         <div class="fixed inset-0 z-10" />
         <DialogPanel
-          class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-surface-light px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10 dark:bg-surface-dark">
-          <div class="flex items-center justify-between text-surface-light dark:text-surface-content-dark">
-            <RouterLink to="/" @click="mobileMenuOpen = false" class="-m-1.5 flex flex-row items-center p-1.5">
+          class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-surface-light px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10 dark:bg-surface-dark"
+        >
+          <div
+            class="flex items-center justify-between text-surface-light dark:text-surface-content-dark"
+          >
+            <RouterLink
+              to="/"
+              @click="mobileMenuOpen = false"
+              class="-m-1.5 flex flex-row items-center p-1.5"
+            >
               <BrandIcon class="size-[32px] pe-2" />
               <span class="text-sm font-bold">{{ BRAND_HOTEL_NAME }}</span>
             </RouterLink>
-            <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700" @click="mobileMenuOpen = false">
+            <button
+              type="button"
+              class="-m-2.5 rounded-md p-2.5 text-gray-700"
+              @click="mobileMenuOpen = false"
+            >
               <span class="sr-only">{{ t("closeMenu") }}</span>
               <XMarkIcon class="h-6 w-6 dark:text-white" aria-hidden="true" />
             </button>
           </div>
 
           <div class="flex flex-col gap-y-2 pt-5 text-lg font-semibold">
-            <RouterLink v-for="entry in topEntries" v-bind:key="entry.path" :to="entry.path"
-              @click="mobileMenuOpen = false">{{ entry.name }}</RouterLink>
-            <RouterLink v-if="currentUser === undefined" to="/login" @click="mobileMenuOpen = false">{{ t("login") }}
+            <RouterLink
+              v-for="entry in topEntries"
+              v-bind:key="entry.path"
+              :to="entry.path"
+              @click="mobileMenuOpen = false"
+              >{{ entry.name }}</RouterLink
+            >
+            <RouterLink v-if="currentUser === undefined" to="/login" @click="mobileMenuOpen = false"
+              >{{ t("login") }}
             </RouterLink>
           </div>
         </DialogPanel>

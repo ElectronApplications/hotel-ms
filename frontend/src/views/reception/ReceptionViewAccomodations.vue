@@ -46,8 +46,8 @@ const rooms = ref<Room[]>([]);
 const roomNumbers = computed(() =>
   rooms.value.map(
     (x) =>
-      `№${x.room_number.toString()}, ${x.places} places, ${classes.value.find((y) => y.id == x.room_class)?.class_description}`,
-  ),
+      `№${x.room_number.toString()}, ${x.places} places, ${classes.value.find((y) => y.id == x.room_class)?.class_description}`
+  )
 );
 
 const classes = ref<Class[]>([]);
@@ -56,10 +56,7 @@ async function fetchAccomodations() {
   accomodations.value = (await axios.get("/api/accomodation/")).data;
 }
 
-async function changeAccomodationCheckedOut(
-  accomodationItem: Accomodation,
-  newValue: boolean,
-) {
+async function changeAccomodationCheckedOut(accomodationItem: Accomodation, newValue: boolean) {
   if (accomodationItem.checked_out !== newValue) {
     await axios.patch(`/api/accomodation/${accomodationItem.id}/`, {
       checked_out: newValue,
@@ -68,10 +65,7 @@ async function changeAccomodationCheckedOut(
   }
 }
 
-async function changeAccomodationPricePaid(
-  accomodationItem: Accomodation,
-  newValue: boolean,
-) {
+async function changeAccomodationPricePaid(accomodationItem: Accomodation, newValue: boolean) {
   if (accomodationItem.was_price_paid !== newValue) {
     await axios.patch(`/api/accomodation/${accomodationItem.id}/`, {
       was_price_paid: newValue,
@@ -96,10 +90,9 @@ watch(newAccomodationClientSearch, async (value) => {
   ).data;
 });
 const newAccomodationClient = computed(() =>
-  newAccomodationClients.value !== undefined &&
-    newAccomodationClients.value.count !== 0
+  newAccomodationClients.value !== undefined && newAccomodationClients.value.count !== 0
     ? newAccomodationClients.value.results[0]
-    : undefined,
+    : undefined
 );
 
 const priceToPay = computed(() => {
@@ -115,9 +108,8 @@ const priceToPay = computed(() => {
 
   return (
     rooms.value[newAccomodationRoom.value].places *
-    classes.value.find(
-      (x) => x.id == rooms.value[newAccomodationRoom.value].room_class,
-    )!.place_price *
+    classes.value.find((x) => x.id == rooms.value[newAccomodationRoom.value].room_class)!
+      .place_price *
     days
   );
 });
@@ -151,22 +143,24 @@ onMounted(async () => {
 </script>
 
 <template>
-  <h1 class="pt-6 text-center text-4xl font-extrabold lg:text-start">
-    Accomodations
-  </h1>
-  <TableCard :columns="[
-    { name: 'room__room_number', display: t('roomNumber') },
-    { name: 'move_in_time', display: t('moveInTime') },
-    { name: 'move_out_time', display: t('moveOutTime') },
-    { name: 'client__phone_number', display: t('client') },
-    { name: 'price_to_pay', display: t('price') },
-    { name: 'checked_out', display: t('checkedOut') },
-    { name: 'was_price_paid', display: t('paid') },
-    { name: 'submit', display: '' },
-  ]" :rows="accomodations" :extraFormRow="{
+  <h1 class="pt-6 text-center text-4xl font-extrabold lg:text-start">Accomodations</h1>
+  <TableCard
+    :columns="[
+      { name: 'room__room_number', display: t('roomNumber') },
+      { name: 'move_in_time', display: t('moveInTime') },
+      { name: 'move_out_time', display: t('moveOutTime') },
+      { name: 'client__phone_number', display: t('client') },
+      { name: 'price_to_pay', display: t('price') },
+      { name: 'checked_out', display: t('checkedOut') },
+      { name: 'was_price_paid', display: t('paid') },
+      { name: 'submit', display: '' },
+    ]"
+    :rows="accomodations"
+    :extraFormRow="{
       formName: 'createAccomodationForm',
       formSubmit: createAccomodation,
-    }">
+    }"
+  >
     <template #room__room_number="item">
       <span v-if="!item.isFormRow">
         {{ item.data.room.room_number }}
@@ -175,16 +169,12 @@ onMounted(async () => {
     </template>
 
     <template #move_in_time="item">
-      <span v-if="!item.isFormRow">{{
-        new Date(item.data.move_in_time).toUTCString()
-        }}</span>
+      <span v-if="!item.isFormRow">{{ new Date(item.data.move_in_time).toUTCString() }}</span>
       <input v-else type="datetime-local" v-model="newAccomodationMoveIn" />
     </template>
 
     <template #move_out_time="item">
-      <span v-if="!item.isFormRow">{{
-        new Date(item.data.move_out_time).toUTCString()
-        }}</span>
+      <span v-if="!item.isFormRow">{{ new Date(item.data.move_out_time).toUTCString() }}</span>
       <input v-else type="datetime-local" v-model="newAccomodationMoveOut" />
     </template>
 
@@ -199,28 +189,38 @@ onMounted(async () => {
     </template>
 
     <template #price_to_pay="item">
-      <span v-if="!item.isFormRow">
-        {{ item.data.price_to_pay }} {{ CURRENCY_SYMBOL }}
-      </span>
-      <span v-else-if="newAccomodationRoom !== undefined && rooms.length !== 0">{{ priceToPay }} {{ CURRENCY_SYMBOL
-        }}</span>
+      <span v-if="!item.isFormRow"> {{ item.data.price_to_pay }} {{ CURRENCY_SYMBOL }} </span>
+      <span v-else-if="newAccomodationRoom !== undefined && rooms.length !== 0"
+        >{{ priceToPay }} {{ CURRENCY_SYMBOL }}</span
+      >
     </template>
 
     <template #checked_out="item">
-      <CheckboxDynamic v-if="!item.isFormRow" :value="item.data.checked_out"
-        @updateValue="(value) => changeAccomodationCheckedOut(item.data, value)" />
+      <CheckboxDynamic
+        v-if="!item.isFormRow"
+        :value="item.data.checked_out"
+        @updateValue="(value) => changeAccomodationCheckedOut(item.data, value)"
+      />
     </template>
 
     <template #was_price_paid="item">
-      <CheckboxDynamic v-if="!item.isFormRow" :value="item.data.was_price_paid"
-        @updateValue="(value) => changeAccomodationPricePaid(item.data, value)" />
+      <CheckboxDynamic
+        v-if="!item.isFormRow"
+        :value="item.data.was_price_paid"
+        @updateValue="(value) => changeAccomodationPricePaid(item.data, value)"
+      />
     </template>
 
     <template #submit="item">
-      <PrimaryButton v-if="item.isFormRow" type="submit" form="createAccomodationForm" :enabled="priceToPay !== undefined &&
-        !isNaN(priceToPay) &&
-        newAccomodationClient !== undefined
-        ">{{ t("createAccomodation") }}</PrimaryButton>
+      <PrimaryButton
+        v-if="item.isFormRow"
+        type="submit"
+        form="createAccomodationForm"
+        :enabled="
+          priceToPay !== undefined && !isNaN(priceToPay) && newAccomodationClient !== undefined
+        "
+        >{{ t("createAccomodation") }}</PrimaryButton
+      >
     </template>
   </TableCard>
 </template>

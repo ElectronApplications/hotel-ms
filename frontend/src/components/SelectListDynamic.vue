@@ -25,7 +25,7 @@ watch(
   },
   {
     immediate: true,
-  },
+  }
 );
 
 function updateSelection() {
@@ -37,5 +37,10 @@ function updateSelection() {
 </script>
 
 <template>
-  <SelectList @change="updateSelection" v-model="selectedOption" :options="options" :blankOption="blankOption" />
+  <SelectList
+    @change="updateSelection"
+    v-model="selectedOption"
+    :options="options"
+    :blankOption="blankOption"
+  />
 </template>

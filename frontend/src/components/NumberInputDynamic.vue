@@ -29,6 +29,11 @@ function updateValue() {
 </script>
 
 <template>
-  <NumberInput @updateValue="updateValue" v-model="inputValue" :name="name" :placeholder="placeholder"
-    :required="required" />
+  <NumberInput
+    @updateValue="updateValue"
+    v-model="inputValue"
+    :name="name"
+    :placeholder="placeholder"
+    :required="required"
+  />
 </template>
