@@ -44,11 +44,6 @@ function updateSelections() {
 </script>
 
 <template>
-  <SelectMulti
-    @updateSelections="updateSelections"
-    v-model="selectedOptions"
-    :options="options"
-    :placeholder="placeholder"
-    :maxTagsShow="maxTagsShow"
-  />
+  <SelectMulti @updateSelections="updateSelections" v-model="selectedOptions" :options="options"
+    :placeholder="placeholder" :maxTagsShow="maxTagsShow" />
 </template>

@@ -108,20 +108,15 @@ const topEntries = computed(() => {
 
 <template>
   <header>
-    <nav
-      class="container mx-auto flex flex-row items-center justify-between p-4 text-sm"
-    >
+    <nav class="container mx-auto flex flex-row items-center justify-between p-4 text-sm">
       <div class="flex flex-row space-x-4">
         <RouterLink to="/" class="flex flex-row items-center">
           <BrandIcon class="size-[32px] pe-2" />
           <span class="font-extrabold">{{ BRAND_HOTEL_NAME }}</span>
         </RouterLink>
 
-        <SelectListDynamic
-          :options="localesText"
-          :selected="localesMap.indexOf(currentLocale)"
-          @updateSelection="(value) => locale.setLocale(localesMap[value])"
-        />
+        <SelectListDynamic :options="localesText" :selected="localesMap.indexOf(currentLocale)"
+          @updateSelection="(value) => locale.setLocale(localesMap[value])" />
       </div>
 
       <button class="block lg:hidden" @click="mobileMenuOpen = true">
@@ -130,64 +125,35 @@ const topEntries = computed(() => {
       </button>
 
       <div class="hidden flex-row gap-x-10 lg:flex">
-        <RouterLink
-          v-for="entry in topEntries"
-          v-bind:key="entry.path"
-          :to="entry.path"
-          class="font-bold"
-          >{{ entry.name }}</RouterLink
-        >
-        <RouterLink v-if="currentUser === undefined" to="/login"
-          ><PrimaryButton class="px-8 py-3">{{
+        <RouterLink v-for="entry in topEntries" v-bind:key="entry.path" :to="entry.path" class="font-bold">{{ entry.name
+          }}</RouterLink>
+        <RouterLink v-if="currentUser === undefined" to="/login">
+          <PrimaryButton class="px-8 py-3">{{
             t("login")
-          }}</PrimaryButton></RouterLink
-        >
+          }}</PrimaryButton>
+        </RouterLink>
       </div>
 
-      <Dialog
-        class="lg:hidden"
-        @close="mobileMenuOpen = false"
-        :open="mobileMenuOpen"
-      >
+      <Dialog class="lg:hidden" @close="mobileMenuOpen = false" :open="mobileMenuOpen">
         <div class="fixed inset-0 z-10" />
         <DialogPanel
-          class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-surface-light px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10 dark:bg-surface-dark"
-        >
-          <div
-            class="flex items-center justify-between text-surface-light dark:text-surface-content-dark"
-          >
-            <RouterLink
-              to="/"
-              @click="mobileMenuOpen = false"
-              class="-m-1.5 flex flex-row items-center p-1.5"
-            >
+          class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-surface-light px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10 dark:bg-surface-dark">
+          <div class="flex items-center justify-between text-surface-light dark:text-surface-content-dark">
+            <RouterLink to="/" @click="mobileMenuOpen = false" class="-m-1.5 flex flex-row items-center p-1.5">
               <BrandIcon class="size-[32px] pe-2" />
               <span class="text-sm font-bold">{{ BRAND_HOTEL_NAME }}</span>
             </RouterLink>
-            <button
-              type="button"
-              class="-m-2.5 rounded-md p-2.5 text-gray-700"
-              @click="mobileMenuOpen = false"
-            >
+            <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700" @click="mobileMenuOpen = false">
               <span class="sr-only">{{ t("closeMenu") }}</span>
               <XMarkIcon class="h-6 w-6 dark:text-white" aria-hidden="true" />
             </button>
           </div>
 
           <div class="flex flex-col gap-y-2 pt-5 text-lg font-semibold">
-            <RouterLink
-              v-for="entry in topEntries"
-              v-bind:key="entry.path"
-              :to="entry.path"
-              @click="mobileMenuOpen = false"
-              >{{ entry.name }}</RouterLink
-            >
-            <RouterLink
-              v-if="currentUser === undefined"
-              to="/login"
-              @click="mobileMenuOpen = false"
-              >{{ t("login") }}</RouterLink
-            >
+            <RouterLink v-for="entry in topEntries" v-bind:key="entry.path" :to="entry.path"
+              @click="mobileMenuOpen = false">{{ entry.name }}</RouterLink>
+            <RouterLink v-if="currentUser === undefined" to="/login" @click="mobileMenuOpen = false">{{ t("login") }}
+            </RouterLink>
           </div>
         </DialogPanel>
       </Dialog>
