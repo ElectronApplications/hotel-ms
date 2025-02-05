@@ -14,7 +14,7 @@ export function useAuthentication(hook: (isAuthenticated: boolean) => void) {
     },
     {
       immediate: true,
-    },
+    }
   );
 }
 
@@ -31,6 +31,6 @@ export function useUserRole(hook: (role: ClientRole) => void) {
     },
     {
       immediate: true,
-    },
+    }
   );
 }

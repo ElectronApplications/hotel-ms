@@ -28,20 +28,11 @@ function switchImage(value: number) {
 
 <template>
   <div v-if="gallery.images.length !== 0" class="relative">
-    <ExpandableImage
-      :src="gallery.images[currentImage].image"
-      :imgClass="imgClass"
-    />
-    <button
-      class="absolute left-2 top-1/2 -translate-y-1/2"
-      @click="switchImage(-1)"
-    >
+    <ExpandableImage :src="gallery.images[currentImage].image" :imgClass="imgClass" />
+    <button class="absolute left-2 top-1/2 -translate-y-1/2" @click="switchImage(-1)">
       <ChevronLeftIcon class="w-[32px] text-white drop-shadow-lg" />
     </button>
-    <button
-      class="absolute right-2 top-1/2 -translate-y-1/2"
-      @click="switchImage(+1)"
-    >
+    <button class="absolute right-2 top-1/2 -translate-y-1/2" @click="switchImage(+1)">
       <ChevronRightIcon class="w-[32px] text-white drop-shadow-lg" />
     </button>
   </div>

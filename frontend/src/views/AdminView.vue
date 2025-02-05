@@ -8,20 +8,12 @@ import SelectListDynamic from "@/components/SelectListDynamic.vue";
 import TextField from "@/components/TextField.vue";
 import { useAuthentication, useUserRole } from "@/composables/auth";
 import router from "@/router";
-import {
-  clientRoles,
-  type Pagination,
-  type Client,
-  type ClientRole,
-} from "@/types";
+import { clientRoles, type Pagination, type Client, type ClientRole } from "@/types";
 import { XMarkIcon } from "@heroicons/vue/24/outline";
 import axios from "axios";
 import { onMounted, ref, watch } from "vue";
 import { debounce } from "lodash";
-import TableCard, {
-  type Filtering,
-  type Ordering,
-} from "@/components/TableCard.vue";
+import TableCard, { type Filtering, type Ordering } from "@/components/TableCard.vue";
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n({
@@ -74,7 +66,7 @@ watch(
     } else {
       fetchClients();
     }
-  },
+  }
 );
 
 async function fetchClients() {
@@ -199,78 +191,129 @@ useUserRole((role) => {
       </div>
     </div>
 
-    <TableCard v-model:ordering="ordering" v-model:filtering="filtering" v-model:currentPage="clientsPage" :columns="[
-      { name: 'delete', display: '' },
-      { name: 'name', display: t('name'), ordering: true },
-      { name: 'phone', display: t('phoneNumber') },
-      { name: 'role', display: t('role'), filtering: clientRoles },
-      { name: 'image', display: t('profileImage') },
-    ]" :rows="clients?.results" :extraFormRow="{ formName: 'createClientForm', formSubmit: createClient }"
-      :pagination="clients !== undefined
+    <TableCard
+      v-model:ordering="ordering"
+      v-model:filtering="filtering"
+      v-model:currentPage="clientsPage"
+      :columns="[
+        { name: 'delete', display: '' },
+        { name: 'name', display: t('name'), ordering: true },
+        { name: 'phone', display: t('phoneNumber') },
+        { name: 'role', display: t('role'), filtering: clientRoles },
+        { name: 'image', display: t('profileImage') },
+      ]"
+      :rows="clients?.results"
+      :extraFormRow="{ formName: 'createClientForm', formSubmit: createClient }"
+      :pagination="
+        clients !== undefined
           ? { totalPages: clients.total_pages, count: clients.count }
           : undefined
-        ">
+      "
+    >
       <template #delete="item">
-        <button v-if="!item.isFormRow && item.data.role !== 'admin'" class="rounded-md bg-red-500 p-[4px]"
-          @click="deleteClient(item.data)">
+        <button
+          v-if="!item.isFormRow && item.data.role !== 'admin'"
+          class="rounded-md bg-red-500 p-[4px]"
+          @click="deleteClient(item.data)"
+        >
           <XMarkIcon class="h-[24px] w-[24px] text-white" />
         </button>
       </template>
 
       <template #name="item">
         <template v-if="!item.isFormRow">
-          <EditableLabel v-if="item.data.role !== 'admin'" class="justify-center" :text="item.data.name"
-            @updateText="(value) => changeClientName(item.data, value)" />
+          <EditableLabel
+            v-if="item.data.role !== 'admin'"
+            class="justify-center"
+            :text="item.data.name"
+            @updateText="(value) => changeClientName(item.data, value)"
+          />
           <span v-else>
             {{ item.data.name }}
           </span>
         </template>
         <div v-else class="inline-block w-[100px] lg:w-[250px]">
-          <TextField :placeholder="t('clientName')" v-model="newClientName" form="createClientForm" />
+          <TextField
+            :placeholder="t('clientName')"
+            v-model="newClientName"
+            form="createClientForm"
+          />
         </div>
       </template>
 
       <template #phone="item">
         <template v-if="!item.isFormRow">
-          <EditableLabel v-if="item.data.role !== 'admin'" class="justify-center" :text="item.data.phone_number"
-            @updateText="(value) => changeClientPhoneNumber(item.data, value)" />
+          <EditableLabel
+            v-if="item.data.role !== 'admin'"
+            class="justify-center"
+            :text="item.data.phone_number"
+            @updateText="(value) => changeClientPhoneNumber(item.data, value)"
+          />
           <span v-else>
             {{ item.data.phone_number }}
           </span>
         </template>
         <div v-else class="inline-block w-[100px] lg:w-[250px]">
-          <TextField :placeholder="t('clientPhoneNumber')" v-model="newClientPhoneNumber" form="createClientForm" />
+          <TextField
+            :placeholder="t('clientPhoneNumber')"
+            v-model="newClientPhoneNumber"
+            form="createClientForm"
+          />
         </div>
       </template>
 
       <template #role="item">
         <template v-if="!item.isFormRow">
-          <SelectListDynamic v-if="item.data.role !== 'admin'" :options="clientRoles"
-            :selected="clientRoles.indexOf(item.data.role)" @updateSelection="(value) => changeClientRole(item.data, clientRoles[value])
-              " />
+          <SelectListDynamic
+            v-if="item.data.role !== 'admin'"
+            :options="clientRoles"
+            :selected="clientRoles.indexOf(item.data.role)"
+            @updateSelection="(value) => changeClientRole(item.data, clientRoles[value])"
+          />
           <span v-else>
             {{ item.data.role }}
           </span>
         </template>
-        <SelectList v-else :options="clientRoles" :defaultOption="clientRoles.indexOf('client')" v-model="newClientRole"
-          form="createClientForm" />
+        <SelectList
+          v-else
+          :options="clientRoles"
+          :defaultOption="clientRoles.indexOf('client')"
+          v-model="newClientRole"
+          form="createClientForm"
+        />
       </template>
 
       <template #image="item">
-        <ExpandableImage v-if="!item.isFormRow" imgClass="w-[64px]" :src="item.data.picture ?? DefaultProfileImage"
-          :alt="item.data.name" />
-        <PrimaryButton v-else form="createClientForm" type="submit"
-          :enabled="newClientName !== '' && newClientPhoneNumber !== ''">{{ t("createClient") }}</PrimaryButton>
+        <ExpandableImage
+          v-if="!item.isFormRow"
+          imgClass="w-[64px]"
+          :src="item.data.picture ?? DefaultProfileImage"
+          :alt="item.data.name"
+        />
+        <PrimaryButton
+          v-else
+          form="createClientForm"
+          type="submit"
+          :enabled="newClientName !== '' && newClientPhoneNumber !== ''"
+          >{{ t("createClient") }}</PrimaryButton
+        >
       </template>
     </TableCard>
 
     <div class="mt-4">
-      <a href="/admin" class="font-bold text-link-light underline dark:text-link-dark">{{ t("djangoAdmin") }}</a>
+      <a href="/admin" class="font-bold text-link-light underline dark:text-link-dark">{{
+        t("djangoAdmin")
+      }}</a>
     </div>
 
     <div class="mt-4">
-      <a href="/api/stats/" class="font-bold text-link-light underline dark:text-link-dark" download
-        @click.prevent="downloadStats">{{ t("stats") }}</a>
+      <a
+        href="/api/stats/"
+        class="font-bold text-link-light underline dark:text-link-dark"
+        download
+        @click.prevent="downloadStats"
+        >{{ t("stats") }}</a
+      >
     </div>
   </main>
 </template>

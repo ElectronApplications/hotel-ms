@@ -83,30 +83,34 @@ useAuthentication((isAuthenticated) => {
         <div>
           <label for="old-password" class="block text-sm/6 font-medium">{{
             t("oldPassword")
-            }}</label>
-          <PasswordTextField class="mt-2" v-model="oldPassword" name="old-password" :required="true" />
+          }}</label>
+          <PasswordTextField
+            class="mt-2"
+            v-model="oldPassword"
+            name="old-password"
+            :required="true"
+          />
         </div>
         <div>
-          <label for="password" class="block text-sm/6 font-medium">{{
-            t("newPassword")
-            }}</label>
+          <label for="password" class="block text-sm/6 font-medium">{{ t("newPassword") }}</label>
           <PasswordTextField class="mt-2" v-model="newPassword" name="password" :required="true" />
         </div>
         <div>
           <label for="confirm-password" class="block text-sm/6 font-medium">{{
             t("confirmNewPassword")
-            }}</label>
-          <PasswordTextField class="mt-2" v-model="newPasswordConfirm" name="confirm-password" :required="true" />
+          }}</label>
+          <PasswordTextField
+            class="mt-2"
+            v-model="newPasswordConfirm"
+            name="confirm-password"
+            :required="true"
+          />
         </div>
         <div v-if="error" class="w-[250px] text-wrap break-words">
-          <span class="text-primary-light dark:text-primary-dark">{{
-            error
-            }}</span>
+          <span class="text-primary-light dark:text-primary-dark">{{ error }}</span>
         </div>
         <div>
-          <PrimaryButton type="submit" class="w-full">{{
-            t("changePassword")
-            }}</PrimaryButton>
+          <PrimaryButton type="submit" class="w-full">{{ t("changePassword") }}</PrimaryButton>
         </div>
       </form>
     </SurfaceCard>

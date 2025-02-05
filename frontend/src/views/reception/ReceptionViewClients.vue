@@ -3,10 +3,7 @@ import DefaultProfileImage from "@/assets/default-profile.png";
 import EditableLabel from "@/components/EditableLabel.vue";
 import ExpandableImage from "@/components/ExpandableImage.vue";
 import PrimaryButton from "@/components/PrimaryButton.vue";
-import TableCard, {
-  type Filtering,
-  type Ordering,
-} from "@/components/TableCard.vue";
+import TableCard, { type Filtering, type Ordering } from "@/components/TableCard.vue";
 import TextField from "@/components/TextField.vue";
 import { clientRoles, type Client, type Pagination } from "@/types";
 import { XMarkIcon } from "@heroicons/vue/24/outline";
@@ -61,7 +58,7 @@ watch(
     } else {
       fetchClients();
     }
-  },
+  }
 );
 
 async function fetchClients() {
@@ -141,27 +138,41 @@ onMounted(async () => {
     </div>
   </div>
 
-  <TableCard v-model:ordering="ordering" v-model:filtering="filtering" v-model:currentPage="clientsPage" :columns="[
-    { name: 'delete', display: '' },
-    { name: 'name', display: t('name'), ordering: true },
-    { name: 'phone', display: t('phoneNumber') },
-    { name: 'role', display: t('role'), filtering: clientRoles },
-    { name: 'image', display: t('profileImage') },
-  ]" :rows="clients?.results" :extraFormRow="{ formName: 'createClientForm', formSubmit: createClient }" :pagination="clients !== undefined
-        ? { totalPages: clients.total_pages, count: clients.count }
-        : undefined
-      ">
+  <TableCard
+    v-model:ordering="ordering"
+    v-model:filtering="filtering"
+    v-model:currentPage="clientsPage"
+    :columns="[
+      { name: 'delete', display: '' },
+      { name: 'name', display: t('name'), ordering: true },
+      { name: 'phone', display: t('phoneNumber') },
+      { name: 'role', display: t('role'), filtering: clientRoles },
+      { name: 'image', display: t('profileImage') },
+    ]"
+    :rows="clients?.results"
+    :extraFormRow="{ formName: 'createClientForm', formSubmit: createClient }"
+    :pagination="
+      clients !== undefined ? { totalPages: clients.total_pages, count: clients.count } : undefined
+    "
+  >
     <template #delete="item">
-      <button v-if="!item.isFormRow && item.data.role === 'client'" class="rounded-md bg-red-500 p-[4px]"
-        @click="deleteClient(item.data)">
+      <button
+        v-if="!item.isFormRow && item.data.role === 'client'"
+        class="rounded-md bg-red-500 p-[4px]"
+        @click="deleteClient(item.data)"
+      >
         <XMarkIcon class="h-[24px] w-[24px] text-white" />
       </button>
     </template>
 
     <template #name="item">
       <template v-if="!item.isFormRow">
-        <EditableLabel v-if="item.data.role === 'client'" class="justify-center" :text="item.data.name"
-          @updateText="(value) => changeClientName(item.data, value)" />
+        <EditableLabel
+          v-if="item.data.role === 'client'"
+          class="justify-center"
+          :text="item.data.name"
+          @updateText="(value) => changeClientName(item.data, value)"
+        />
         <span v-else>
           {{ item.data.name }}
         </span>
@@ -173,14 +184,22 @@ onMounted(async () => {
 
     <template #phone="item">
       <template v-if="!item.isFormRow">
-        <EditableLabel v-if="item.data.role === 'client'" class="justify-center" :text="item.data.phone_number"
-          @updateText="(value) => changeClientPhoneNumber(item.data, value)" />
+        <EditableLabel
+          v-if="item.data.role === 'client'"
+          class="justify-center"
+          :text="item.data.phone_number"
+          @updateText="(value) => changeClientPhoneNumber(item.data, value)"
+        />
         <span v-else>
           {{ item.data.phone_number }}
         </span>
       </template>
       <div v-else class="inline-block w-[100px] lg:w-[250px]">
-        <TextField :placeholder="t('clientPhoneNumber')" v-model="newClientPhoneNumber" form="createClientForm" />
+        <TextField
+          :placeholder="t('clientPhoneNumber')"
+          v-model="newClientPhoneNumber"
+          form="createClientForm"
+        />
       </div>
     </template>
 
@@ -192,10 +211,19 @@ onMounted(async () => {
     </template>
 
     <template #image="item">
-      <ExpandableImage v-if="!item.isFormRow" imgClass="w-[64px]" :src="item.data.picture ?? DefaultProfileImage"
-        :alt="item.data.name" />
-      <PrimaryButton v-else form="createClientForm" type="submit"
-        :enabled="newClientName !== '' && newClientPhoneNumber !== ''">{{ t("createClient") }}</PrimaryButton>
+      <ExpandableImage
+        v-if="!item.isFormRow"
+        imgClass="w-[64px]"
+        :src="item.data.picture ?? DefaultProfileImage"
+        :alt="item.data.name"
+      />
+      <PrimaryButton
+        v-else
+        form="createClientForm"
+        type="submit"
+        :enabled="newClientName !== '' && newClientPhoneNumber !== ''"
+        >{{ t("createClient") }}</PrimaryButton
+      >
     </template>
   </TableCard>
 </template>

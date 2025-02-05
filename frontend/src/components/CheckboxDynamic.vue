@@ -22,7 +22,7 @@ watch(
   },
   {
     immediate: true,
-  },
+  }
 );
 
 function updateValue() {

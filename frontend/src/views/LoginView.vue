@@ -58,10 +58,7 @@ const registerConfirmPassword = ref("");
 const registerError = ref<string>();
 
 async function loginSubmit(): Promise<boolean> {
-  const result = await authStore.login(
-    loginPhoneNumber.value,
-    loginPassword.value,
-  );
+  const result = await authStore.login(loginPhoneNumber.value, loginPassword.value);
 
   if (!result) {
     loginError.value = t("incorrectNumberPassword");
@@ -106,42 +103,65 @@ useAuthentication((isAuthenticated) => {
 
       <div class="pt-6">
         <TabGroup>
-          <TabList class="flex w-[300px] flex-row space-x-1 rounded-xl bg-primary-light p-1 dark:bg-primary-dark">
-            <Tab v-slot="{ selected }" class="basis-1/2 outline-none"><button class="w-full rounded-lg py-2" :class="[
-              selected
-                ? 'bg-surface-light text-surface-content-light shadow dark:bg-surface-dark dark:text-surface-content-dark'
-                : 'text-primary-content-light hover:bg-primary-active-light dark:text-primary-content-dark dark:hover:bg-primary-active-dark',
-            ]">
+          <TabList
+            class="flex w-[300px] flex-row space-x-1 rounded-xl bg-primary-light p-1 dark:bg-primary-dark"
+          >
+            <Tab v-slot="{ selected }" class="basis-1/2 outline-none"
+              ><button
+                class="w-full rounded-lg py-2"
+                :class="[
+                  selected
+                    ? 'bg-surface-light text-surface-content-light shadow dark:bg-surface-dark dark:text-surface-content-dark'
+                    : 'text-primary-content-light hover:bg-primary-active-light dark:text-primary-content-dark dark:hover:bg-primary-active-dark',
+                ]"
+              >
                 {{ t("login") }}
-              </button></Tab>
+              </button></Tab
+            >
 
-            <Tab v-slot="{ selected }" class="basis-1/2 outline-none"><button class="w-full rounded-lg py-2" :class="[
-              selected
-                ? 'bg-surface-light text-surface-content-light shadow dark:bg-surface-dark dark:text-surface-content-dark'
-                : 'text-primary-content-light hover:bg-primary-active-light dark:text-primary-content-dark dark:hover:bg-primary-active-dark',
-            ]">
+            <Tab v-slot="{ selected }" class="basis-1/2 outline-none"
+              ><button
+                class="w-full rounded-lg py-2"
+                :class="[
+                  selected
+                    ? 'bg-surface-light text-surface-content-light shadow dark:bg-surface-dark dark:text-surface-content-dark'
+                    : 'text-primary-content-light hover:bg-primary-active-light dark:text-primary-content-dark dark:hover:bg-primary-active-dark',
+                ]"
+              >
                 {{ t("register") }}
-              </button></Tab>
+              </button></Tab
+            >
           </TabList>
 
           <TabPanels class="pt-4">
             <TabPanel>
               <form class="space-y-4" @submit.prevent="loginSubmit">
                 <div>
-                  <label for="phone_number" class="block text-sm/6 font-medium">{{ t("phoneNumber") }}</label>
-                  <TextField class="mt-2" v-model="loginPhoneNumber" name="phone_number" type="tel" autocomplete="tel"
-                    :required="true" />
+                  <label for="phone_number" class="block text-sm/6 font-medium">{{
+                    t("phoneNumber")
+                  }}</label>
+                  <TextField
+                    class="mt-2"
+                    v-model="loginPhoneNumber"
+                    name="phone_number"
+                    type="tel"
+                    autocomplete="tel"
+                    :required="true"
+                  />
                 </div>
                 <div>
                   <label for="password" class="block text-sm/6 font-medium">{{
                     t("password")
-                    }}</label>
-                  <PasswordTextField class="mt-2" v-model="loginPassword" name="password" :required="true" />
+                  }}</label>
+                  <PasswordTextField
+                    class="mt-2"
+                    v-model="loginPassword"
+                    name="password"
+                    :required="true"
+                  />
                 </div>
                 <div v-if="loginError">
-                  <span class="text-primary-light dark:text-primary-dark">{{
-                    loginError
-                    }}</span>
+                  <span class="text-primary-light dark:text-primary-dark">{{ loginError }}</span>
                 </div>
                 <div>
                   <PrimaryButton type="submit" class="w-full">
@@ -154,27 +174,50 @@ useAuthentication((isAuthenticated) => {
             <TabPanel>
               <form class="space-y-4" @submit.prevent="registerSubmit">
                 <div>
-                  <label for="name" class="block text-sm/6 font-medium">{{
-                    t("name")
-                    }}</label>
-                  <TextField class="mt-2" v-model="registerName" name="name" type="text" autocomplete="name"
-                    :required="true" />
+                  <label for="name" class="block text-sm/6 font-medium">{{ t("name") }}</label>
+                  <TextField
+                    class="mt-2"
+                    v-model="registerName"
+                    name="name"
+                    type="text"
+                    autocomplete="name"
+                    :required="true"
+                  />
                 </div>
                 <div>
-                  <label for="phone_number" class="block text-sm/6 font-medium">{{ t("phoneNumber") }}</label>
-                  <TextField class="mt-2" v-model="registerPhoneNumber" name="phone_number" type="tel"
-                    autocomplete="tel" :required="true" />
+                  <label for="phone_number" class="block text-sm/6 font-medium">{{
+                    t("phoneNumber")
+                  }}</label>
+                  <TextField
+                    class="mt-2"
+                    v-model="registerPhoneNumber"
+                    name="phone_number"
+                    type="tel"
+                    autocomplete="tel"
+                    :required="true"
+                  />
                 </div>
                 <div>
                   <label for="password" class="block text-sm/6 font-medium">{{
                     t("password")
-                    }}</label>
-                  <PasswordTextField class="mt-2" v-model="registerPassword" name="password" :required="true" />
+                  }}</label>
+                  <PasswordTextField
+                    class="mt-2"
+                    v-model="registerPassword"
+                    name="password"
+                    :required="true"
+                  />
                 </div>
                 <div>
-                  <label for="confirm-password" class="block text-sm/6 font-medium">{{ t("confirmPassword") }}</label>
-                  <PasswordTextField class="mt-2" v-model="registerConfirmPassword" name="confirm-password"
-                    :required="true" />
+                  <label for="confirm-password" class="block text-sm/6 font-medium">{{
+                    t("confirmPassword")
+                  }}</label>
+                  <PasswordTextField
+                    class="mt-2"
+                    v-model="registerConfirmPassword"
+                    name="confirm-password"
+                    :required="true"
+                  />
                 </div>
                 <div v-if="registerError" class="max-w-[250px] text-wrap break-words">
                   <span class="text-primary-light dark:text-primary-dark">

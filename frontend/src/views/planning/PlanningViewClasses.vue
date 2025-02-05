@@ -67,10 +67,7 @@ async function fetchClasses() {
   ).data;
 }
 
-async function changeClassDescription(
-  classItem: Class,
-  newDescription: string,
-) {
+async function changeClassDescription(classItem: Class, newDescription: string) {
   if (classItem.class_description !== newDescription) {
     await axios.patch(`/api/class/${classItem.id}/`, {
       class_description: newDescription,
@@ -139,41 +136,64 @@ onMounted(async () => {
 </script>
 
 <template>
-  <PlanningViewGalleryDialog :open="createGalleryClass !== undefined" @close="createGalleryClass = undefined"
-    @createGallery="(value) => createGallery(value)" />
+  <PlanningViewGalleryDialog
+    :open="createGalleryClass !== undefined"
+    @close="createGalleryClass = undefined"
+    @createGallery="(value) => createGallery(value)"
+  />
 
   <h1 class="pb-2 text-center text-4xl font-extrabold lg:text-start">
     {{ t("classes") }}
   </h1>
-  <TableCard v-model:ordering="classesOrdering" :columns="[
-    { name: 'delete', display: '' },
-    {
-      name: 'class_description',
-      display: t('classDescription'),
-      ordering: true,
-    },
-    { name: 'place_price', display: t('placePrice'), ordering: true },
-    { name: 'gallery', display: t('gallery') },
-    { name: 'submit', display: '' },
-  ]" :rows="classes" :extraFormRow="{ formName: 'createClassForm', formSubmit: createClass }">
+  <TableCard
+    v-model:ordering="classesOrdering"
+    :columns="[
+      { name: 'delete', display: '' },
+      {
+        name: 'class_description',
+        display: t('classDescription'),
+        ordering: true,
+      },
+      { name: 'place_price', display: t('placePrice'), ordering: true },
+      { name: 'gallery', display: t('gallery') },
+      { name: 'submit', display: '' },
+    ]"
+    :rows="classes"
+    :extraFormRow="{ formName: 'createClassForm', formSubmit: createClass }"
+  >
     <template #delete="item">
-      <button v-if="!item.isFormRow" class="rounded-md bg-red-500 p-[4px]" @click="deleteClass(item.data)">
+      <button
+        v-if="!item.isFormRow"
+        class="rounded-md bg-red-500 p-[4px]"
+        @click="deleteClass(item.data)"
+      >
         <XMarkIcon class="h-[24px] w-[24px] text-white" />
       </button>
     </template>
 
     <template #class_description="item">
-      <EditableLabel v-if="!item.isFormRow" class="justify-center" :text="item.data.class_description"
-        @updateText="(value) => changeClassDescription(item.data, value)" />
+      <EditableLabel
+        v-if="!item.isFormRow"
+        class="justify-center"
+        :text="item.data.class_description"
+        @updateText="(value) => changeClassDescription(item.data, value)"
+      />
       <div v-else class="inline-block w-[100px] lg:w-[250px]">
-        <TextField :placeholder="t('classDescription')" v-model="newClassDescription" form="createClassForm" />
+        <TextField
+          :placeholder="t('classDescription')"
+          v-model="newClassDescription"
+          form="createClassForm"
+        />
       </div>
     </template>
 
     <template #place_price="item">
       <div v-if="!item.isFormRow">
-        <EditableLabel class="justify-center" :text="item.data.place_price.toString()"
-          @updateText="(value) => changeClassPrice(item.data, value)" />
+        <EditableLabel
+          class="justify-center"
+          :text="item.data.place_price.toString()"
+          @updateText="(value) => changeClassPrice(item.data, value)"
+        />
         {{ CURRENCY_SYMBOL }}
       </div>
       <div v-else class="inline-block w-[100px] lg:w-[250px]">
@@ -182,16 +202,24 @@ onMounted(async () => {
     </template>
 
     <template #gallery="item">
-      <div v-if="!item.isFormRow" class="flex flex-col items-center justify-center space-x-2 lg:flex-row">
-        <SelectListDynamic :blankOption="true" :options="galleryNames"
-          :selected="galleries.findIndex((x) => x.id == item.data.gallery?.id)" @updateSelection="(value) =>
-              changeClassGallery(
-                item.data,
-                value === undefined ? undefined : galleries[value].id,
-              )
-            " />
-        <div class="flex flex-col text-nowrap font-bold text-link-light underline lg:items-start dark:text-link-dark">
-          <RouterLink v-if="item.data.gallery !== null" :to="`/gallery/${item.data.gallery.id}`">{{ t("editGallery") }}
+      <div
+        v-if="!item.isFormRow"
+        class="flex flex-col items-center justify-center space-x-2 lg:flex-row"
+      >
+        <SelectListDynamic
+          :blankOption="true"
+          :options="galleryNames"
+          :selected="galleries.findIndex((x) => x.id == item.data.gallery?.id)"
+          @updateSelection="
+            (value) =>
+              changeClassGallery(item.data, value === undefined ? undefined : galleries[value].id)
+          "
+        />
+        <div
+          class="flex flex-col text-nowrap font-bold text-link-light underline lg:items-start dark:text-link-dark"
+        >
+          <RouterLink v-if="item.data.gallery !== null" :to="`/gallery/${item.data.gallery.id}`"
+            >{{ t("editGallery") }}
           </RouterLink>
           <button @click="createGalleryClass = item.data">
             {{ t("createGallery") }}
@@ -201,8 +229,13 @@ onMounted(async () => {
     </template>
 
     <template #submit="item">
-      <PrimaryButton v-if="item.isFormRow" form="createClassForm" type="submit"
-        :enabled="newClassDescription !== '' && newClassPrice !== ''">{{ t("createClass") }}</PrimaryButton>
+      <PrimaryButton
+        v-if="item.isFormRow"
+        form="createClassForm"
+        type="submit"
+        :enabled="newClassDescription !== '' && newClassPrice !== ''"
+        >{{ t("createClass") }}</PrimaryButton
+      >
     </template>
   </TableCard>
 </template>

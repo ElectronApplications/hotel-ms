@@ -7,10 +7,7 @@ export const locales = ["en", "ru"] as const;
 export type LocaleType = (typeof locales)[number];
 
 export const useLocale = defineStore("locale", () => {
-  const currentLocale = useLocalStorage<LocaleType | undefined>(
-    "locale",
-    undefined,
-  );
+  const currentLocale = useLocalStorage<LocaleType | undefined>("locale", undefined);
 
   const { locale } = useI18n();
 
@@ -20,9 +17,7 @@ export const useLocale = defineStore("locale", () => {
     } else {
       const browserLocale = window.navigator.language.substring(0, 2);
       console.log(browserLocale);
-      locale.value = (locales as readonly string[]).includes(browserLocale)
-        ? browserLocale
-        : "en";
+      locale.value = (locales as readonly string[]).includes(browserLocale) ? browserLocale : "en";
     }
   }
 
