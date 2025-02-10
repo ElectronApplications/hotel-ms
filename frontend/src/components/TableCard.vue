@@ -109,7 +109,7 @@ const pageEntries = computed(() => {
   const pages = new Set(
     [1, 2, current - 1, current, current + 1, total - 1, total].filter((x) => x >= 1 && x <= total)
   );
-  let result = [...pages];
+  const result = [...pages];
 
   for (let i = 0; i < result.length - 1; i++) {
     if (result[i] + 1 !== result[i + 1]) {

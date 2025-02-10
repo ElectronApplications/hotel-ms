@@ -43,7 +43,7 @@ const displayRooms = computed(() =>
   rooms.value
     .filter((x) => x.status == "free")
     .map((x) => {
-      let room = x as Room & { class_info: Class };
+      const room = x as Room & { class_info: Class };
       room.class_info = classes.value.find((y) => y.id == x.room_class)!;
       return room;
     })
