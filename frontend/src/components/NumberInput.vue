@@ -42,7 +42,7 @@ function addModel(value: number) {
 }
 
 function setModel(value: number) {
-  let newModel = isNaN(value) ? (min.value ?? 1) : value;
+  const newModel = isNaN(value) ? (min.value ?? 1) : value;
   updateModel(newModel);
 }
 </script>
