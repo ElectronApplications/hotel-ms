@@ -13,6 +13,7 @@ class Accomodation(models.Model):
     was_price_paid = models.BooleanField("Did the client pay", default=False)
     checked_out = models.BooleanField("Did the client check out", default=False)
     reservation = models.OneToOneField(Reservation, on_delete=models.SET_NULL, null=True, blank=True, related_name="accomodation")
+    created_time = models.DateTimeField("Accomodation creation time", auto_now=True)
 
     def __str__(self) -> str:
         return f"Accomodation №{self.id} for {self.client.name}"
@@ -27,6 +28,7 @@ class ServiceCard(models.Model):
     price_to_pay = models.DecimalField("Service's price", max_digits=8, decimal_places=2)
     service_time = models.DateTimeField("Time of service")
     was_price_paid = models.BooleanField("Did the client pay", default=False)
+    created_time = models.DateTimeField("Accomodation creation time", auto_now=True)
 
     def __str__(self) -> str:
         return f"Service card №{self.id} for {self.accomodation.client.name} and accomodation №{self.accomodation.id}"
