@@ -1,4 +1,4 @@
-django==5.1
+django==5.0.12
 djangorestframework==3.15.2
 pytest-django==4.9.0
 model-bakery==1.19.5
@@ -8,3 +8,4 @@ Pillow==11.0.0
 django-filter==24.3
 openpyxl==3.1.5
 gunicorn==23.0.0
+mssql-django==1.5
