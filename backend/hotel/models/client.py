@@ -26,6 +26,7 @@ class Client(models.Model):
     role = models.CharField(max_length=16, choices=Role.choices, default=Role.CLIENT)
 
     picture = models.ImageField("Profile picture", null=True, blank=True, upload_to="clients")
+    created_time = models.DateTimeField("Accomodation creation time", auto_now=True)
 
     def __str__(self) -> str:
         return self.name
