@@ -4,7 +4,7 @@ from hotel.models.gallery import Gallery
 
 class ClassInfo(models.Model):
     class_description = models.TextField("Class description")
-    place_price = models.DecimalField("Price of a place", max_digits=8, decimal_places=2)
+    place_price = models.DecimalField("Price of a place", max_digits=14, decimal_places=2)
     gallery = models.ForeignKey(Gallery, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self) -> str:
@@ -16,7 +16,7 @@ class ClassInfo(models.Model):
 
 class Service(models.Model):
     service_description = models.TextField("Service description")
-    service_price = models.DecimalField("Service price", max_digits=8, decimal_places=2)
+    service_price = models.DecimalField("Service price", max_digits=14, decimal_places=2)
     classes = models.ManyToManyField(ClassInfo, related_name="services")
     gallery = models.ForeignKey(Gallery, on_delete=models.SET_NULL, null=True, blank=True)
 

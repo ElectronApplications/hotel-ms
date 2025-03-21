@@ -7,7 +7,7 @@ from hotel.models.reservation import Reservation
 class Accomodation(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE, null=False, related_name="accomodations")
     room = models.ForeignKey(Room, on_delete=models.CASCADE, null=False, related_name="accomodations")
-    price_to_pay = models.DecimalField("Accomodation's price", max_digits=8, decimal_places=2)
+    price_to_pay = models.DecimalField("Accomodation's price", max_digits=14, decimal_places=2)
     move_in_time = models.DateTimeField("Time of moving in")
     move_out_time = models.DateTimeField("Time of moving out")
     was_price_paid = models.BooleanField("Did the client pay", default=False)
@@ -25,7 +25,7 @@ class Accomodation(models.Model):
 class ServiceCard(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE, null=False, related_name="servicecards")
     accomodation = models.ForeignKey(Accomodation, on_delete=models.CASCADE, null=False, related_name="servicecards")
-    price_to_pay = models.DecimalField("Service's price", max_digits=8, decimal_places=2)
+    price_to_pay = models.DecimalField("Service's price", max_digits=14, decimal_places=2)
     service_time = models.DateTimeField("Time of service")
     was_price_paid = models.BooleanField("Did the client pay", default=False)
     created_time = models.DateTimeField("Accomodation creation time", auto_now=True)
