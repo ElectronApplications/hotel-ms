@@ -5,7 +5,7 @@ from django.dispatch import receiver
 from django.db.models.signals import post_delete
 
 class Client(models.Model):
-    name = models.TextField("ФИО")
+    name = models.CharField("ФИО", max_length=128)
     phone_number = models.CharField(
         "Phone number",
         max_length=16,
