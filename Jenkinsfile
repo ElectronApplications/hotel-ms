@@ -5,7 +5,7 @@ pipeline {
         stage('Test') {
             steps {
                 sh 'pip install pytest'
-                sh 'cd backend && pytest mytest.py'
+                sh 'cd backend && python -m pytest'
             }
         }
     }
