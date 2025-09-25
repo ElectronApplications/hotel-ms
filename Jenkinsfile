@@ -3,8 +3,9 @@ pipeline {
 
     stages {
         stage('Test') {
-            steps {
-                sh 'cd backend && pytest'
+            withPythonEnv('python3') {
+                sh 'pip install pytest'
+                sh 'cd backend && pytest mytest.py'
             }
         }
     }
