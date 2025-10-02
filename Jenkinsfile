@@ -16,7 +16,11 @@ pipeline {
 
         stage('Test') {
             steps {
-                sh 'cd backend && python -m pytest'
+                sh '''
+                . .venv/bin/activate
+                cd backend
+                python -m pytest
+                '''
             }
         }
 
