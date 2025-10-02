@@ -30,7 +30,7 @@ pipeline {
                     . .venv/bin/activate
                     cd backend
                     python manage.py migrate
-                    python manage.py runserver 1267
+                    python manage.py runserver 0.0.0.0:1267
                 '''
             }
         }
