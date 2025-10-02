@@ -7,6 +7,7 @@ pipeline {
                 sh '''
                     python -m venv .venv
                     . .venv/bin/activate
+                    cd backend
                     python -m pip install -r requirements.txt
                     python -m pip install pytest
                 '''
