@@ -28,6 +28,7 @@ pipeline {
             steps {
                 sh '''
                     cp .env.jenkins .env
+                    cp local_settings.py.jenkins local_settings.py
                     docker compose up
                 '''
             }
