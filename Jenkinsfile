@@ -27,11 +27,9 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh '''
-                    podman --version
-                    podman compose --version
                     cp .env.jenkins .env
                     cp local_settings.py.jenkins local_settings.py
-                    podman compose up
+                    podman-compose up
                 '''
             }
         }
