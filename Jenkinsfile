@@ -27,10 +27,8 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh '''
-                    . .venv/bin/activate
-                    cd backend
-                    python manage.py migrate
-                    python manage.py runserver 0.0.0.0:1267
+                    cp .env.jenkins .env
+                    docker compose up
                 '''
             }
         }
