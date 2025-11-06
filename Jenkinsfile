@@ -29,7 +29,7 @@ pipeline {
                 sh '''
                     cp .env.jenkins .env
                     cp local_settings.py.jenkins local_settings.py
-                    echo /rootpassword | sudo -S docker compose up
+                    bash -c "echo /rootpassword | sudo -S docker compose up"
                 '''
             }
         }
