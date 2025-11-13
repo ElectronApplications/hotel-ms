@@ -29,7 +29,7 @@ pipeline {
                 sh '''
                     cp .env.jenkins .env
                     cp local_settings.py.jenkins local_settings.py
-                    sudo docker compose up
+                    sudo docker compose up --build
                 '''
             }
         }
