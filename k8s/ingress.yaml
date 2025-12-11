@@ -17,13 +17,13 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: backend-service
+            name: hotel-ms
             port:
               number: 8000
       - path: /admin/
         pathType: Prefix
         backend:
           service:
-            name: backend-service
+            name: hotel-ms
             port:
               number: 8000
